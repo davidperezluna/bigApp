@@ -1,0 +1,34 @@
+# mapps_usuario_api:
+#     resource: "@MappsUsuarioBundle/Controller/"
+#     type:     rest
+#     prefix:   /api
+
+mapps_usuario_web:
+    resource: "@MappsUsuarioBundle/Controller/"
+    type:     annotation
+
+mapps_usuario_api:
+    resource: "@MappsUsuarioBundle/ControllerApi/"
+    type:     rest
+    prefix:   /api
+
+app_controller_api:
+    resource: "@AppBundle/ControllerApi/"
+    type:     annotation
+    prefix:   /api
+
+app:
+    resource: '@AppBundle/Controller/'
+    type: annotation
+
+fos_user:
+    resource: "@FOSUserBundle/Resources/config/routing/all.xml"
+
+
+# app/config/routing.yml
+NelmioApiDocBundle:
+    resource: "@NelmioApiDocBundle/Resources/config/routing.yml"
+    prefix:   /api/doc
+
+fos_oauth_server_token:
+    resource: "@FOSOAuthServerBundle/Resources/config/routing/token.xml" 

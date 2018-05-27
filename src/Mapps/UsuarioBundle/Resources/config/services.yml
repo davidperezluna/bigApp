@@ -1,0 +1,4 @@
+services:
+#    mapps_usuario.example:
+#        class: Mapps\UsuarioBundle\Example
+#        arguments: ["@service_id", "plain_value", "%parameter%"]

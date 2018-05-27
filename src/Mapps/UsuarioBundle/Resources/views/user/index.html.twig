@@ -1,0 +1,53 @@
+{% extends 'base.html.twig' %}
+{% block body %}
+<div class="panel panel-default">
+    <div class="panel-heading">
+        <h3 class="panel-title"><span class="icon-user"></span>Lista de Usuarios</h3>                                        
+    </div>
+    <div class="panel-body">                                    
+          <div class="table-responsive">
+                <table class="table table-bordered no-margin-bottom" id="datatable">
+                    <thead>
+                        <tr>
+                          <th>Nombres</th>
+                          <th>Apellidos</th>
+                          <th>Identificación</th>
+                          <th>Correo</th>
+                          <th>Teléfono</th>
+                          <th>Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    {% for usuario in users %}
+                      <tr>
+                          <td>{{usuario.nombres}}</td>                      
+                          <td>{{usuario.apellidos}}</td>                      
+                          <td>{{usuario.identificacion}}</td>                      
+                          <td>{{usuario.email}}</td>                      
+                          <td>{{usuario.celular}}</td>                      
+                          <td>
+                            <a class="btn btn-info btn-line btn-xs" href="{{ path('user_edit', { 'id': usuario.id }) }}"><span class="fa fa-pencil"></span>Editar</a>
+                          </td>                      
+                      </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>                            
+    </div>
+    <div class="panel-footer">   
+        <div class="panel-elements pull-right">
+            <a href="{{ path('user_new') }}" class="btn btn-primary pull-right">Crear Nuevo</a>
+        </div>                                        
+    </div>
+</div>
+{% endblock %}
+{% block javascripts %}
+{{parent()}}
+    <script type="text/javascript">
+      $(document).ready(function() {
+          $('#datatable').DataTable();
+      } );
+    </script>
+{% endblock %}
+
+
