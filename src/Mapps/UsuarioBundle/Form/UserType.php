@@ -9,6 +9,7 @@ use Symfony\Component\Form\Extension\Core\Type\RepeatedType;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Form\Extension\Core\Type\FileType;
 
 class UserType extends AbstractType
 {
@@ -18,20 +19,11 @@ class UserType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-        ->add('username')
         ->add('nombres')
         ->add('apellidos')
-        ->add('identificacion')
         ->add('celular')
-        ->add('direccion')
-        ->add('direccion')
         ->add('email', EmailType::class)
-        ->add('genero', ChoiceType::class, array(
-            'choices'  => array(
-                'Masculino' => "masculino",
-                'Femenino' => "femenino",
-            ),
-        ))
+        
         ->add('rolePersona', ChoiceType::class, array(
             'choices'  => array(
                 'Administrador' => "ROLE_ADMIN",

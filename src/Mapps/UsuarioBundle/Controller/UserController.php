@@ -51,6 +51,7 @@ class UserController extends Controller
             $passwordd =$user->getPassword();
             $password = $encoder->encodePassword($passwordd, $user->getSalt());
             $user->setPassword($password);
+            $user->setUsername($user->getEmail());
             $user->setEnabled("true");
             $em->persist($user);
             $em->flush();

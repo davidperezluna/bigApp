@@ -35,12 +35,6 @@ class User extends BaseUser
      */
     private $apellidos;
 
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="identificacion", type="string", length=255)
-     */
-    private $identificacion;
 
     /**
      * @var string
@@ -49,19 +43,19 @@ class User extends BaseUser
      */
     private $celular;
 
-    /**
+      /**
      * @var string
      *
-     * @ORM\Column(name="direccion", type="string", length=255, nullable = true)
+     * @ORM\Column(name="fotoPerfil", type="string", length=255)
      */
-    private $direccion;
+    private $fotoPerfil;
 
-    /**
+      /**
      * @var string
      *
-     * @ORM\Column(name="genero", type="string", length=255, nullable = true)
+     * @ORM\Column(name="fotoPortada", type="string", length=255)
      */
-    private $genero;
+    private $fotoPortada;
 
      /**
      * @var string
@@ -116,8 +110,6 @@ class User extends BaseUser
    }
 
 
-    
-
     /**
      * Set nombres
      *
@@ -167,30 +159,6 @@ class User extends BaseUser
     }
 
     /**
-     * Set identificacion
-     *
-     * @param string $identificacion
-     *
-     * @return User
-     */
-    public function setIdentificacion($identificacion)
-    {
-        $this->identificacion = $identificacion;
-
-        return $this;
-    }
-
-    /**
-     * Get identificacion
-     *
-     * @return string
-     */
-    public function getIdentificacion()
-    {
-        return $this->identificacion;
-    }
-
-    /**
      * Set celular
      *
      * @param string $celular
@@ -215,51 +183,51 @@ class User extends BaseUser
     }
 
     /**
-     * Set direccion
+     * Set fotoPerfil
      *
-     * @param string $direccion
+     * @param string $fotoPerfil
      *
      * @return User
      */
-    public function setDireccion($direccion)
+    public function setFotoPerfil($fotoPerfil)
     {
-        $this->direccion = $direccion;
+        $this->fotoPerfil = $fotoPerfil;
 
         return $this;
     }
 
     /**
-     * Get direccion
+     * Get fotoPerfil
      *
      * @return string
      */
-    public function getDireccion()
+    public function getFotoPerfil()
     {
-        return $this->direccion;
+        return $this->fotoPerfil;
     }
 
     /**
-     * Set genero
+     * Set fotoPortada
      *
-     * @param string $genero
+     * @param string $fotoPortada
      *
      * @return User
      */
-    public function setGenero($genero)
+    public function setFotoPortada($fotoPortada)
     {
-        $this->genero = $genero;
+        $this->fotoPortada = $fotoPortada;
 
         return $this;
     }
 
     /**
-     * Get genero
+     * Get fotoPortada
      *
      * @return string
      */
-    public function getGenero()
+    public function getFotoPortada()
     {
-        return $this->genero;
+        return $this->fotoPortada;
     }
 
     /**
@@ -333,6 +301,4 @@ class User extends BaseUser
     {
         return $this->updatedAt;
     }
-
- 
 }
