@@ -1,3 +1,7 @@
+app_empresa:
+    resource: "@AppBundle/Controller/EmpresaController.php"
+    type:     annotation
+
 # mapps_usuario_api:
 #     resource: "@MappsUsuarioBundle/Controller/"
 #     type:     rest

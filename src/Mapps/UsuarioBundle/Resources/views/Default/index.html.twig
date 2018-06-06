@@ -1,26 +1,9 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
-<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-	<div class="pane equal" >
-		<h2><span>{{app.user.nombres}} {{app.user.apellidos}}</span></h2>
-		<ul>
-			<li>Nombre de usuario: <b>{{app.user.username}}</b></li> 
-			<li>Identificacion: <b>{{app.user.identificacion}}</b></li> 
-			<li>Celular: <b>{{app.user.celular}}</b></li> 
-			<li>Correo electronico: <b>{{app.user.email}}</b></li> 
-			<li>Direccion: <b>{{app.user.direccion}}</b></li> 
-			<li>Ultima conexion: <b class="label label-success">{{app.user.lastLogin|date("F jS \\a\\t g:ia")}}</b></li> 
-		</ul>
-	</div><!-- pane -->
-</div>
 
 {% endblock %}
 {% block javascripts %}
 {{parent()}}
-    <script type="text/javascript">
-      $(document).ready(function() {
-          $('#datatable').DataTable();
-      } );
-    </script>
+   
 {% endblock %}

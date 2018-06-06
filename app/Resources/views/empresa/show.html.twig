@@ -1,0 +1,108 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <h1>Empresa</h1>
+
+    <table>
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ empresa.id }}</td>
+            </tr>
+            <tr>
+                <th>Visitas</th>
+                <td>{{ empresa.visitas }}</td>
+            </tr>
+            <tr>
+                <th>Nombre</th>
+                <td>{{ empresa.nombre }}</td>
+            </tr>
+            <tr>
+                <th>Correo</th>
+                <td>{{ empresa.correo }}</td>
+            </tr>
+            <tr>
+                <th>Telefono</th>
+                <td>{{ empresa.telefono }}</td>
+            </tr>
+            <tr>
+                <th>Celular</th>
+                <td>{{ empresa.celular }}</td>
+            </tr>
+            <tr>
+                <th>Nit</th>
+                <td>{{ empresa.nit }}</td>
+            </tr>
+            <tr>
+                <th>Fotologo</th>
+                <td>{{ empresa.fotoLogo }}</td>
+            </tr>
+            <tr>
+                <th>Fotoportada</th>
+                <td>{{ empresa.fotoPortada }}</td>
+            </tr>
+            <tr>
+                <th>Fotoportadacov</th>
+                <td>{{ empresa.fotoPortadaCov }}</td>
+            </tr>
+            <tr>
+                <th>Paginaweb</th>
+                <td>{{ empresa.paginaWeb }}</td>
+            </tr>
+            <tr>
+                <th>Descripcion</th>
+                <td>{{ empresa.descripcion }}</td>
+            </tr>
+            <tr>
+                <th>Direccion</th>
+                <td>{{ empresa.direccion }}</td>
+            </tr>
+            <tr>
+                <th>Lat</th>
+                <td>{{ empresa.lat }}</td>
+            </tr>
+            <tr>
+                <th>Lng</th>
+                <td>{{ empresa.lng }}</td>
+            </tr>
+            <tr>
+                <th>Colorprimario</th>
+                <td>{{ empresa.colorPrimario }}</td>
+            </tr>
+            <tr>
+                <th>Colorsecundario</th>
+                <td>{{ empresa.colorSecundario }}</td>
+            </tr>
+            <tr>
+                <th>Activo</th>
+                <td>{% if empresa.activo %}Yes{% else %}No{% endif %}</td>
+            </tr>
+            <tr>
+                <th>Createdat</th>
+                <td>{% if empresa.createdAt %}{{ empresa.createdAt|date('Y-m-d') }}{% endif %}</td>
+            </tr>
+            <tr>
+                <th>Updatedat</th>
+                <td>{% if empresa.updatedAt %}{{ empresa.updatedAt|date('Y-m-d') }}{% endif %}</td>
+            </tr>
+            <tr>
+                <th>Posicionamiento</th>
+                <td>{{ empresa.posicionamiento }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <ul>
+        <li>
+            <a href="{{ path('empresa_index') }}">Back to the list</a>
+        </li>
+        <li>
+            <a href="{{ path('empresa_edit', { 'id': empresa.id }) }}">Edit</a>
+        </li>
+        <li>
+            {{ form_start(delete_form) }}
+                <input type="submit" value="Delete">
+            {{ form_end(delete_form) }}
+        </li>
+    </ul>
+{% endblock %}

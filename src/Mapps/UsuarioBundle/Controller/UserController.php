@@ -52,6 +52,8 @@ class UserController extends Controller
             $password = $encoder->encodePassword($passwordd, $user->getSalt());
             $user->setPassword($password);
             $user->setUsername($user->getEmail());
+            $user->setFotoPerfil("user.png");
+            $user->setFotoPortada("portadaDefault.jpg");
             $user->setEnabled("true");
             $em->persist($user);
             $em->flush();

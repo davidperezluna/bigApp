@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <style>
+       #map {
+        height: 950px;
+        width: 100%;
+       }
+    </style>
+  </head> 
+  <body>
+    <div id="map"></div>
+    <script>
+      function initMap() {
+        var pasto = {lat: 1.228489, lng: -77.285937};
+        var map = new google.maps.Map(document.getElementById('map'), {
+          zoom: 13,
+          center: pasto
+        });
+        var marker = new google.maps.Marker({
+          position: {lat: {{empresa.lat}}, lng: {{empresa.lng}}},
+          map: map
+        });
+      }
+    </script>
+    <script async defer
+    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAufs3m98ovPKTMtcRUXbAqQ0H1DpEUseQ&callback=initMap">
+    </script>
+  </body>
+</html>

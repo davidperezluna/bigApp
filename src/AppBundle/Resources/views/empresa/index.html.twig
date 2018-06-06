@@ -1,0 +1,59 @@
+{% extends 'base.html.twig' %}
+{% block body %}
+<div class="panel panel-default">
+    <div class="panel-heading">
+        <h3 class="panel-title"><span class="icon-briefcase"></span>Lista de Empresas</h3>                                        
+    </div>
+    <div class="panel-body">                                    
+          <div class="table-responsive">
+                <table class="table table-bordered no-margin-bottom" id="datatable">
+                     <thead>
+                        <tr>
+                          <th>Nombre</th>
+                          <th>Correo</th>
+                          <th>Telefono</th>
+                          <th>Celular</th>
+                          <th>Nit</th>
+                          <th>Estado</th>
+                          <th>Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    {% for empresa in empresas %}
+                      <tr>
+                          <td>{{ empresa.nombre }}</td>
+                          <td>{{ empresa.correo }}</td>
+                          <td>{{ empresa.telefono }}</td>
+                          <td>{{ empresa.celular }}</td>
+                          <td>{{ empresa.nit }}</td>
+                          <td>{% if empresa.activo == 1 %}<label class="label label-success">Visible</label>{% else %}<label class="label label-warning">No Visible</label>{% endif %}</td>
+                          <td>
+                            <div class="col-md-9">
+                              <a class="btn btn-warning btn-xs" href="{{ path('empresa_show', { 'id': empresa.id }) }}">Ver</a>
+                              <a class="btn btn-warning btn-xs" href="{{ path('empresa_edit', { 'id': empresa.id }) }}">editar</a>
+                            </div>
+                          </td>
+                      </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>                            
+    </div>
+    <div class="panel-footer">   
+        <div class="panel-elements pull-right">
+            <a href="{{ path('empresa_new') }}" class="btn btn-primary pull-right">Crear Nuevo</a>
+        </div>                                        
+    </div>
+</div>
+{% endblock %}
+{% block javascripts %}
+{{parent()}}
+    <script type="text/javascript">
+      $(document).ready(function() {
+          $('#datatable').DataTable();
+      } );
+    </script>
+{% endblock %}
+
+
+

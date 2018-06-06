@@ -7,9 +7,16 @@ imports:
 # https://symfony.com/doc/current/best_practices/configuration.html#application-related-configuration
 parameters:
     locale: en
-    icono_pregunta_directory: '%kernel.root_dir%/../web/uploads/iconosPreguntas/'
-    icono_respuesta_directory: '%kernel.root_dir%/../web/uploads/iconosRespuestas/'
-    icono_sabiasque_directory: '%kernel.root_dir%/../web/uploads/iconosSabiasQue/'
+    perfil_usuario_directory: '%kernel.root_dir%/../web/uploads/usuario/fotosPerfil'
+    portada_usuario_directory: '%kernel.root_dir%/../web/uploads/usuario/fotosPortada'
+
+    logo_empresa_directory: '%kernel.root_dir%/../web/uploads/empresa/fotosLogo'
+    portada_empresa_directory: '%kernel.root_dir%/../web/uploads/empresa/fotosPortada'
+
+    imagen_producto_directory: '%kernel.root_dir%/../web/uploads/producto/'
+    imagen_empresa_directory: '%kernel.root_dir%/../web/uploads/empresa/imagenes'
+    baner_publicidad_directory: '%kernel.root_dir%/../web/uploads/banerpublicidad/'
+    logo_sector_directory: '%kernel.root_dir%/../web/uploads/sectores/'
 
 framework:
     #esi: ~

@@ -1,100 +1,79 @@
 {% extends 'base.html.twig' %}
 
-{% block navegacion %}
-    <div class="app-heading-container app-heading-bordered bottom">
-        <ul class="breadcrumb">
-            <li><a href="{{ path('user_index') }}">Usuarios</a></li>
-            <li>Crear</li>
-        </ul>
-    </div>
-{% endblock %}
 
 {% block body %}
-    <div class="col-md-6">
-      <div class="container">                              
-          <div class="pane">
-              <h2><span>Nuevo Usuario</span></h2>
-              <div class="panel-body">
-                  {{ form_start(edit_form, {'attr': {'class': 'form-horizontal'}}) }}   
-                            <div class="form-group">
-                                <label class="col-md-2 control-label">Nombres</label>
-                                <div class="col-md-10">
-                                   {{ form_widget(edit_form.nombres, {'attr': {'class': 'form-control','placeholder': "Digite Nombres"}}) }}
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <label class="col-md-2 control-label">Apellidos</label>
-                                <div class="col-md-10">
-                                   {{ form_widget(edit_form.apellidos, {'attr': {'class': 'form-control','placeholder': "Digite Apellidos"}}) }}
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <label class="col-md-2 control-label">Identificación</label>
-                                <div class="col-md-10">
-                                   {{ form_widget(edit_form.identificacion, {'attr': {'class': 'form-control spinner','placeholder': "Digite Identificación"}}) }}
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <label class="col-md-2 control-label">Género</label>
-                                <div class="col-md-10">
-                                   {{ form_widget(edit_form.genero, {'attr': {'class': 'selectpicker dark','data-live-search':'true'}}) }}
-                                </div>
-                            </div> 
-                            <div class="form-group">
-                                <label class="col-md-2 control-label">Teléfono</label>
-                                <div class="col-md-10">
-                                   {{ form_widget(edit_form.celular, {'attr': {'class': 'form-control','placeholder': "Digite Teléfono"}}) }}
-                                </div>
-                            </div>
-                             <div class="form-group">
-                                <label class="col-md-2 control-label">Dirección</label>
-                                <div class="col-md-10">
-                                   {{ form_widget(edit_form.direccion, {'attr': {'class': 'form-control','placeholder': "Digite Dirección"}}) }}
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <label class="col-md-2 control-label">Correo</label>
-                                <div class="col-md-10">
-                                   {{ form_widget(edit_form.email, {'attr': {'class': 'form-control','placeholder': "Digite Correo"}}) }}
-                                </div>
-                            </div>
-                             <div class="form-group">
-                                <label class="col-md-2 control-label">Nombre de usuario</label>
-                                <div class="col-md-10">
-                                   {{ form_widget(edit_form.username, {'attr': {'class': 'form-control','placeholder': "Digite Nombre de usuario"}}) }}
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <label class="col-md-2 control-label">Contraseña</label>
-                                <div class="col-md-10">
-                                   {{ form_widget(edit_form.password.first, {'attr': {'class': 'form-control','placeholder': "Digite Su Contraseña"}}) }}
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <label class="col-md-2 control-label">Repita la Contraseña</label>
-                                <div class="col-md-10">
-                                   {{ form_widget(edit_form.password.second, {'attr': {'class': 'form-control','placeholder': "Confirme Su Contraseña"}}) }}
-                                </div>
-                            </div>
-                        {{ form_widget(edit_form) }}
-                     <div class="pull-right">
-                      <hr>
-                      <a href="{{ path('user_index') }}"  class="btn  btn-default btn-clean btn-glow margin-right-5">Cancelar</a>
-                      <button type="submit" class="btn btn-primary btn-icon-fixed"><span class="icon-chevron-right-circle"></span> Registrar</button>
-                     </div>
-                  {{ form_end(edit_form) }}
-            </div> 
-          </div>
+<div class="container">
+  <div class="panel panel-default">
+      <div class="panel-heading">
+          <h3 class="panel-default"><span class="icon-user"></span>Nuevo</h3>                                        
       </div>
-    </div>
+      <div class="panel-body">                                    
+          {{ form_start(edit_form, {'attr': {'class': 'form-horizontal'}}) }}   
+                  <div class="form-group">
+                      <label class="col-md-2 control-label">Nombres</label>
+                      <div class="col-md-10">
+                         {{ form_widget(edit_form.nombres, {'attr': {'class': 'form-control','placeholder': "Digite Nombres"}}) }}
+                      </div>
+                  </div>
+                  <div class="form-group">
+                      <label class="col-md-2 control-label">Apellidos</label>
+                      <div class="col-md-10">
+                         {{ form_widget(edit_form.apellidos, {'attr': {'class': 'form-control','placeholder': "Digite Apellidos"}}) }}
+                      </div>
+                  </div>
+                  <div class="form-group">
+                      <label class="col-md-2 control-label">Celular</label>
+                      <div class="col-md-10">
+                         {{ form_widget(edit_form.celular, {'attr': {'class': 'form-control','placeholder': "Digite Celular"}}) }}
+                      </div>
+                  </div>
+                   
+                  <div class="form-group">
+                      <label class="col-md-2 control-label">Correo</label>
+                      <div class="col-md-10">
+                         {{ form_widget(edit_form.email, {'attr': {'class': 'form-control','placeholder': "Digite Correo"}}) }}
+                      </div>
+                  </div>
+                  <div class="form-group">
+                      <label class="col-md-2 control-label">Role</label>
+                      <div class="col-md-10">
+                            {{ form_widget(edit_form.rolePersona, {'attr': {'class': 's2-select-search form-control'}}) }}
+                      </div>
+                  </div>
+                  
+               
+                  <div class="form-group">
+                      <label class="col-md-2 control-label">Contraseña</label>
+                      <div class="col-md-10">
+                         {{ form_widget(edit_form.password.first, {'attr': {'class': 'form-control','placeholder': "Digite Su Contraseña"}}) }}
+                      </div>
+                  </div>
+                  <div class="form-group">
+                      <label class="col-md-2 control-label">Repita la Contraseña</label>
+                      <div class="col-md-10">
+                         {{ form_widget(edit_form.password.second, {'attr': {'class': 'form-control','placeholder': "Confirme Su Contraseña"}}) }}
+                      </div>
+                  </div>
+                                   
+              {{ form_widget(edit_form) }}
+      </div>
+      <div class="panel-footer">   
+          <div class="panel-elements pull-right">
+              <a href="{{ path('user_index') }}"  class="btn  btn-default btn-clean btn-glow margin-right-5">Cancelar</a>
+            <button type="submit" class="btn btn-primary btn-icon-fixed"><span class="icon-chevron-right-circle"></span> Registrar</button>
+          </div>                                        
+      </div>
+      {{ form_end(edit_form) }}
+  </div>
+</div>
+
 {% endblock %}
 
 {% block javascripts %}
     {{parent()}}
+    <script src="{{ asset('build/js/vendor/bootstrap-select/bootstrap-select.js') }}" type="text/javascript"></script>
+    <script src="{{ asset('build/js/vendor/select2/select2.full.min.js') }}" type="text/javascript"></script>
     <script type="text/javascript">
-        $('.selectpicker').selectpicker({
-            style: 'btn-select',
-            size: 10,
-        });
+        
     </script>
 {% endblock %}

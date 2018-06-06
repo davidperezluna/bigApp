@@ -1,0 +1,989 @@
+{% extends 'base.html.twig' %}
+
+{% block stylesheets %}
+{{parent()}}
+<style media="screen">
+.nav-tabs.tabs-active-border-yellow > li.active a:after, .nav-tabs.tabs-active-border-yellow > li.active a:hover:after, .nav-tabs.tabs-active-border-yellow > li.active a:active:after, .nav-tabs.tabs-active-border-yellow > li.active a:focus:after {
+  border-color: {{empresa.colorSecundario}} !important;
+}
+.page-header { 
+background:{{empresa.colorPrimario}} !important;
+}
+.card.card-meal.card-meal-orange .card-heading {
+border-top-color:  {{empresa.colorSecundario}} !important;
+
+}
+</style>
+<link href="{{ asset('/assets/style.image.css') }}" type="text/css" rel="stylesheet" />
+{% endblock %}
+
+{% block header %}
+  {% for flash_message in app.session.flashbag.get('añadido') %}
+  <div class="alert alert-success alert-dismissable">
+    <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+    <strong>{{ flash_message }}!</strong>
+  </div>
+  {% endfor %}
+ <div class="page-header full-content parallax " style="height: 500px; overflow: hidden">
+   <div class="cover-wrapper">
+     {% if empresa.fotoPortadaCov == "" %}
+     <img class="hidden-xs" src="{{asset('/uploads/empresa/fotosPortada/'~ empresa.fotoPortada)}}" alt="w3lessons.info">
+     {% else %}
+     <img class="hidden-xs" src="{{asset('/uploads/empresa/fotosPortada/recortes/'~ empresa.fotoPortada)}}" alt="w3lessons.info">
+     {% endif %}
+     <div class="cover-progress"></div>
+     <img  style="height: 500px;" class="hidden-lg hidden-md hidden-sm " src="{{asset('/uploads/empresa/fotosPortada/'~ empresa.fotoPortada)}}" alt="w3lessons.info">
+   </div>
+
+   <div class="cover-resize-wrapper">
+
+     <img src="{{asset('/uploads/empresa/fotosPortada/'~ empresa.fotoPortada)}}" alt="w3lessons.info">
+     <div class="drag-div" align="center">Arrastre para reposicionar</div>
+     <div class="cover-progress"></div>
+   </div>
+
+
+    <div class="profile-info">
+      <div class="profile-photo hidden-xs">
+        <img src="{{asset('/uploads/empresa/fotosLogo/'~ empresa.fotoLogo)}}"style="width: 110px; height: 110px;">
+      </div><!--.profile-photo-->
+      <div class="profile-photo hidden-md hidden-lg  hidden-sm">
+        <img src="{{asset('/uploads/empresa/fotosLogo/'~ empresa.fotoLogo)}}"style="width: 80px; height: 80px;">
+      </div><!--.profile-photo-->
+      <div class="profile-text light">
+        {{empresa.nombre}}
+        <span class="caption">{{empresa.correo}}</span>
+      <div class="display-animation">
+        <a style="background-color:{{empresa.colorSecundario}};" data-toggle="tooltip" title="Inicio!" href="{{ path('homepage')}}" class="btn btn-floating btn-warning btn-ripple material-animate"><i class="fa fa-home"></i></a>
+        {% if app.user.role == "ROLE_ADMIN" %}
+        <a style="background-color:{{empresa.colorSecundario}};" data-toggle="tooltip" title="producto!" href="{{ path('producto_new', { 'id': empresa.id }) }}" class="btn btn-floating btn-blue btn-ripple material-animate"><i class="ion-android-playstore"></i></a>
+        <a style="background-color:{{empresa.colorSecundario}};" data-toggle="tooltip" title="listar!" href="{{ path('empresa_index') }}" class="btn btn-floating btn-deep-purple btn-ripple material-animate"><i class="fa fa-arrow-left"></i></a>
+        {% endif %}
+        {% if app.user.role == "ROLE_EMPRESA" and app.user.id == empresa.usuario.id %}
+        <a style="background-color:{{empresa.colorSecundario}};" data-toggle="tooltip" title="editar!" href="{{ path('empresa_edit', { 'id': empresa.id }) }}" class="btn btn-floating btn-indigo btn-ripple material-animate"><i class="fa fa-pencil"></i></a>
+        {% endif %}
+        {% if app.user.id != empresa.usuario.id %}
+        <a style="background-color:{{empresa.colorSecundario}};" data-toggle="tooltip" title="añadir a favoritos!" href="{{ path('empresafavorita_new', { 'id': empresa.id }) }}" class="btn btn-floating btn-warning btn-ripple material-animate"><i class="ion-android-star"></i></a>
+        {% endif %}
+
+        <a style="background-color:{{empresa.colorSecundario}}" target="blank" href="{{path('empresa_show_location',{'id':empresa.id})}}"  data-toggle="tooltip" title="Trazar Ruta!" class=" hidden-xs btn btn-floating btn-cyan btn-ripple material-animate"><i class="ion-android-pin"></i></a>
+<a style="background-color:{{empresa.colorSecundario}}" target="blank" href="{{path('empresa_show_location_movil',{'id':empresa.id})}}"  data-toggle="tooltip" title="Ver Ubicación!" class=" hidden-md hidden-lg hidden-sm btn btn-floating btn-cyan btn-ripple material-animate"><i class="ion-android-pin"></i></a>
+        <a style="background-color:{{empresa.colorSecundario}}" href="{{path('chat_desde_perfil',{'id':empresa.usuario.id})}}"  data-toggle="tooltip" title="Contactar!" class="btn btn-floating btn-cyan btn-ripple material-animate "><i class="ion-chatbubbles"></i></a>
+      </div>
+      </div><!--.profile-text-->
+    </div><!--.profile-info-->
+    <div class="row">
+      <div class="col-sm-6">
+        <h1> <a class="btn btn-flat btn-primary btn-ripple" href="{{ path('usuario_show', { 'id': empresa.usuario.id }) }}">{% if empresa.activo == 1 %}{% else %}<label class="label label-warning">No Visible</label> {% endif %} </a></h1>
+      </div><!--.col-->
+    </div><!--.row-->
+    <div class="header-tabs scrollable-tabs sticky" style="background-color: {{empresa.colorPrimario}}; padding-left:10px;">
+      <ul class="nav nav-tabs tabs-active-text-white tabs-active-border-yellow">
+        {% for planServicio in planServicios %}
+          {% if planServicio.activo == 1 %}
+          {% if app.user.id == empresa.usuario.id %}
+            {% if planServicio.servicio.tipo != 3 %}
+                {% if planServicio.servicio.nombre == "Productos" %}
+                <li class="active "><a href="#{{planServicio.servicio.id}}" data-toggle="tab" class="btn-ripple"> {{planServicio.servicio.nombre}}</a></li>
+                {% else %}
+                <li class=""><a href="#{{planServicio.servicio.id}}" data-toggle="tab" class="btn-ripple"> {{planServicio.servicio.nombre}}</a></li>
+                {% endif %}
+            {% endif %}
+            {% else %}
+                {% if planServicio.servicio.tipo != 3 and planServicio.servicio.tipo != 2 %}
+                    {% if loop.first %}
+                    <li class="active "><a href="#{{planServicio.servicio.id}}" data-toggle="tab" class="btn-ripple"> {{planServicio.servicio.nombre}}</a></li>
+                    {% else %}
+                    <li class=""><a href="#{{planServicio.servicio.id}}" data-toggle="tab" class="btn-ripple"> {{planServicio.servicio.nombre}}</a></li>
+                    {% endif %}
+                {% endif %}
+          {% endif %}
+          {% endif %}
+        {% endfor %}
+        <li class=""><a href="#contactos" data-toggle="tab" class="btn-ripple" data-toggle="tooltip" title="Contactos!">Contactos</a></li>
+        <li class=""><a href="#sectores" data-toggle="tab" class="btn-ripple" data-toggle="tooltip" title="Sectores!">Sector</a></li>
+        {% if app.user.role == "ROLE_ADMIN" %}
+        <li class=""><a href="#configuracion" data-toggle="tab" class="btn-ripple" data-toggle="tooltip" title="Sectores!">Configuracion</a></li>
+        {% endif %}
+        {% if app.user.role == "ROLE_EMPRESA" %}
+        {% if app.user.id == empresa.usuario.id %}
+        <li class=""><a href="#configuracion" data-toggle="tab" class="btn-ripple" data-toggle="tooltip" title="Sectores!">Configuracion</a></li>
+        {% endif %}
+        {% endif %}
+      </ul>
+    </div>
+  </div><!--.page-header-->
+
+  <div class="float-left span35 hidden-xs">
+    <div class="timeline-buttons cover-resize-buttons">
+      <br><br>
+      <table border="0" width="100%" cellspacing="0" cellpadding="0">
+        <tr>
+          <td align="center" valign="middle">
+            <a onclick="saveReposition();">Guardar Posicion</a>
+          </td>
+          <td align="center" valign="middle">
+            <a onclick="cancelReposition();">Cancelar</a>
+          </td>
+        </tr>
+      </table>
+      <form class="cover-position-form hidden" method="post">
+        <input class="cover-position" name="pos" value="0" type="hidden">
+      </form>
+    </div>
+    {% if app.user.id == empresa.usuario.id or app.user.role == "ROLE_ADMIN"  %}
+     <div class="timeline-buttons default-buttons">
+      <br><br>
+      <table border="0" width="300" cellspacing="0" cellpadding="0">
+        <tr>
+          <td align="center" valign="middle">
+            <a onclick="repositionCover();">Reposicionar Imagen</a>
+          </td>
+        </tr>
+      </table>
+    </div>
+    {% endif %}
+      </div>
+{% endblock %}
+{% block body %}
+<div class="modal fade full-height from-right" id="panel-modal2" tabindex="-1" role="dialog" aria-hidden="true">
+  <form class="" action="{{path('sectores_new_array',{'id':empresa.id})}}" method="post">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h4 class="modal-title">Agregar Sectores</h4>
+          </div>
+          <div class="modal-body">
+            <label for="">Seleccione Sectores</label>
+                <select class="selectpicker"  name="sector" data-live-search = "true" id="servicios">
+                  {% for sector in sectores %}
+                  {% if sector.activo == 1 %}
+                  <option value="{{sector.id}}" name = "sector">{{sector.nombre}}</option>
+                  {% endif %}
+                  {% endfor %}
+                </select>
+          </div>
+          <div class="modal-footer">
+            <button type="submit" class="btn btn-flat-primary">ENVIAR</button>
+            <a class="btn btn-flat-primary"  data-dismiss="modal">CANCELAR</a>
+          </div>
+        </div>
+      </div>
+    </form>
+</div><!--.modal-->
+<div class="row user-profile">
+  <div class="col-md-12 ">
+    <div class="tab-content without-border">
+      <div id="14" class="tab-pane"> <!--#mapa.tab-pane-->
+      </div><!--#about.tab-pane-->
+      <div id="13" class="tab-pane">
+        <div class="row image-row margin-top-40 margin-bottom-40">
+          <div class="col-md-12">
+            <div class="panel panel-with-border">
+              <div class="panel-heading">
+                <div class="panel-title"><h4>Imagenes</h4>
+                  <div class="panel-buttons">
+                    <div class="btn-group btn-merged">
+                    </div>
+                  </div>
+                </div>
+              </div><!--.panel-heading-->
+              <div class="panel-body">
+                <div class="row image-row margin-top-40 margin-bottom-40 ">
+                  <div class="col-md-12">
+                    <div class="row image-row col-lg-8 col-md-6 col-xs-12 col-sm-12 ">
+                        {% for imagen in empresa.imagenes %}
+                        <div class="col-xs-5 col-lg-2 col-md-2 col-sm-2" style="margin-bottom:4px;">
+                            <a href="{{asset('/uploads/empresa/imagenes/'~ imagen.urlImagen)}}" title="{{imagen.empresa.nombre}}" data-gallery="#user-gallery">
+                            <img src="{{asset('/uploads/empresa/imagenes/'~ imagen.urlImagen)}}" width="100%" alt=""></a>
+                            {% if app.user.id == empresa.usuario.id or app.user.role == "ROLE_ADMIN"  %}
+                            <a href="{{path('imagenempresa_delete',{'id':imagen.id})}}" class="btn btn-danger btn-xs" style="background-color:{{empresa.colorSecundario}};border:none">Eliminar</a>
+                            {% endif %}
+                        </div><!--.col-->
+                      {% endfor %}
+                    </div><!--.row-->
+                  </div>
+                </div><!--.row-->
+              </div><!--.panel-body-->
+            </div><!--.panel-->
+          </div>
+        </div><!--.row-->
+      </div><!--#about.tab-pane-->
+     <div id="12" class="tab-pane">
+        <div class="card" id="">
+          <div class="card-body">
+            <div class="legend">Descripcion</div>
+            <blockquote class="blockquote-primary" style="border-color:{{empresa.colorSecundario}};">
+                  {{empresa.descripcion}}
+            </blockquote>
+            <div class="col-md-6 col-xs-12">
+              <div class="legend">Informacion de Contacto</div>
+              <ul class="list-material">
+                <li class="has-action-left has-action-right">
+                  <a href="#" class="visible">
+                    <div class="list-action-left">
+                      <i class="ion-chevron-right icon" style="color:{{empresa.colorSecundario}}"></i>
+                    </div>
+                    <div class="list-content">
+                      <span class="title">Nombre</span>
+                      <small><span class="caption">{{empresa.nombre}}</span></small>
+                    </div>
+                  </a>
+                </li>
+                <li class="has-action-left has-action-right">
+                  <a href="#" class="visible">
+                    <div class="list-action-left">
+                      <i class="ion-ios-telephone icon" style="color:{{empresa.colorSecundario}}"></i>
+                    </div>
+                    <div class="list-content">
+                      <span class="title">Telefono</span>
+                      <small><span class="caption">{{empresa.telefono}} - {{empresa.celular}}</span></small>
+                    </div>
+
+                  </a>
+                </li>
+                <li class="has-action-left has-action-right">
+                  <a href="{{path('empresa_show_location_movil',{'id':empresa.id})}}" class="visible">
+                    <div class="list-action-left">
+                      <i class="ion-ios-location icon" style="color:{{empresa.colorSecundario}}"></i>
+                    </div>
+                    <div class="list-content">
+                      <span class="title">Direccion</span>
+                      <small><span class="caption">{{empresa.direccion}}</span></small>
+                    </div>
+
+                  </a>
+                </li>
+                <li class="has-action-left has-action-right">
+                  <a href="{{empresa.paginaWeb}}" target="blank" class="visible">
+                    <div class="list-action-left">
+                      <i class="ion-link icon" style="color:{{empresa.colorSecundario}}"></i>
+                    </div>
+                    <div class="list-content">
+                        <small><span class="title">Web</span></small>
+                      <small><span class="caption">{{empresa.paginaWeb}}</span></small>
+                    </div>
+                  </a>
+                </li>
+              </ul>
+              <br>
+              <br>
+              <br>
+          </div>
+          <div class="col-md-6 col-xs-12">
+            <div class="legend">Informacion Basica</div>
+            <ul class="list-material">
+              <li class="has-action-left has-action-right">
+                <a href="#" class="visible">
+                  <div class="list-action-left">
+                    <i class="ion-calendar icon" style="color:{{empresa.colorSecundario}}"></i>
+                  </div>
+                  <div class="list-content">
+                    <span class="title">Fecha</span>
+                    <span class="caption">{{empresa.createdAt|date("Y-F-d")}}</span>
+                  </div>
+                </a>
+              </li>
+              <li class="has-action-left has-action-right">
+                <a href="#" class="visible">
+                  <div class="list-action-left">
+                    <i class="ion-android-alert icon" style="color:{{empresa.colorSecundario}}"></i>
+                  </div>
+                  <div class="list-content">
+                    <span class="title">Nit</span>
+                    <span class="caption">{{empresa.nit}}</span>
+                  </div>
+                </a>
+              </li>
+          </div>
+            <br>
+            <br>
+            <br>
+          </div>
+        </div>
+      </div><!--#informacion.tab-pane-->
+      <div id="24" class="tab-pane">
+          <div class="col-xs-12	col-sm-12	col-md-12	col-lg-12">
+            <div class="card card-user card-user-indigo" >
+              <div class="card-heading heading-left" style="background-color: {{empresa.colorSecundario}};">
+                <img src="{{asset('/uploads/empresa/fotosLogo/'~ empresa.fotoLogo)}}" alt="" class="user-image">
+                <h3 class="card-title text-color-white"><a href="#">Visita Nuestras Redes Sociales</a></h3>
+                {% if app.user.id == empresa.usuario.id or app.user.role == "ROLE_ADMIN"  %}
+                <a  href="{{path('empresaredes_new',{'id':empresa.id})}}" class="btn btn-flat btn-default btn-ripple pull-right">Agregar</a>
+                {% endif %}
+              </div><!--.card-heading-->
+              <div class="card-body">
+                <div class="col-xs-12	col-sm-12	col-md-4	col-lg-4">
+                  {% for key, red in empresa.redes %}
+                  {% if red.nombre == "facebook" %}
+                    <div data-width="350" class="fb-page col-md-12" data-href="{{red.urlRedSocial}}" data-tabs="timeline" data-small-header="true" data-adapt-container-width="true" data-hide-cover="false" data-show-facepile="true"><blockquote cite="{{red.urlRedSocial}}" class="fb-xfbml-parse-ignore"><a href="{{red.urlRedSocial}}">{{empresa.nombre}}</a></blockquote></div>
+                  {% endif %}
+                  {% endfor %}
+                  <hr>
+                </div>
+                <div class="col-xs-12	col-sm-12	col-md-4	col-lg-4">
+                  {% for key, red in empresa.redes %}
+                  {% if red.nombre == "twitter" %}
+                  <a class="twitter-timeline"  href="{{red.urlRedSocial}}" data-widget-id="593787365388394497">Tweets por el {{empresa.nombre}}.</a>
+                  <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+"://platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>
+                  {% endif %}
+                  {% endfor %}
+                </div>
+                <div class="col-xs-12	col-sm-12	col-md-4	col-lg-4">
+                  <div class="col-md-12 hidden-xs" >
+                    <ul class="inline-list col-xs-6">
+                      {% for red in empresa.redes %}
+                      <li><a  data-toggle="tooltip" title="{{red.nombre}}!" href="{{red.urlRedSocial}}" target="blank" class=""><i   class="fa fa-{{red.nombre}}"></i></a></li>
+                      {% endfor %}
+                    </ul>
+                   </div>
+                   <div class="col-xs-12  hidden-lg hidden-md hidden-sm" >
+                    <ul class="">
+                       {% for red in empresa.redes %}
+                       <li><a  data-toggle="tooltip" title="{{red.nombre}}!" href="{{red.urlRedSocial}}" target="blank" class=""><i   class="fa fa-{{red.nombre}}"></i></a></li>
+                       <br>
+                       {% endfor %}
+                    </ul>
+                   </div>
+                </div>
+
+              </div><!--.card-body-->
+            </div><!--.card-->
+          </div>
+      </div><!--#ubicacion.tab-pane-->
+      <div id="sectores" class="tab-pane">
+        <div class="col-md-12">
+          <div class="panel panel-with-border">
+            <div class="panel-heading">
+              <div class="panel-title"><h4>Sectores</h4>
+                <div class="panel-buttons">
+                  <div class="btn-group btn-merged">
+                  </div>
+                </div>
+              </div>
+            </div><!--.panel-heading-->
+            <div class="panel-body">
+              <p>{% for empresaSector in empresa.empresasSectores %}
+                <div class="col-md-2 col-xs-12">
+                  <div class="card card-meal card-meal-orange card-square card-shadow">
+                    <div class="card-heading">
+                      <h3 class="card-title">{{empresaSector.sector.nombre}}</h3>
+                    </div><!--.card-heading-->
+                    <div class="card-body">
+                      <div class="image">
+                        <a href="{{path('sector_show',{'id':empresaSector.sector.id})}}" data-toggle="tooltip" title="{{empresaSector.sector.nombre}}"> <img src='{{asset('/uploads/sectores/'~ empresaSector.sector.urlIcono)}}' width='90' height='100'></a>
+                      </div><!--.image-->
+                    </div><!--.card-body-->
+                  </div><!--.card-->
+                </div>
+              {% endfor %}</p>
+            </div><!--.panel-body-->
+          </div><!--.panel-->
+        </div>
+      </div><!--#ubicacion.tab-pane-->
+
+      <div id="configuracion" class="tab-pane">
+        <form class="" action="{{path('empresa_cambiar_colores',{'id':empresa.id})}}" method="post">
+          <div class="panel col-md-4">
+            <div class="panel-body">
+              <div class="row example-row">
+                <div class="col-md-6">Color Principal</div><!--.col-md-6-->
+                <div class="col-md-6">
+                  <div class="inputer">
+                    <div class="input-wrapper">
+                      <input type="text" class="bs-colorpicker form-control" value="{{empresa.colorPrimario}}" name = "colorPrimario">
+                    </div>
+                  </div>
+                </div><!--.col-md-9-->
+              </div><!--.row-->
+              <div class="row example-row">
+                <div class="col-md-6">Color Secundario</div><!--.col-md-6-->
+                <div class="col-md-6">
+                  <div class="inputer">
+                    <div class="input-wrapper">
+                      <input type="text" class="bs-colorpicker form-control" value="{{empresa.colorSecundario}}" name = "colorSecundario">
+                    </div>
+                  </div>
+                </div><!--.col-md-9-->
+              </div><!--.row-->
+              <div class="panel-fotter">
+                <input type="submit" name="" value="Cambiar" class="btn btn-block" style="background-color:{{empresa.colorPrimario}}; color:{{empresa.colorSecundario}};">
+              </div>
+            </div>
+          </div>
+        </form>
+        <div class="col-md-4">
+          <div class="panel">
+            <div class="panel-body">
+              <a href="{{path('empresasubcategoria_new',{'id':empresa.id})}}" class="pull-right">Agregar Categoria</a>
+              <table class="table table-striped">
+                  <thead>
+                      <tr>
+                        <th>Nombre</th>
+                        <th>Acciones</th>
+                      </tr>
+                  </thead> 
+                  <tbody>
+                  {% for subCategoria in empresa.subcategorias %}
+                      <tr>
+                          <td>{{ subCategoria.nombre }}</td>
+                          <td>
+                            <div class="col-md-9">
+                              <a class="btn btn-cyan btn-ripple" href="{{ path('empresasubcategoria_edit', { 'id': subCategoria.id }) }}"><i class="ion-android-create"></i></a>
+                              <a class="btn btn-red btn-ripple" href="{{ path('empresasubcategoria_delete', { 'id': subCategoria.id }) }}"><i class="fa fa-close"></i></a>
+                            </div>
+                          </td>
+                      </tr>
+                  {% endfor %}
+                  </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+         <div class="col-md-4">
+          <div class="panel">
+            <div class="panel-title">Redes sociales</div>
+            <div class="panel-body">
+              <table class="table table-striped">
+                  <thead>
+                      <tr>
+                        <th>Nombre</th>
+                        <th>Acciones</th>
+                      </tr>
+                  </thead> 
+                  <tbody>
+                  {% for red in empresa.redes %}
+                      <tr>
+                          <td>{{ red.nombre }}</td>
+                          <td>
+                            <div class="col-md-9">
+                              <a class="btn btn-red btn-ripple" href="{{ path('empresa_redes_delete', { 'id': red.id }) }}"><i class="fa fa-close"></i></a>
+                            </div>
+                          </td>
+                      </tr>
+                  {% endfor %}
+                  </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+        <div class="col-lg-12 col-xs-12">
+						<a href="{{ path('producto_new', { 'id': empresa.id }) }}" style="background-color:{{empresa.colorSecundario}}; color:white;" class="btn  btn-ripple col-xs-12 col-lg-3">Asignar Productos</a>
+						<a data-toggle="modal" data-target="#panel-modal2" style="background-color:{{empresa.colorPrimario}}; color:white;" class="btn  btn-ripple col-xs-12 col-lg-3">Asigar Sectores</a>
+						<a  href="{{ path('empresa_edit', { 'id': empresa.id }) }}" style="background-color:{{empresa.colorSecundario}}; color:white;" class="btn  btn-ripple col-xs-12 col-lg-3">Editar Empresa</a>
+            <a  href="{{ path('imagenempresa_new', { 'id': empresa.id }) }}" style="background-color:{{empresa.colorPrimario}}; color:white;" class="btn  btn-ripple col-xs-12 col-lg-3">Ingresar Imagenes</a>
+        </div>
+        <div class="col-lg-12">
+          <br><br>
+        </div>
+      </div><!--#ubicacion.tab-pane-->
+    <div id="21" class="tab-pane">
+      <div class="col-md-12">
+        <div class="panel panel-with-border">
+          <div class="panel-heading">
+            <div class="panel-title"><h4>Recorrido 360</h4>
+              <div class="panel-buttons">
+                <div class="btn-group btn-merged">
+                  {% if app.user.role == "ROLE_ADMIN" %}
+                  <a href="{{path('empresarecorrido360_new',{'id':empresa.id})}}" class="btn btn-flat btn-default btn-ripple ">Subir Recorrido</a>
+                  {% endif %}
+                </div>
+              </div>
+            </div>
+          </div><!--.panel-heading-->
+          <div class="panel-body">
+            {% for recorrido in empresa.recorridos %}
+              <div class="col-md-6">
+              <div class="responsive-content">
+                {{recorrido.tipo360.nombre}}
+                <iframe width="100%" src="{{asset('/uploads/recorridos/%nombreCarpeta%/index.html'|replace({'%nombreCarpeta%':recorrido.urlRecorrido}))}}" width="100%" height="550"></iframe>
+                </div>
+              </div>
+            {% endfor %}
+          </div><!--.panel-body-->
+        </div><!--.panel-->
+      </div>
+    </div><!--#ubicacion.tab-pane-->
+  <div class="tab-pane" id="23">
+    <div class="col-md-4">
+					<div class="row image-row">
+						<div class="col-md-12">
+							<div class="card tile card-white card-stocks">
+								<div class="card-heading" style="background-color:{{empresa.colorPrimario}}">
+									<div class="card-action">
+										<a href="javascript:;" data-toggle="fake-reload"></a>
+									</div><!--.card-action-->
+									<span class="name">Total de Productos</span>
+									<span class="price"><i class="ion-arrow-up-b"></i>{{productos|length}}</span>
+									<div class="chart chart-stocks"></div>
+								</div><!--.card-heading-->
+								<div class="card-body">
+									<ul>
+                    <li class="animate-item btn-ripple">
+                      <span class="name">Nombre </span>
+                      <span class="price" style="color:{{empresa.colorSecundario}}">Votaciones</span>
+                    </li>
+                    {% for productosRanked in paginacionRanked %}
+                      <li class="animate-item btn-ripple">
+                        <span class="name">{{productosRanked[0].producto.nombre}}</span>
+                        <span class="price" style="color:{{empresa.colorSecundario}}"><i class="ion-arrow-up-b"></i>{{productosRanked["total"]}}</span>
+                      </li>
+                    {% endfor %}
+									</ul>
+								</div><!--.card-body-->
+							</div><!--.card-->
+						</div><!--.col-->
+					</div><!--.row-->
+				</div><!--.col-->
+        <div class="col-md-4">
+          {% if empresasFavoritas|length == 1 %}
+          <li>
+            <div class="card tile" style="background-color:{{empresa.colorSecundario}}">
+              <div class="card-body" style="color:white;">
+                <p>El usuario {{empresasFavoritas[0].usuario.nombres}} {{empresasFavoritas[0].usuario.apellidos}} agrego tu empresa a sus favoritos</p>
+              </div><!--.card-body-->
+            </div><!--.card-->
+          </li>
+          {% else %}
+          <ul class="bxslider width-percent-100" data-bx-slider-pager="false" data-bx-slider-controls="false" data-bx-slider-auto="true" data-bx-slider-mode="vertical">
+            {% for ef in empresasFavoritas %}
+              <li>
+                <div class="card tile" style="background-color:{{empresa.colorSecundario}}">
+                  <div class="card-body" style="color:white;">
+                    <p>El usuario {{ef.usuario.nombres}} {{ef.usuario.apellidos}} agrego tu empresa a sus favoritos</p>
+                  </div><!--.card-body-->
+                </div><!--.card-->
+              </li>
+            {% endfor %}
+  				</ul>
+          {% endif %}
+
+            <br>
+          <div class="col-md-11" style="width: 100%;height: 410px; overflow: scroll; overflow-x: hidden;">
+            {% for ef in empresasFavoritas %}
+  					<div class="card tile card-friend material-animate material-animated" style="animation-delay: 1.28s;">
+  						<a href="{{path('usuario_show',{'id':ef.usuario.id})}}"><img src="{{asset('/uploads/usuario/fotosPerfil/'~ ef.usuario.fotoPerfil)}}" class="user-photo" alt=""></a>
+  						<div class="friend-content">
+  							<p class="title">{{ef.usuario.nombres}} {{ef.usuario.apellidos}}</p>
+  							<p><a href="user-profile.html">se unio el: {{ef.usuario.createdAt|date("Y-m-d")}}</a></p>
+  							<a href="{{path('usuario_show',{'id':ef.usuario.id})}}" class="btn btn-flat btn-primary btn-xs btn-ripple">Visitar Posible Cliente</a>
+  						</div><!--.friend-content-->
+  					</div><!--.card-->
+            {% endfor %}
+  				</div>
+			</div><!--.col-->
+        <div class="col-md-4">
+          <div class="panel">
+            <div class="panel-title">
+            <h2>  Total visitas</h2>
+            </div>
+            <div class="panel-body">
+              <div class="knob-container">
+                <input   class="knob" data-angleOffset="180" data-fgColor="cyan" data-skin="tron" data-thickness=".05" value="{{empresa.visitas}}" data-max = "5000">
+              </div><!--.knob-container-->
+            </div>
+          </div>
+          <div class="panel">
+            <div class="panel-title">
+            <h2> Total favoritos</h2>
+            </div>
+            <div class="panel-body">
+              <div class="knob-container">
+                <input s  class="knob" data-angleOffset="180" data-fgColor="cyan" data-skin="tron" data-thickness=".05" value="{{empresasFavoritas|length}}" data-max = "5000">
+              </div><!--.knob-container-->
+            </div>
+          </div>
+        </div>
+        <div class="col-md-12">
+              <div class="panel">
+                <div class="panel-heading">
+                  <div class="panel-title"><h4>Productos Cantidad / Precio</h4></div>
+                </div><!--.panel-heading-->
+                <div class="panel-body">
+                  <div class="barCharat c3-charts"></div>
+                </div><!--.panel-body-->
+              </div><!--.panel-->
+          </div>
+            <div class="col-md-12">
+              <div class="panel">
+                <div class="panel-heading">
+                  <div class="panel-title"><h4>Porcentaje Visitas / favoritos</h4></div>
+                </div><!--.panel-heading-->
+                <div class="panel-body">
+                  <div class="porcentajeFavoritos c3-charts"></div>
+                </div><!--.panel-body-->
+              </div><!--.panel-->
+            </div>
+
+      </div>
+      <div id="contactos" class="tab-pane">
+        <div class="col-md-12">
+              <div class="col-md-12">
+                <div class="card card-user card-user-indigo" >
+                  <div class="card-heading heading-left" style="background-color: {{empresa.colorSecundario}};">
+                    <img src="{{asset('/uploads/usuario/fotosPerfil/'~ empresa.usuario.fotoPerfil)}}" alt="" class="user-image">
+                    <h3 class="card-title text-color-white"><a href="#">{{empresa.usuario.nombres}} {{empresa.usuario.apellidos}}</a></h3>
+                    <div class="subhead">Administrador de<a href="#">{{empresa.nombre}}</a></div>
+                  </div><!--.card-heading-->
+
+                  <div class="card-body">
+                    <p>Visita el perfil de usuario si tiene alguna duda sobre los productos ofrecidos</p>
+                    <ul class="social-links">
+                      <li><a href="{{path('usuario_show',{'id':empresa.usuario.id})}}"><i class="ion-person"></i>Ir</a></li>
+                    </ul>
+                  </div><!--.card-body-->
+                </div><!--.card-->
+            </div>
+        </div>
+      </div><!--#about.tab-pane-->
+      <div id="17" class="tab-pane">
+
+      </div><!--#about.tab-pane-->
+      <div id="16" class="tab-pane active">
+        <div class="row ">
+          <div class="col-md-3 pull-right">
+            <div class="input-group">
+              <input type="text" class="form-control input-lg" placeholder="Buscar" id="txtBusqueda">
+              <span class="input-group-btn">
+                  <a style="background-color:{{empresa.colorSecundario}}" class="btn btn-flat btn-light-blue btn-ripple load-in btn-lg" href="{{path('buscar_producto_empresa_html',{'id':empresa.id})}}" data-id="#container-load-productos"><i class="ion-ios-search text-white"></i></a>
+              </span>
+            </div>
+          </div>
+          <hr>
+        </div>
+        <div class="col-md-12" id="container-load-productos">
+        </div>
+        <div class="row">
+        			<div class="col-md-12">
+                <div class="panel-group accordion" id="accordion">
+                {% for subCategoria in empresa.subCategorias %}
+                {% if loop.first %}
+                <div class="panel">
+                  <div class="panel-heading active">
+                    <a class="panel-title" data-toggle="collapse" data-parent="#accordion" href="#collapse{{subCategoria.id}}" aria-expanded="true">Categoria {{subCategoria.nombre}}</a>
+                  </div>
+                  <div id="collapse{{subCategoria.id}}" class="panel-collapse collapse in" aria-expanded="true">
+                    <div class="panel-body">
+                      {% for producto in subCategoria.productos %}
+                      {% if producto.activo == 1 %}
+                      <div class="col-md-3 col-xs-12">
+                          <div class="card card-event ">
+                            {% if producto.imagenes|length == 0 %}
+                            <div class="card-heading bg-image sample-bg-image{{random(29)}} ">
+                            {% else %}
+                            <div class="card-heading bg-image" style="background: url('{{asset('/uploads/producto/'~ producto.imagenes[random(producto.imagenes|length -1)].imagen)}}'); background-size: auto 200%;">
+                            {% endif %}
+                            </div><!--.card-heading-->
+                            <div class="card-body">
+                              <div class="calendar">
+                                <div class="month">{{producto.nombre}}</div>
+                                <div class="date">Cantidad: {{producto.cantidad}}</div>
+                              </div><!--.calendar--><br><br>
+                              <h4>{{producto.nombre}} - {{producto.subCategoria.nombre}} </h4>
+
+                            </div><!--.card-body-->
+                            <div class="card-footer">
+                              <div class="btn-group btn-merged btn-group-sm pull-right">
+                                {% if app.user != null %}
+                                {% if app.user.role == "ROLE_ADMIN" or  app.user.id == producto.empresa.usuario.id %}
+                                <a href="{{path('producto_edit',{'id':producto.id})}}" class="btn btn-green btn-flat btn-ripple">Editar</a>
+                                <a href="{{path('producto_delete',{'id':producto.id})}}" class="btn btn-red btn-flat btn-ripple">Eliminar</a>
+                                {% endif %}
+                                {% endif %}
+                                {% if app.user != null %}
+                                <a href="{{path('producto_show',{'id':producto.id})}}" class="btn btn-cyan btn-flat btn-ripple">Ver</a>
+                                {% else %}
+                                <a href="{{path('show_producto_anon',{'id':producto.id})}}" class="btn btn-cyan btn-flat btn-ripple">Ver</a>
+                                {% endif %}
+                              </div>
+                            </div><!--.card-footer-->
+                          </div><!--.card-->
+                        </div>
+                      {% endif %}
+                      {% endfor %}
+                    </div>
+                  </div>
+                </div>
+                {% else %}
+                <div class="panel">
+                  <div class="panel-heading">
+                    <a class="panel-title" data-toggle="collapse" data-parent="#accordion" href="#collapse{{subCategoria.id}}" aria-expanded="true">Categoria {{subCategoria.nombre}}</a>
+                  </div>
+                  <div id="collapse{{subCategoria.id}}" class="panel-collapse collapse" aria-expanded="true">
+                    <div class="panel-body">
+                      {% for producto in subCategoria.productos %}
+                      {% if producto.activo == 1 %}
+                      <div class="col-md-3 col-xs-12">
+                          <div class="card card-event ">
+                            {% if producto.imagenes|length == 0 %}
+                            <div class="card-heading bg-image sample-bg-image{{random(29)}} ">
+                            {% else %}
+                            <div class="card-heading bg-image" style="background: url('{{asset('/uploads/producto/'~ producto.imagenes[random(producto.imagenes|length -1)].imagen)}}'); background-size: auto 200%;">
+                            {% endif %}
+                            </div><!--.card-heading-->
+                            <div class="card-body">
+                              <div class="calendar">
+                                <div class="month">{{producto.nombre}}</div>
+                                <div class="date">Cantidad: {{producto.cantidad}}</div>
+                              </div><!--.calendar--><br><br>
+                              <h4>{{producto.nombre}} - {{producto.subCategoria.nombre}} </h4>
+
+                            </div><!--.card-body-->
+                            <div class="card-footer">
+                              <div class="btn-group btn-merged btn-group-sm pull-right">
+                                {% if app.user != null %}
+                                {% if app.user.role == "ROLE_ADMIN" or  app.user.id == producto.empresa.usuario.id %}
+                                <a href="{{path('producto_edit',{'id':producto.id})}}" class="btn btn-green btn-flat btn-ripple">Editar</a>
+                                <a href="{{path('producto_delete',{'id':producto.id})}}" class="btn btn-red btn-flat btn-ripple">Eliminar</a>
+                                {% endif %}
+                                {% endif %}
+                                {% if app.user != null %}
+                                <a href="{{path('producto_show',{'id':producto.id})}}" class="btn btn-cyan btn-flat btn-ripple">Ver</a>
+                                {% else %}
+                                <a href="{{path('show_producto_anon',{'id':producto.id})}}" class="btn btn-cyan btn-flat btn-ripple">Ver</a>
+                                {% endif %}
+                              </div>
+                            </div><!--.card-footer-->
+                          </div><!--.card-->
+                        </div>
+                      {% endif %}
+                      {% endfor %}
+                    </div>
+                  </div>
+                </div>
+                {% endif %}
+                {% endfor %}
+        				</div><!--.panel-group-->
+        			</div><!--.col-md-6-->
+        		</div>
+      </div>
+
+      <div id="blueimp-gallery" class="blueimp-gallery blueimp-gallery-controls" data-use-bootstrap-modal="false">
+      			<div class="slides"></div>
+      			<h3 class="title">Gallery</h3>
+      			<a class="prev">‹</a>
+      			<a class="next">›</a>
+      			<a class="close">×</a>
+      			<a class="play-pause"></a>
+      			<ol class="indicator"></ol>
+      			<div class="modal fade">
+      				<div class="modal-dialog">
+      					<div class="modal-content">
+      						<div class="modal-header">
+      							<button type="button" class="close" aria-hidden="true">&times;</button>
+      							<h4 class="modal-title">Gallery</h4>
+      						</div>
+      						<div class="modal-body next"></div>
+      						<div class="modal-footer">
+      							<button type="button" class="btn btn-default pull-left prev">
+      								<i class="glyphicon glyphicon-chevron-left"></i>
+      								Previous
+      							</button>
+      							<button type="button" class="btn btn-primary next">
+      								Next
+      								<i class="glyphicon glyphicon-chevron-right"></i>
+      							</button>
+      						</div>
+      					</div>
+      				</div>
+      			</div>
+      	</div>
+<div id="fb-root"></div>
+
+{% endblock %}
+{% block javascripts %}
+{{parent()}}
+<script>(function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0];
+  if (d.getElementById(id)) return;
+  js = d.createElement(s); js.id = id;
+  js.src = "//connect.facebook.net/es_ES/sdk.js#xfbml=1&version=v2.9";
+  fjs.parentNode.insertBefore(js, fjs);
+}(document, 'script', 'facebook-jssdk'));</script>
+<script src="{{ asset('/assets/globals/scripts/sliders.js') }}" type="text/javascript"></script>
+<script src="{{ asset('/assets/globals/plugins/bxslider/jquery.bxslider.min.js') }}" type="text/javascript"></script>
+<script src="{{ asset('/assets/globals/plugins/d3/d3.min.js') }}" type="text/javascript"></script>
+<script src="{{ asset('/assets/globals/plugins/c3js-chart/c3.min.js') }}" type="text/javascript"></script>
+<script src="{{ asset('/assets/globals/scripts/charts-c3.js') }}" type="text/javascript"></script>
+<script src="{{ asset('/assets/globals/plugins/blueimp-gallery/js/jquery.blueimp-gallery.min.js') }}" type="text/javascript"></script>
+<script src="{{ asset('/assets/globals/plugins/blueimp-bootstrap-image-gallery/js/bootstrap-image-gallery.min.js') }}" type="text/javascript"></script>
+
+<script src="{{ asset('/assets/jquery.form.image.min.js') }}" type="text/javascript"></script>
+
+<script type="text/javascript">
+$( document ).ready(function() {
+  FluidBox.init();
+  GridsMasonry.init();
+  var chart = c3.generate({
+    bindto: '.porcentajeFavoritos',
+    data: {
+      columns: [
+        ['Porcentaje de Faboritos', {{porcentajeFavoritos}}]
+      ],
+      type: 'gauge',
+      onclick: function (d, i) { console.log("onclick", d, i); },
+      onmouseover: function (d, i) { console.log("onmouseover", d, i); },
+      onmouseout: function (d, i) { console.log("onmouseout", d, i); }
+    },
+    color: {
+      pattern: ['#FF0000', '#F97600', '#F6C600', '#60B044'], // the three color levels for the percentage values.
+      threshold: {
+        values: [30, 60, 90, 100]
+      }
+    }
+
+  });
+  setTimeout(function () {
+  chart.load({
+  });
+}, 1000);
+
+  var chart = c3.generate({
+    bindto: '.barCharat',
+    data: {
+      columns: [
+
+      ],
+    },
+    bar: {
+      width: {
+        ratio: 0.5   // this makes bar width 50% of length between ticks
+      }
+      // or
+      //width: 100 // this makes bar width 100px
+    }
+  });
+  setTimeout(function () {
+    var url = "{{path('bar_char_json',{'id':'ID'})}}";
+    $.ajax({
+        type: 'GET',
+        url: url.replace('ID',{{empresa.id}}),
+        dataType:'json',
+        success: function(data) {
+          console.log(data);
+          chart.load({
+              data
+          });
+        },
+        error: function() {
+            console.log("error");
+        }
+    });
+}, 1000);
+});
+    $('body').delegate('.load-in','click', function(e){
+    e.preventDefault();
+    var url = $(this).attr('href');
+    var content = $(this).data('id');
+    var producto = $('#txtBusqueda').val();
+    $(content).html("<div class='loading-bar determinate-center margin-top-10'></div>");
+    $.ajax({
+        url: url,
+        method: 'get',
+        data: {'producto':producto},
+        success: function(data) {
+            $(content).html(data);
+        },
+        error: function() {
+            console.log('Error!');
+        }
+    });
+});
+
+$(document).keypress(function(e) {
+    if(e.which == 13) {
+      $('.load-in').click();
+    }
+});
+</script>
+
+<script type="text/javascript">
+function repositionCover() {
+    $('.cover-wrapper').hide();
+    $('.cover-resize-wrapper').show();
+    $('.cover-resize-buttons').show();
+    $('.default-buttons').hide();
+    $('.screen-width').val($('.cover-resize-wrapper').width());
+    $('.cover-resize-wrapper img')
+    .css('cursor', 's-resize')
+    .draggable({
+        scroll: false,
+
+        axis: "y",
+
+        cursor: "s-resize",
+
+        drag: function (event, ui) {
+            y1 = $('.timeline-header-wrapper').height();
+            y2 = $('.cover-resize-wrapper').find('img').height();
+
+            if (ui.position.top >= 0) {
+                ui.position.top = 0;
+            }
+            else
+            if (ui.position.top <= (y1-y2)) {
+                ui.position.top = y1-y2;
+            }
+        },
+
+        stop: function(event, ui) {
+            $('input.cover-position').val(ui.position.top);
+        }
+    });
+}
+
+function saveReposition() {
+
+    if ($('input.cover-position').length == 1) {
+        posY = $('input.cover-position').val();
+        console.log(posY);
+        $('form.cover-position-form').submit();
+    }
+}
+
+function cancelReposition() {
+    $('.cover-wrapper').show();
+    $('.cover-resize-wrapper').hide();
+    $('.cover-resize-buttons').hide();
+    $('.default-buttons').show();
+    $('input.cover-position').val(0);
+    $('.cover-resize-wrapper img').draggable('destroy').css('cursor','default');
+}
+
+
+ $(function(){
+    $('.cover-resize-wrapper').height($('.cover-resize-wrapper').width()*0.3);
+
+    $('form.cover-position-form').ajaxForm({
+        url: "{{path('reposicionar_imagen_empresa',{'id':empresa.id})}}",
+        dataType:  'json',
+        beforeSend: function() {
+            $('.cover-progress').html('Repositioning...').fadeIn('fast').removeClass('hidden');
+        },
+
+        success: function(responseText) {
+          url = "{{asset('/uploads/empresa/fotosPortada/recortes/')}}";
+          console.log(url + responseText.url);
+            if ((responseText.status) == 200) {
+                $('.cover-wrapper img')
+                    .attr('src', url + responseText.url + '?' + new Date().getTime())
+                    .load(function () {
+                        $('.cover-progress').fadeOut('fast').addClass('hidden').html('');
+                        $('.cover-wrapper').show();
+                        $('.cover-resize-wrapper')
+                            .hide()
+                            .find('img').css('top', 0);
+                        $('.cover-resize-buttons').hide();
+                        $('.default-buttons').show();
+                        $('input.cover-position').val(0);
+                        $('.cover-resize-wrapper img').draggable('destroy').css('cursor','default');
+                    });
+            }
+        }
+    });
+});
+
+
+</script>
+
+{% endblock %}
