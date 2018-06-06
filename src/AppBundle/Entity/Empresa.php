@@ -183,10 +183,7 @@ class Empresa
      * @ORM\OneToMany(targetEntity="ImagenEmpresa", mappedBy="empresa")
      */
     private $imagenes;
-    /**
-     * @ORM\OneToMany(targetEntity="PlanEmpresa", mappedBy="empresa")
-     */
-    private $planesEmpresa;
+  
 
     /**
      * @ORM\OneToMany(targetEntity="EmpresaRecorrido360", mappedBy="empresa")
@@ -207,7 +204,6 @@ class Empresa
         $this->imagenes = new ArrayCollection();
         $this->productos = new ArrayCollection();
         $this->empresasSectores = new ArrayCollection();
-        $this->planesEmpresa = new ArrayCollection();
         $this->recorridos = new ArrayCollection();
         $this->redes = new ArrayCollection();
         $this->subCategorias = new ArrayCollection();
@@ -711,39 +707,6 @@ class Empresa
     public function getImagenes()
     {
         return $this->imagenes;
-    }
-
-    /**
-     * Add planesEmpresa
-     *
-     * @param \AppBundle\Entity\PlanEmpresa $planesEmpresa
-     * @return Empresa
-     */
-    public function addPlanesEmpresa(\AppBundle\Entity\PlanEmpresa $planesEmpresa)
-    {
-        $this->planesEmpresa[] = $planesEmpresa;
-
-        return $this;
-    }
-
-    /**
-     * Remove planesEmpresa
-     *
-     * @param \AppBundle\Entity\PlanEmpresa $planesEmpresa
-     */
-    public function removePlanesEmpresa(\AppBundle\Entity\PlanEmpresa $planesEmpresa)
-    {
-        $this->planesEmpresa->removeElement($planesEmpresa);
-    }
-
-    /**
-     * Get planesEmpresa
-     *
-     * @return \Doctrine\Common\Collections\Collection
-     */
-    public function getPlanesEmpresa()
-    {
-        return $this->planesEmpresa;
     }
 
     /**

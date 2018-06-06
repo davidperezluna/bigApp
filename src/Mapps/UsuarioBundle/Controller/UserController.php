@@ -54,7 +54,7 @@ class UserController extends Controller
             $user->setUsername($user->getEmail());
             $user->setFotoPerfil("user.png");
             $user->setFotoPortada("portadaDefault.jpg");
-            $user->setEnabled("true");
+            $user->setEnabled(1);
             $em->persist($user);
             $em->flush();
 

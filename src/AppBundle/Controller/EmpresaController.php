@@ -129,31 +129,11 @@ class EmpresaController extends Controller
       $vistas = $empresa->getVisitas() + 1;
       $empresa->setVisitas($vistas);
       $em->flush($empresa);
-      $em    = $this->getDoctrine()->getManager();
-      $planEmpresa = $em->getRepository('AppBundle:PlanEmpresa')->findOneByEmpresa($empresa->getId());
-      $plan = $planEmpresa->getPlan();
-      $planesServicios = $plan->getPlanesServicios();
-      $ban = false;
-      foreach ($planesServicios as $key => $ps) {
-          if ($ps->getServicio()->getNombre() == "Localizacion") {
-            $ban = true;
-          }
-        }
-      $dql   =
-      "SELECT p FROM AppBundle:Producto p
-      WHERE p.empresa = :idEmpresa";
-      $query = $em->createQuery($dql);
-      $query->setParameter("idEmpresa", $empresa->getId());
 
-      $paginator  = $this->get('knp_paginator');
-      $pagination = $paginator->paginate(
-          $query, /* query NOT result */
-          $request->query->getInt('page', 1)/*page number*/,
-          9/*limit per page*/
-      );
-        $sectores = $em->getRepository('AppBundle:Sector')->findAll();
+
+     
       // parameters to template
-      return $this->render('AppBundle:empresa:show.html.twig', array('pagination' => $pagination,'empresa'=>$empresa, 'sectores' => $sectores, 'planServicios' => $planesServicios,'ban'=>$ban));
+      return $this->render('AppBundle:empresa:show.html.twig', array('empresa'=>$empresa));
     }
 
     /**
