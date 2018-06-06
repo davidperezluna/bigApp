@@ -96,6 +96,11 @@ class UserController extends Controller
         $editForm->handleRequest($request);
 
         if ($editForm->isSubmitted() && $editForm->isValid()) {
+            $factory = $this->get("security.encoder_factory");
+            $encoder = $factory->getEncoder($user);
+            $passwordd =$user->getPassword();
+            $password = $encoder->encodePassword($passwordd, $user->getSalt());
+            $user->setPassword($password);
             $this->getDoctrine()->getManager()->flush();
 
             return $this->redirectToRoute('user_edit', array('id' => $user->getId()));
