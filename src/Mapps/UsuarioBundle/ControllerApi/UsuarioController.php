@@ -22,23 +22,13 @@ class UsuarioController extends FOSRestController
      */
     public function getLoginAction(Request $request)
     {
-    	$data = $request->getContent();
+    	
+      $data = $request->getContent();
     	$params = json_decode($data);
     	$em = $this->getDoctrine()->getManager();
-      	$usuario = $em->getRepository('MappsUsuarioBundle:User')->findOneByUsername($params->username);
+      $usuario = $em->getRepository('MappsUsuarioBundle:User')->findOneByUsername($params->username);
 
-        $user = array(
-          'id' => $usuario->getId(), 
-          'nombres' => $usuario->getNombres(), 
-          'apellidos' => $usuario->getApellidos(), 
-          'identificacion' => $usuario->getIdentificacion(), 
-
-        );
-
-      	return $response = array(
-      		'status' => "success",
-      		'user' => $user
-      	);
+      return $usuario = array('usuario' =>  $usuario );
     }
 
     /**
