@@ -1,0 +1,53 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <h1>Publicacions list</h1>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Contenido</th>
+                <th>Tipo</th>
+                <th>Urlvideoyutube</th>
+                <th>Imagen</th>
+                <th>Calificacion</th>
+                <th>Activo</th>
+                <th>Createdat</th>
+                <th>Updatedat</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for publicacion in publicacions %}
+            <tr>
+                <td><a href="{{ path('publicacion_show', { 'id': publicacion.id }) }}">{{ publicacion.id }}</a></td>
+                <td>{{ publicacion.contenido }}</td>
+                <td>{{ publicacion.tipo }}</td>
+                <td>{{ publicacion.urlVideoYutube }}</td>
+                <td>{{ publicacion.imagen }}</td>
+                <td>{{ publicacion.calificacion }}</td>
+                <td>{% if publicacion.activo %}Yes{% else %}No{% endif %}</td>
+                <td>{% if publicacion.createdAt %}{{ publicacion.createdAt|date('Y-m-d H:i:s') }}{% endif %}</td>
+                <td>{% if publicacion.updatedAt %}{{ publicacion.updatedAt|date('Y-m-d H:i:s') }}{% endif %}</td>
+                <td>
+                    <ul>
+                        <li>
+                            <a href="{{ path('publicacion_show', { 'id': publicacion.id }) }}">show</a>
+                        </li>
+                        <li>
+                            <a href="{{ path('publicacion_edit', { 'id': publicacion.id }) }}">edit</a>
+                        </li>
+                    </ul>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <ul>
+        <li>
+            <a href="{{ path('publicacion_new') }}">Create a new publicacion</a>
+        </li>
+    </ul>
+{% endblock %}

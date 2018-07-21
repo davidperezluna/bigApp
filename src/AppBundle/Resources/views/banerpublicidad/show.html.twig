@@ -1,0 +1,70 @@
+{% extends 'base.html.twig' %}
+{% block body %}
+    <div class="app-heading app-heading-background app-heading-light" style="background: url({{asset('uploads/banerpublicidad/'~ banerPublicidad.url)}}) center center no-repeat;">
+        <div class="contact contact-rounded contact-bordered contact-xlg status-online margin-bottom-0">
+            <img src="{{asset('uploads/empresa/fotosLogo/'~ banerPublicidad.empresa.fotoLogo)}}">
+            <div class="contact-container">
+                <a href="{{ path('empresa_show', { 'id': banerPublicidad.empresa.id }) }}">{{banerPublicidad.empresa.nombre}}</a>
+                <span>{{banerPublicidad.empresa.paginaWeb}}</span>
+                <p>{{banerPublicidad.slogan}}</p>
+            </div>
+        </div>                        
+    </div>
+<div class="col-md-12">
+    <!-- BLOCK -->
+    <div class="block block-condensed">
+        <!-- HEADING -->
+        <div class="app-heading app-heading-small">
+            <div class="title">
+                <h2>Productos</h2>
+                <p>Listado de productos con descuentos especiales</p>
+            </div>
+            
+            <div class="heading-elements">
+                <a href="{{ path('productopromocion_new', { 'id': banerPublicidad.id }) }}" class="btn btn-default btn-icon"><span class="fa fa-plus"></span></a>
+            </div>                
+        </div>
+        <!-- END HEADING -->
+          <div class="block-content">
+            <div class="container">
+                  <div class="row grid">
+                      {% for productoPromocion in banerPublicidad.productosPromocion %}
+                        <div class="col-md-3">
+                          <div class="tile-basic">
+                              <div class="tile-image">
+                                {% for imagen in productoPromocion.producto.imagenes %}
+                                {% if loop.last %}
+                                  <a href="#" class="tile-image tile-image-padding tile-image-hover-grayscale preview" data-preview-image="{{asset('uploads/producto/'~ imagen.imagen)}}" data-preview-size="modal-lg">
+                                      <img src="{{asset('uploads/producto/'~ imagen.imagen)}}" alt="">
+                                  </a>
+                                  {% endif %}
+                                  {% endfor %}
+                                  <div class="tile-image-container text-right">
+                                      {% if productoPromocion.producto.subCategoria.id == 1 %}
+                                      <span class="label label-success">
+                                      {% elseif productoPromocion.producto.subCategoria.id == 2 %}
+                                      <span class="label label-warning">
+                                      {% else %}
+                                      <span class="label label-danger">
+                                      {% endif %}
+                                      {{productoPromocion.producto.subCategoria.nombre}}
+                                      </span>
+                                  </div>
+                              </div>
+                              <div class="tile-content tile-content-condensed-bottom text-center"style="background-color:#edeff0;">
+                                  <span class="tile-subtitle">{{productoPromocion.producto.valor}}</span>
+                                  <h5 class="tile-title" style="color:{{productoPromocion.producto.empresa.colorPrimario}};">{{productoPromocion.producto.nombre}}</h5>
+                                  <p>{{productoPromocion.producto.descripcion}}</p>
+                                  <a href="{{ path('producto_show', { 'id': productoPromocion.producto.id }) }}" class="btn btn-warning btn-xs"><span class="fa fa-eye"></span></a>
+                                  <a href="{{ path('productopromocion_delete', { 'id': productoPromocion.id }) }}" class="btn btn-danger btn-xs"><span class="fa fa-close"></span></a>
+                              </div>
+                          </div>
+                        </div>
+                      {% endfor %}
+                  </div>
+            </div> 
+          </div>
+    </div>
+    <!-- END BLOCK -->
+</div>
+{% endblock %}

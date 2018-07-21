@@ -183,10 +183,7 @@ class Empresa
      * @ORM\OneToMany(targetEntity="ImagenEmpresa", mappedBy="empresa")
      */
     private $imagenes;
-    /**
-     * @ORM\OneToMany(targetEntity="PlanEmpresa", mappedBy="empresa")
-     */
-    private $planesEmpresa;
+  
 
     /**
      * @ORM\OneToMany(targetEntity="EmpresaRecorrido360", mappedBy="empresa")
@@ -202,15 +199,20 @@ class Empresa
      * @ORM\OneToMany(targetEntity="EmpresaSubCategoria", mappedBy="empresa")
      */
     private $subCategorias;
+      /**
+     * @ORM\OneToMany(targetEntity="BanerPublicidad", mappedBy="empresa")
+     */
+    private $banersPublicidad;
 
     public function __construct() {
         $this->imagenes = new ArrayCollection();
         $this->productos = new ArrayCollection();
         $this->empresasSectores = new ArrayCollection();
-        $this->planesEmpresa = new ArrayCollection();
         $this->recorridos = new ArrayCollection();
         $this->redes = new ArrayCollection();
         $this->subCategorias = new ArrayCollection();
+        $this->banersPublicidad = new ArrayCollection();
+
     }
     /**
      * Get id
@@ -714,39 +716,6 @@ class Empresa
     }
 
     /**
-     * Add planesEmpresa
-     *
-     * @param \AppBundle\Entity\PlanEmpresa $planesEmpresa
-     * @return Empresa
-     */
-    public function addPlanesEmpresa(\AppBundle\Entity\PlanEmpresa $planesEmpresa)
-    {
-        $this->planesEmpresa[] = $planesEmpresa;
-
-        return $this;
-    }
-
-    /**
-     * Remove planesEmpresa
-     *
-     * @param \AppBundle\Entity\PlanEmpresa $planesEmpresa
-     */
-    public function removePlanesEmpresa(\AppBundle\Entity\PlanEmpresa $planesEmpresa)
-    {
-        $this->planesEmpresa->removeElement($planesEmpresa);
-    }
-
-    /**
-     * Get planesEmpresa
-     *
-     * @return \Doctrine\Common\Collections\Collection
-     */
-    public function getPlanesEmpresa()
-    {
-        return $this->planesEmpresa;
-    }
-
-    /**
      * Add recorridos
      *
      * @param \AppBundle\Entity\EmpresaRecorrido360 $recorridos
@@ -958,5 +927,29 @@ class Empresa
     public function getLng()
     {
         return $this->lng;
+    }
+
+    /**
+     * Set usuario
+     *
+     * @param \Mapps\UsuarioBundle\Entity\User $usuario
+     *
+     * @return Empresa
+     */
+    public function setUsuario(\Mapps\UsuarioBundle\Entity\User $usuario = null)
+    {
+        $this->usuario = $usuario;
+
+        return $this;
+    }
+
+    /**
+     * Get usuario
+     *
+     * @return \Mapps\UsuarioBundle\Entity\User
+     */
+    public function getUsuario()
+    {
+        return $this->usuario;
     }
 }

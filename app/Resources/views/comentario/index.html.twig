@@ -1,0 +1,49 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <h1>Comentarios list</h1>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Contenido</th>
+                <th>Calificacion</th>
+                <th>Activo</th>
+                <th>Createdat</th>
+                <th>Updatedat</th>
+                <th>Visto</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for comentario in comentarios %}
+            <tr>
+                <td><a href="{{ path('comentario_show', { 'id': comentario.id }) }}">{{ comentario.id }}</a></td>
+                <td>{{ comentario.contenido }}</td>
+                <td>{{ comentario.calificacion }}</td>
+                <td>{% if comentario.activo %}Yes{% else %}No{% endif %}</td>
+                <td>{% if comentario.createdAt %}{{ comentario.createdAt|date('Y-m-d') }}{% endif %}</td>
+                <td>{% if comentario.updatedAt %}{{ comentario.updatedAt|date('Y-m-d') }}{% endif %}</td>
+                <td>{% if comentario.visto %}Yes{% else %}No{% endif %}</td>
+                <td>
+                    <ul>
+                        <li>
+                            <a href="{{ path('comentario_show', { 'id': comentario.id }) }}">show</a>
+                        </li>
+                        <li>
+                            <a href="{{ path('comentario_edit', { 'id': comentario.id }) }}">edit</a>
+                        </li>
+                    </ul>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <ul>
+        <li>
+            <a href="{{ path('comentario_new') }}">Create a new comentario</a>
+        </li>
+    </ul>
+{% endblock %}

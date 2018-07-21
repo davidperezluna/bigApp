@@ -30,10 +30,6 @@ class EmpresaSubCategoria
      */
     private $nombre;
 
-    /**
-     * @ORM\ManyToOne(targetEntity="Empresa", inversedBy="subCategorias")
-     */
-    protected $empresa;
 
     /**
      * @ORM\OneToMany(targetEntity="Producto", mappedBy="subCategoria")
@@ -78,28 +74,6 @@ class EmpresaSubCategoria
         return $this->nombre;
     }
 
-    /**
-     * Set empresa
-     *
-     * @param \AppBundle\Entity\Empresa $empresa
-     * @return EmpresaSubCategoria
-     */
-    public function setEmpresa(\AppBundle\Entity\Empresa $empresa = null)
-    {
-        $this->empresa = $empresa;
-
-        return $this;
-    }
-
-    /**
-     * Get empresa
-     *
-     * @return \AppBundle\Entity\Empresa
-     */
-    public function getEmpresa()
-    {
-        return $this->empresa;
-    }
 
 
 

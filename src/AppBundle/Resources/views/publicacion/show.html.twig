@@ -1,0 +1,60 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <h1>Publicacion</h1>
+
+    <table>
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ publicacion.id }}</td>
+            </tr>
+            <tr>
+                <th>Contenido</th>
+                <td>{{ publicacion.contenido }}</td>
+            </tr>
+            <tr>
+                <th>Tipo</th>
+                <td>{{ publicacion.tipo }}</td>
+            </tr>
+            <tr>
+                <th>Urlvideoyutube</th>
+                <td>{{ publicacion.urlVideoYutube }}</td>
+            </tr>
+            <tr>
+                <th>Imagen</th>
+                <td>{{ publicacion.imagen }}</td>
+            </tr>
+            <tr>
+                <th>Calificacion</th>
+                <td>{{ publicacion.calificacion }}</td>
+            </tr>
+            <tr>
+                <th>Activo</th>
+                <td>{% if publicacion.activo %}Yes{% else %}No{% endif %}</td>
+            </tr>
+            <tr>
+                <th>Createdat</th>
+                <td>{% if publicacion.createdAt %}{{ publicacion.createdAt|date('Y-m-d H:i:s') }}{% endif %}</td>
+            </tr>
+            <tr>
+                <th>Updatedat</th>
+                <td>{% if publicacion.updatedAt %}{{ publicacion.updatedAt|date('Y-m-d H:i:s') }}{% endif %}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <ul>
+        <li>
+            <a href="{{ path('publicacion_index') }}">Back to the list</a>
+        </li>
+        <li>
+            <a href="{{ path('publicacion_edit', { 'id': publicacion.id }) }}">Edit</a>
+        </li>
+        <li>
+            {{ form_start(delete_form) }}
+                <input type="submit" value="Delete">
+            {{ form_end(delete_form) }}
+        </li>
+    </ul>
+{% endblock %}

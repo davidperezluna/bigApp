@@ -1,0 +1,43 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <h1>Banerpublicidads list</h1>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Nombre</th>
+                <th>Slogan</th>
+                <th>Url</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for banerPublicidad in banerPublicidads %}
+            <tr>
+                <td><a href="{{ path('banerpublicidad_show', { 'id': banerPublicidad.id }) }}">{{ banerPublicidad.id }}</a></td>
+                <td>{{ banerPublicidad.nombre }}</td>
+                <td>{{ banerPublicidad.slogan }}</td>
+                <td>{{ banerPublicidad.url }}</td>
+                <td>
+                    <ul>
+                        <li>
+                            <a href="{{ path('banerpublicidad_show', { 'id': banerPublicidad.id }) }}">show</a>
+                        </li>
+                        <li>
+                            <a href="{{ path('banerpublicidad_edit', { 'id': banerPublicidad.id }) }}">edit</a>
+                        </li>
+                    </ul>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <ul>
+        <li>
+            <a href="{{ path('banerpublicidad_new') }}">Create a new banerPublicidad</a>
+        </li>
+    </ul>
+{% endblock %}

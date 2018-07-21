@@ -78,6 +78,12 @@ class User extends BaseUser
      */
     private $updatedAt;
 
+    /**
+     * @ORM\OneToMany(targetEntity="AppBundle\Entity\Publicacion", mappedBy="usuarioReceptor")
+     */
+    private $publicaciones;
+
+
       /**
     * Gets triggered only on insert
     * @ORM\PrePersist
@@ -300,5 +306,41 @@ class User extends BaseUser
     public function getUpdatedAt()
     {
         return $this->updatedAt;
+    }
+
+    
+
+    /**
+     * Add publicacione
+     *
+     * @param \AppBundle\Entity\Publicacion $publicacione
+     *
+     * @return User
+     */
+    public function addPublicacione(\AppBundle\Entity\Publicacion $publicacione)
+    {
+        $this->publicaciones[] = $publicacione;
+
+        return $this;
+    }
+
+    /**
+     * Remove publicacione
+     *
+     * @param \AppBundle\Entity\Publicacion $publicacione
+     */
+    public function removePublicacione(\AppBundle\Entity\Publicacion $publicacione)
+    {
+        $this->publicaciones->removeElement($publicacione);
+    }
+
+    /**
+     * Get publicaciones
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getPublicaciones()
+    {
+        return $this->publicaciones;
     }
 }

@@ -1,0 +1,37 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <h1>Amigos list</h1>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for amigo in amigos %}
+            <tr>
+                <td><a href="{{ path('amigo_show', { 'id': amigo.id }) }}">{{ amigo.id }}</a></td>
+                <td>
+                    <ul>
+                        <li>
+                            <a href="{{ path('amigo_show', { 'id': amigo.id }) }}">show</a>
+                        </li>
+                        <li>
+                            <a href="{{ path('amigo_edit', { 'id': amigo.id }) }}">edit</a>
+                        </li>
+                    </ul>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <ul>
+        <li>
+            <a href="{{ path('amigo_new') }}">Create a new amigo</a>
+        </li>
+    </ul>
+{% endblock %}

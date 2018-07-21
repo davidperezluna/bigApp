@@ -17,6 +17,7 @@ parameters:
     imagen_empresa_directory: '%kernel.root_dir%/../web/uploads/empresa/imagenes'
     baner_publicidad_directory: '%kernel.root_dir%/../web/uploads/banerpublicidad/'
     logo_sector_directory: '%kernel.root_dir%/../web/uploads/sectores/'
+    imagen_publicacion_directory: '%kernel.root_dir%/../web/uploads/publicaciones/'
 
 framework:
     #esi: ~
@@ -131,4 +132,9 @@ fos_rest:
         view_response_listener: 'force'
         formats:
             json: true
+knp_paginator:
+    template:                                        
+        pagination: '@KnpPaginator/Pagination/twitter_bootstrap_v3_pagination.html.twig'     # sliding pagination controls template                                    
+        sortable: '@KnpPaginator/Pagination/sortable_link.html.twig' # sort link template                                
+        filtration: '@KnpPaginator/Pagination/filtration.html.twig'  # filters template
 

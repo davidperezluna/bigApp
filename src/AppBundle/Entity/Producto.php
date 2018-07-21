@@ -50,13 +50,7 @@ class Producto
      */
     private $descripcion;
 
-    /**
-     * @var int
-     *
-     * @ORM\Column(name="cantidad", type="integer")
-     */
-    private $cantidad;
-
+  
     /**
      * @var float
      *
@@ -377,4 +371,12 @@ class Producto
     {
         return $this->tags;
     }
+
+    
+    public function getInfo()
+    {
+        return $this->referencia +"-"+ $this->nombre;
+    }
+
+
 }

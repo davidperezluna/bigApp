@@ -1,0 +1,41 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <h1>Imagenempresas list</h1>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Urlimagen</th>
+                <th>Created</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for imagenEmpresa in imagenEmpresas %}
+            <tr>
+                <td><a href="{{ path('imagenempresa_show', { 'id': imagenEmpresa.id }) }}">{{ imagenEmpresa.id }}</a></td>
+                <td>{{ imagenEmpresa.urlImagen }}</td>
+                <td>{% if imagenEmpresa.created %}{{ imagenEmpresa.created|date('Y-m-d') }}{% endif %}</td>
+                <td>
+                    <ul>
+                        <li>
+                            <a href="{{ path('imagenempresa_show', { 'id': imagenEmpresa.id }) }}">show</a>
+                        </li>
+                        <li>
+                            <a href="{{ path('imagenempresa_edit', { 'id': imagenEmpresa.id }) }}">edit</a>
+                        </li>
+                    </ul>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <ul>
+        <li>
+            <a href="{{ path('imagenempresa_new') }}">Create a new imagenEmpresa</a>
+        </li>
+    </ul>
+{% endblock %}

@@ -1,7 +1,181 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
+<div class="app-heading app-heading-background app-heading-light" style="background: url({{asset('uploads/usuario/fotosPortada/'~ user.fotoPortada)}}) center center no-repeat;">
+    <div class="contact contact-rounded contact-bordered contact-xlg status-online margin-bottom-0">
+        <img src="{{asset('uploads/usuario/fotosPerfil/'~ user.fotoPerfil)}}">
+        <div class="contact-container">
+            <a href="#">{{user.nombres}} {{user.apellidos}}</a>
+            <span>{{user.email}}</span>
+            <p>{{user.celular}}</p>
+            <a href="{{path('amigo_new',{'amigoId':user.id})}}">Añadir</a>
+        </div>
+    </div>                        
+     
+</div>
 
+
+<div class="col-md-4">
+    <!-- BLOCK -->
+    <div class="block block-condensed block-arrow-top">
+        <div class="block-content">
+           <div class="app-content-separate-content">
+			    <div class="list-group list-group-noborder">
+			        <div class="list-group-title">Perfil</div>
+			        <a href="{{ path('empresa_index') }}" class="list-group-item text-bold active">Empresas</a>
+			        <a href="{{ path('producto_list') }}" class="list-group-item text-bold">Productos <span class="badge badge-success"></a>
+			        <a href="#" class="list-group-item text-bold">Mensajes <span class="badge badge-danger"></a>
+			        <div class="list-group-title">Cuenta</div>
+			        <a href="#" class="list-group-item text-bold">Buscador</a>
+			        <a href="#" class="list-group-item text-bold">Configracion</a>
+			    </div>
+			    <div class="app-heading app-heading-small heading-transparent">                                
+			        <div class="title">
+			            <h3>Amigos</h3>
+			            <a href="#">Ver Todos</a> 
+			        </div>                                                 
+			    </div>
+			    <div class="row">
+            {% for amigo in amigos %}   
+			        <div class="col-xs-4">
+			            <div class="contact contact-single contact-bordered contact-rounded">
+			                <img src="{{asset('uploads/usuario/fotosPerfil/'~ amigo.amigo.fotoPerfil)}}">
+			                <div class="contact-container">
+			                    <a href="#">{{amigo.amigo.nombres}}</a>                
+			                </div>
+			            </div>
+			        </div>
+              {% endfor %}
+			    </div>
+			</div>
+
+			<div class="title">
+	            <h3>Productos</h3>
+	            <a href="#">Ver Todos</a> 
+	        </div> 
+			<br>
+			{% for producto in productos %}
+			    <div class="col-md-12">
+                  <div class="tile-basic">
+                      <div class="tile-image">
+                        {% for imagen in producto.imagenes %}
+                        {% if loop.last %}
+                          <a href="#" class="tile-image tile-image-padding tile-image-hover-grayscale preview" data-preview-image="{{asset('uploads/producto/'~ imagen.imagen)}}" data-preview-size="modal-lg">
+                              <img src="{{asset('uploads/producto/'~ imagen.imagen)}}" alt="">
+                          </a>
+                          {% endif %}
+                          {% endfor %}
+                          <div class="tile-image-container text-right">
+                              {% if producto.subCategoria.id == 1 %}
+                              <span class="label label-success">
+                              {% elseif producto.subCategoria.id == 2 %}
+                              <span class="label label-warning">
+                              {% else %}
+                              <span class="label label-danger">
+                              {% endif %}
+                              {{producto.subCategoria.nombre}}
+                              </span>
+                          </div>
+                      </div>
+                      <div class="tile-content tile-content-condensed-bottom text-center"style="background-color:#edeff0;">
+                          <span class="tile-subtitle">{{producto.valor}}</span>
+                          <h5 class="tile-title" style="color:{{producto.empresa.colorPrimario}};">{{producto.nombre}}</h5>
+                          <p>{{producto.descripcion}}</p>
+                          <a href="{{ path('producto_show', { 'id': producto.id }) }}" class="btn btn-warning btn-xs">ver</a>
+                      </div>
+                  </div>
+                </div>
+			{% endfor %}
+        </div>                                    
+    </div>
+    <!-- END BLOCK -->                                
+</div>
+
+<div class="col-md-8">
+<br>
+    <!-- BLOCK -->
+    <div class="block block-primary">
+        <!-- HEADING -->
+        <div class="app-heading app-heading-small">                                        
+            <div class="title">
+                <h2>Escribir un comentario</h2>
+            </div>                 
+        </div>
+        <!-- END HEADING -->
+        <div class="col-lg-12 col-md-12">
+            <div class="row margin-bottom-20">
+            	{% if app.user.id != user.id %}
+                <div class="col-xs-6">
+                    <button class="btn btn-primary btn-block btn-icon-fixed"><span class="fa fa-user-plus"></span> Añadir</button>
+                </div>
+                <div class="col-xs-6">                                                
+                    <button class="btn btn-primary btn-block btn-icon-fixed"><span class="fa fa-comments"></span> Mensaje</button>
+                </div>
+                {% else %}
+                <div class="col-xs-12">
+                	<a class="btn btn-primary btn-block btn-icon-fixed" href="{{ path('publicacion_new', { 'receptorId': user.id, 'emisorId': app.user.id }) }}"><span class="fa fa-comments"></span>Crear Publicacion</a>                                                
+                </div> 
+                {% endif %}
+            </div>
+            <div class="app-timeline">
+            	{% for publicacion in user.publicaciones %}
+            	<div class="app-timeline-item">
+                    <div class="user"><img src="{{asset('uploads/usuario/fotosPerfil/'~ publicacion.usuarioEmisor.fotoPerfil)}}" ></div>
+                    <div class="content">
+                        <div class="title"><a href="#">{{publicacion.usuarioEmisor.nombres}}</a></div>
+                        <p>
+                          <div class="col-md-12">
+                              <div class="tile-basic">
+                                  <div class="tile-image">
+                                      {% if publicacion.imagen != null %}
+                                      <img src="{{asset('uploads/publicaciones/'~ publicacion.imagen)}}" alt="">
+                                      {% elseif publicacion.urlVideoYutube != null %}
+                                      <iframe width="100%" height="315" src="{{publicacion.urlVideoYutube}}" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+                                      {% else %}
+                                      {% endif %}
+                                  </div>
+                                  <div style="background-color:#f7f7f7;" class=" text-justify tile-content tile-content-condensed-bottom">
+                                      <p>{{publicacion.contenido}}</p>
+                                  </div>
+                              </div>
+                          </div>
+                        </p>
+                        <div class="comments">
+                          {% for comentario in publicacion.comentarios %}
+                            <div class="comment">
+                                <div class="contact contact-rounded contact-lg">
+                                    <img src="{{asset('uploads/usuario/fotosPerfil/'~ comentario.usuario.fotoPerfil)}}">
+                                    <div class="contact-container">
+                                        <a href="#">{{comentario.usuario.nombres}}</a>
+                                        <span>{{comentario.contenido}}</span>
+                                    </div>
+                                </div>
+                            </div>   
+                          {% endfor %}
+                            <div class="form">
+                                  <form class="" action="{{path('comentario_new',{'id':publicacion.id,'userId':app.user.id})}}" method="post">
+                                      <div class="form-group">
+                                        <div class="input-group">
+                                              <input type="text" class="form-control" placeholder="Comentar..." name="contenido">
+                                          <div class="input-group-btn">
+                                              <button type="submit" class="btn btn-default">Envair</button>
+                                          </div>
+                                        </div>
+                                  </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>                                                
+                </div> 
+            	{% endfor %}
+                <div class="app-timeline-more">
+                    <a href="#">...</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- END BLOCK -->
+</div>
 {% endblock %}
 {% block javascripts %}
 {{parent()}}

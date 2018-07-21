@@ -1,0 +1,28 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+   
+<div class="container">
+  <!-- BASIC INPUTS -->
+  <div class="block">                        
+      <div class="app-heading app-heading-small">                                
+          <div class="title">
+              <h2>Cargar Imagen</h2>
+          </div>                                
+      </div>
+       {{ form_start(form) }}
+          <div class="form-group">
+              <label class="col-md-2 control-label">Imagen</label>
+              <div class="col-md-10">
+                  {{ form_widget(form.imagen,  {'attr': {'class': 'file btn-primary','title':'<span class="icon-download2"></span>Subir Imagen'}}) }}
+              </div>
+          </div> 
+                   <div class="pull-right">
+              <hr>
+               <a href="{{ path('empresa_index') }}" class="btn btn-default">Cancelar</a>
+              <button type="submit" class="btn btn-primary btn-icon-fixed"><span class="icon-chevron-right-circle"></span> Registrar</button>
+          </div>
+      {{ form_end(form) }}
+  </div>
+</div>
+{% endblock %}

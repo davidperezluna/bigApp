@@ -1,0 +1,63 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+<div class="col-md-3">
+    <h4 class="text-uppercase text-bold text-rg heading-line-below heading-line-below-short text-center">Producto</h4>
+    <div class="tile-basic">
+        <div class="tile-image">
+           <a href="#" class="tile-image tile-image-padding tile-image-hover-grayscale preview" data-preview-image="{{asset('uploads/producto/'~ producto.imagenes[0].imagen)}}" data-preview-size="modal-lg">
+              <img src="{{asset('uploads/producto/'~ producto.imagenes[0].imagen)}}" alt="">
+          </a>
+            <div class="tile-image-container text-right">
+                {% if producto.subCategoria.id == 1 %}
+                <span class="label label-success">
+                {% elseif producto.subCategoria.id == 2 %}
+                <span class="label label-warning">
+                {% else %}
+                <span class="label label-danger">
+                {% endif %}
+                {{producto.subCategoria.nombre}}
+                </span>
+            </div>
+        </div>
+        <div class="tile-content tile-content-condensed-bottom text-center"style="background-color:#edeff0;">
+            <span class="tile-subtitle">{{producto.valor}}</span>
+            <h5 class="tile-title" style="color:{{producto.empresa.colorPrimario}};">{{producto.nombre}}</h5>
+            <p>{{producto.descripcion}}</p>
+            <a href="{{ path('producto_edit', { 'id': producto.id }) }}" class="btn btn-warning btn-xs"><span class="icon-pencil"></span></a>
+            <a href="{{ path('producto_delete', { 'id': producto.id }) }}" class="btn btn-danger btn-xs"><span class="icon-cross"></span></a>
+            <a href="{{ path('productoimagen_new', { 'id': producto.id }) }}" class="btn btn-info btn-xs"><span class="icon-picture"></span></a>
+            <a href="{{ path('empresa_show', { 'id': producto.empresa.id }) }}" class="btn btn-success btn-xs"><span class="icon-undo"></span></a>
+        </div>
+    </div>
+</div>
+<div class="col-md-9">
+    <h4 class="text-uppercase text-bold text-rg heading-line-below heading-line-below-short text-center">Imagenes</h4>
+    <ul class="app-feature-gallery app-feature-gallery-noshadow margin-bottom-0">
+    {% for imagenProducto in producto.imagenes %}
+        <li>
+            <!-- START WIDGET -->
+            <div class="col-md-12">
+                <div class="tile-basic">
+                    <div class="tile-image">
+                        <img src="{{asset('uploads/producto/'~ imagenProducto.imagen)}}" alt="">
+                    </div>
+                </div>
+            </div>
+            <!-- END WIDGET -->
+        </li>
+    {% endfor %}
+    </ul>
+</div>
+  <!-- MODAL PREVIEW -->
+    <div class="modal fade" id="preview" tabindex="-1" role="dialog">
+        <div class="modal-dialog">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true" class="icon-cross"></span></button>
+            
+            <div class="modal-content">
+                <div class="modal-body padding-5"></div>
+            </div>
+        </div>            
+    </div>
+    <!-- END MODAL PREVIEW -->
+{% endblock %}

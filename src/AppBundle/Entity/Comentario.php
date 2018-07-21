@@ -200,28 +200,7 @@ class Comentario
         return $this->updatedAt;
     }
 
-    /**
-     * Set usuario
-     *
-     * @param \AppBundle\Entity\Usuario $usuario
-     * @return Comentario
-     */
-    public function setUsuario(\AppBundle\Entity\Usuario $usuario = null)
-    {
-        $this->usuario = $usuario;
-
-        return $this;
-    }
-
-    /**
-     * Get usuario
-     *
-     * @return \AppBundle\Entity\Usuario
-     */
-    public function getUsuario()
-    {
-        return $this->usuario;
-    }
+    
 
     /**
      * Set publicacion
@@ -287,5 +266,29 @@ class Comentario
     public function getVisto()
     {
         return $this->visto;
+    }
+
+    /**
+     * Set usuario
+     *
+     * @param \Mapps\UsuarioBundle\Entity\User $usuario
+     *
+     * @return Comentario
+     */
+    public function setUsuario(\Mapps\UsuarioBundle\Entity\User $usuario = null)
+    {
+        $this->usuario = $usuario;
+
+        return $this;
+    }
+
+    /**
+     * Get usuario
+     *
+     * @return \Mapps\UsuarioBundle\Entity\User
+     */
+    public function getUsuario()
+    {
+        return $this->usuario;
     }
 }

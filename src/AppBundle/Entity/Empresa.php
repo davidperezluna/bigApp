@@ -199,6 +199,10 @@ class Empresa
      * @ORM\OneToMany(targetEntity="EmpresaSubCategoria", mappedBy="empresa")
      */
     private $subCategorias;
+      /**
+     * @ORM\OneToMany(targetEntity="BanerPublicidad", mappedBy="empresa")
+     */
+    private $banersPublicidad;
 
     public function __construct() {
         $this->imagenes = new ArrayCollection();
@@ -207,6 +211,8 @@ class Empresa
         $this->recorridos = new ArrayCollection();
         $this->redes = new ArrayCollection();
         $this->subCategorias = new ArrayCollection();
+        $this->banersPublicidad = new ArrayCollection();
+
     }
     /**
      * Get id
@@ -945,5 +951,39 @@ class Empresa
     public function getUsuario()
     {
         return $this->usuario;
+    }
+
+    /**
+     * Add banersPublicidad
+     *
+     * @param \AppBundle\Entity\BanerPublicidad $banersPublicidad
+     *
+     * @return Empresa
+     */
+    public function addBanersPublicidad(\AppBundle\Entity\BanerPublicidad $banersPublicidad)
+    {
+        $this->banersPublicidad[] = $banersPublicidad;
+
+        return $this;
+    }
+
+    /**
+     * Remove banersPublicidad
+     *
+     * @param \AppBundle\Entity\BanerPublicidad $banersPublicidad
+     */
+    public function removeBanersPublicidad(\AppBundle\Entity\BanerPublicidad $banersPublicidad)
+    {
+        $this->banersPublicidad->removeElement($banersPublicidad);
+    }
+
+    /**
+     * Get banersPublicidad
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getBanersPublicidad()
+    {
+        return $this->banersPublicidad;
     }
 }

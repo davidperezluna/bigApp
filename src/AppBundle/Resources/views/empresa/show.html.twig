@@ -1,10 +1,280 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
-    
+
+<div class="block" style="background-color:#C5CAE9;">
+    <div class="app-heading app-heading-small app-heading-condensed">
+        <div class="title">
+           
+        </div>
+    </div>
+    <div>
+        <ul class="nav nav-pills nav-justified">
+            <li class="active"><a href="#pills-4" data-toggle="tab">Informacion</a></li>
+            <li><a href="#pills-3" data-toggle="tab">Imagenes</a></li>
+            <li><a href="#pills-5" data-toggle="tab">Productos</a></li>
+            <li><a href="#pills-6" data-toggle="tab">Promociones</a></li>
+        </ul>
+        <div class="tab-content">
+            <div class="tab-pane active" id="pills-4">
+                <div class="app-heading app-heading-background app-heading-light" style="background: url({{asset('uploads/empresa/fotosLogo/'~ empresa.fotoLogo)}}) center center no-repeat;">
+                    <div class="contact contact-rounded contact-bordered contact-xlg status-online margin-bottom-0">
+                        <img src="{{asset('uploads/empresa/fotosLogo/'~ empresa.fotoLogo)}}">
+                        <div class="contact-container">
+                            <a href="#">{{empresa.usuario.nombres}} {{empresa.usuario.apellidos}} </a>
+                            <span>{{empresa.usuario.email}}</span>
+                            <a href="#" style="color:{{empresa.colorPrimario}}">{{empresa.nombre}}</a>
+                            <span style="color:{{empresa.colorPrimario}}">{{empresa.correo}}</span>
+                            <span class="label label-success" style="background-color:{{empresa.colorPrimario}} !important">Visitas: {{empresa.visitas}}</span>
+                        </div>
+                    </div>                        
+                </div>
+                <div class="col-md-12 block">
+                    <div class="tile-basic">
+                        <div class="tile-icon" style="color:{{empresa.colorPrimario}}">
+                            <span class="icon-apartment"></span>
+                        </div>
+                        <div class="tile-content text-center">
+                            <h3 class="tile-title">Descripcion</h3>
+                            <p>{{empresa.descripcion}}</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-2">
+                  <h3 class="tile-title">Informacion</h3>                                       
+                  <div class="list-group list-group-noborder"> 
+                      <div class="list-group-item"><span style="color:{{empresa.colorPrimario}}" class="icon-home"></span> {{empresa.direccion}}</div>
+                      <div class="list-group-item"><span style="color:{{empresa.colorPrimario}}" class="icon-phone"></span>{{empresa.telefono}}</div>
+                      <div class="list-group-item"><span style="color:{{empresa.colorPrimario}}" class="icon-smartphone"></span> {{empresa.celular}}</div>
+                      <div class="list-group-item"><span style="color:{{empresa.colorPrimario}}" class="icon-flag"></span> {{empresa.nit}}</div>
+                      <div class="list-group-item"><span style="color:{{empresa.colorPrimario}}" class="icon-link"></span> {{empresa.paginaWeb}}</div>
+                  </div>
+                </div>
+                <div class="col-md-10">
+                  <h3 class="tile-title text-center">Ubicacion</h3>                                       
+                  <div style=" height: 200px;   width: 100%;" id="map"></div>
+                </div>
+                <div class="col-md-12">
+                  <div class="col-md-6">
+                      <div class="tile-basic tile-basic-icon-top tile-basic-shadow">
+                          <div class="tile-icon">
+                              <span class="fa fa-facebook"></span>
+                          </div>
+                          <div class="tile-content text-center">
+                              <span class="tile-subtitle">Visita Nuestro Perfil de Facebook</span>
+                              {% for key, red in empresa.redes %}
+                              {% if red.nombre == "facebook" %}
+                                <div class="fb-page col-md-12" data-href="{{red.urlRedSocial}}" data-tabs="timeline" data-small-header="true" data-adapt-container-width="true" data-hide-cover="false" data-show-facepile="true"><blockquote cite="{{red.urlRedSocial}}" class="fb-xfbml-parse-ignore"><a href="{{red.urlRedSocial}}">{{empresa.nombre}}</a></blockquote></div>
+                              {% endif %}
+                              {% endfor %}
+                              <p>&nbsp;</p>
+                          </div>
+                      </div>
+                  </div>
+                  <div class="col-md-6">
+                      <div class="tile-basic tile-basic-icon-top tile-basic-shadow">
+                          <div class="tile-icon">
+                              <span class="fa fa-twitter"></span>
+                          </div>
+                          <div class="tile-content text-center">
+                              <span class="tile-subtitle">Visita Nuestro Perfil de Facebook</span>
+                              {% for key, red in empresa.redes %}
+                              {% if red.nombre == "twitter" %}
+                              <a class="twitter-timeline"  href="{{red.urlRedSocial}}" data-widget-id="593787365388394497" data-height="500">Tweets por el {{empresa.nombre}}.</a>
+                              <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+"://platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>
+                              {% endif %}
+                              {% endfor %}
+                              <p>&nbsp;</p>
+                          </div>
+                      </div>
+                  </div>
+                </div>
+            </div>
+            <div class="tab-pane" id="pills-3">
+                <div class="col-md-12">
+                    <!-- BLOCK -->
+                    <div class="block block-condensed">
+                        <!-- HEADING -->
+                        <div class="app-heading app-heading-small">
+                            <div class="title">
+                                <h2>Images</h2>
+                                <p>Vistaso rapido a nuestras instalaciones</p>
+                            </div>
+                            
+                            <div class="heading-elements">
+                                <a href="{{ path('imagenempresa_new', { 'id': empresa.id }) }}" class="btn btn-default btn-icon"><span class="fa fa-plus"></span></a>
+                            </div>                
+                        </div>
+                        <!-- END HEADING -->
+                          <div class="block-content">
+                              <div class="container">
+                                <div class="row grid">
+                                    {% for imagen in empresa.imagenes %}
+                                    <div class="col-md-3 col-ms-4">
+                                        <div class="tile-basic">
+                                            <a href="#" class="tile-image tile-image-padding tile-image-hover-grayscale preview" data-preview-image="{{asset('uploads/empresa/imagenes/'~ imagen.urlImagen)}}" data-preview-size="modal-lg">
+                                                <img src="{{asset('uploads/empresa/imagenes/'~ imagen.urlImagen)}}" alt="">
+                                            </a>
+                                            <div class="tile-content tile-content-condensed-bottom text-center">
+                                                 <a href="{{ path('imagenempresa_delete', { 'id': imagen.id }) }}" class="btn btn-danger btn-xs"><span class="fa fa-close"></span> Eliminar</a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    {% endfor %}
+                                </div>
+                          </div> 
+                        </div>
+                    </div>
+                    <!-- END BLOCK -->
+                </div>
+            </div>
+            <div class="tab-pane" id="pills-5">
+               <div class="col-md-12">
+                    <!-- BLOCK -->
+                    <div class="block block-condensed">
+                        <!-- HEADING -->
+                        <div class="app-heading app-heading-small">
+                            <div class="title">
+                                <h2>Productos</h2>
+                                <p>Listado de Productos de la empresa {{empresa.nombre}}</p>
+                            </div>
+                            
+                            <div class="heading-elements">
+                                <a href="{{ path('producto_new', { 'id': empresa.id }) }}" class="btn btn-default btn-icon"><span class="fa fa-plus"></span></a>
+                            </div>                
+                        </div>
+                        <!-- END HEADING -->
+                          <div class="block-content">
+                            <div class="container">
+                                  <div class="row grid">
+                                      {% for producto in empresa.productos %}
+                                        <div class="col-md-3">
+                                          <div class="tile-basic">
+                                              <div class="tile-image">
+                                                {% for imagen in producto.imagenes %}
+                                                {% if loop.last %}
+                                                  <a href="#" class="tile-image tile-image-padding tile-image-hover-grayscale preview" data-preview-image="{{asset('uploads/producto/'~ imagen.imagen)}}" data-preview-size="modal-lg">
+                                                      <img src="{{asset('uploads/producto/'~ imagen.imagen)}}" alt="">
+                                                  </a>
+                                                  {% endif %}
+                                                  {% endfor %}
+                                                  <div class="tile-image-container text-right">
+                                                      {% if producto.subCategoria.id == 1 %}
+                                                      <span class="label label-success">
+                                                      {% elseif producto.subCategoria.id == 2 %}
+                                                      <span class="label label-warning">
+                                                      {% else %}
+                                                      <span class="label label-danger">
+                                                      {% endif %}
+                                                      {{producto.subCategoria.nombre}}
+                                                      </span>
+                                                  </div>
+                                              </div>
+                                              <div class="tile-content tile-content-condensed-bottom text-center"style="background-color:#edeff0;">
+                                                  <span class="tile-subtitle">{{producto.valor}}</span>
+                                                  <h5 class="tile-title" style="color:{{empresa.colorPrimario}};">{{producto.nombre}}</h5>
+                                                  <p>{{producto.descripcion}}</p>
+                                                  <a href="{{ path('producto_show', { 'id': producto.id }) }}" class="btn btn-warning btn-xs">ver</a>
+                                              </div>
+                                          </div>
+                                        </div>
+                                      {% endfor %}
+                                  </div>
+                            </div> 
+                          </div>
+                    </div>
+                    <!-- END BLOCK -->
+                </div>
+            </div>
+            <div class="tab-pane" id="pills-6">
+              <div class="col-md-12">
+                    <!-- BLOCK -->
+                    <div class="block block-condensed">
+                        <!-- HEADING -->
+                        <div class="app-heading app-heading-small">
+                            <div class="title">
+                                <h2>Banner Publiciarios</h2>
+                                <p>Creacion de promociones y descuentos en tus productos</p>
+                            </div>
+                            
+                            <div class="heading-elements">
+                                <a href="{{ path('banerpublicidad_new', { 'id': empresa.id }) }}" class="btn btn-default btn-icon"><span class="fa fa-plus"></span></a>
+                            </div>                
+                        </div>
+                        <!-- END HEADING -->
+                          <div class="block-content">
+                              <div class="container">
+                                <div class="row grid">
+                                  {% for baner in empresa.banersPublicidad %}
+                                        <div class="col-md-3">
+                                          <div class="tile-basic"> 
+                                              <div class="tile-image">
+                                                  <a href="#" class="tile-image tile-image-padding tile-image-hover-grayscale preview" data-preview-image="{{asset('uploads/banerpublicidad/'~ baner.url)}}" data-preview-size="modal-lg">
+                                                      <img src="{{asset('uploads/banerpublicidad/'~ baner.url)}}" alt="">
+                                                  </a> 
+                                                  <div class="tile-image-container text-right">
+                                                      <span class="label label-warning">
+                                                      {{baner.nombre}}
+                                                      </span>
+                                                  </div>
+                                              </div>
+                                              <div class="tile-content tile-content-condensed-bottom text-center"style="background-color:#edeff0;">
+                                                  <p>{{baner.slogan}}</p>
+                                                  <a href="{{ path('banerpublicidad_show', { 'id': baner.id }) }}" class="btn btn-warning btn-xs">ver</a>
+                                              </div>
+                                          </div>
+                                        </div>
+                                      {% endfor %}  
+                                </div>
+                          </div> 
+                        </div>
+                    </div>
+                    <!-- END BLOCK -->
+                </div> 
+            </div>
+        </div>
+    </div>                                    
+
+</div>
+<!-- MODAL PREVIEW -->
+<div class="modal fade" id="preview" tabindex="-1" role="dialog">
+    <div class="modal-dialog">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true" class="icon-cross"></span></button>
+        
+        <div class="modal-content">
+            <div class="modal-body padding-5"></div>
+        </div>
+    </div>            
+</div>
+<!-- END MODAL PREVIEW -->
+
 {% endblock %}
 
 {% block stylesheets %}
 {{parent()}}
+<script>
+      function initMap() {
+        var uluru = {lat: {{empresa.lat}}, lng: {{empresa.lng}}};
+        var map = new google.maps.Map(document.getElementById('map'), {
+          zoom: 15,
+          center: uluru
+        });
+        var marker = new google.maps.Marker({
+          position: uluru,
+          map: map
+        });
+      }
+    </script>
+    <script async defer
+    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCCW6xc8DjJ-oE2QgQqg3JNX1bkD7DngOQ&callback=initMap">
+    </script>
+  <script>(function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0];
+  if (d.getElementById(id)) return;
+  js = d.createElement(s); js.id = id;
+  js.src = "//connect.facebook.net/es_ES/sdk.js#xfbml=1&version=v2.9";
+  fjs.parentNode.insertBefore(js, fjs);
+}(document, 'script', 'facebook-jssdk'));</script>
+
 
 {% endblock %}

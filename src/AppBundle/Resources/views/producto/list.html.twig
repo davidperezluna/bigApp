@@ -1,0 +1,64 @@
+{# total items count #}
+{% extends 'base.html.twig' %}
+{% block body %}
+<div class="col-md-12">
+	<!-- BLOCK -->
+	<div class="block block-condensed">
+	    <!-- HEADING -->
+	    <div class="app-heading app-heading-small">
+	        <div class="title">
+	            <h2>Productos</h2>
+	            <div class="count">
+				    Cantidad <label class="label label-success"> {{ pagination.getTotalItemCount }}</label>
+				</div>
+	        </div>
+	    </div> 
+	    <!-- END HEADING -->
+	      <div class="block-content">
+	        <div class="container">
+	              <div class="row grid">
+	                  {% for producto in pagination %}
+	                    <div class="col-md-3">
+	                      <div class="tile-basic">
+	                          <div class="tile-image">
+	                            {% for imagen in producto.imagenes %}
+	                            {% if loop.last %}
+	                              <a href="#" class="tile-image tile-image-padding tile-image-hover-grayscale preview" data-preview-image="{{asset('uploads/producto/'~ imagen.imagen)}}" data-preview-size="modal-lg">
+	                                  <img src="{{asset('uploads/producto/'~ imagen.imagen)}}" alt="">
+	                              </a>
+	                              {% endif %}
+	                              {% endfor %}
+	                              <div class="tile-image-container text-right">
+	                                  {% if producto.subCategoria.id == 1 %}
+	                                  <span class="label label-success">
+	                                  {% elseif producto.subCategoria.id == 2 %}
+	                                  <span class="label label-warning">
+	                                  {% else %}
+	                                  <span class="label label-danger">
+	                                  {% endif %}
+	                                  {{producto.subCategoria.nombre}}
+	                                  </span>
+	                              </div>
+	                          </div>
+	                          <div class="tile-content tile-content-condensed-bottom text-center"style="background-color:#edeff0;">
+	                              <span class="tile-subtitle">{{producto.valor}}</span>
+	                              <h5 class="tile-title" style="color:{{producto.empresa.colorPrimario}};">{{producto.nombre}}</h5>
+	                              <p>{{producto.descripcion}}</p>
+	                              <a href="{{ path('producto_show', { 'id': producto.id }) }}" class="btn btn-warning btn-xs">ver</a>
+	                          </div>
+	                      </div>
+	                    </div>
+	                  {% endfor %}
+	              </div>
+	        </div> 
+	      </div>
+	      	<div class=" container navigation">
+			    {{ knp_pagination_render(pagination) }}
+			</div>
+	</div>
+	<!-- END BLOCK -->
+
+</div>
+
+
+{% endblock %}

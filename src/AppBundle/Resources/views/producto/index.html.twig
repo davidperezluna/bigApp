@@ -1,0 +1,53 @@
+{% extends 'base.html.twig' %}
+{% block body %}
+<div class="panel panel-default">
+    <div class="panel-heading">
+        <h3 class="panel-title"><span class="icon-briefcase"></span>Lista de Empresas</h3>                                        
+    </div>
+    <div class="panel-body">                                    
+          <div class="table-responsive">
+                <table class="table table-bordered no-margin-bottom" id="datatable">
+                     <thead>
+                        <tr>
+                            <th>Referencia</th>
+                            <th>Nombre</th>
+                            <th>Descripcion</th>
+                            <th>Valor</th>
+                            <th>Activo</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    {% for producto in productos %}
+                      <tr>
+                            <td>{{ producto.referencia }}</td>
+                            <td>{{ producto.nombre }}</td>
+                            <td>{{ producto.descripcion }}</td>
+                            <td>{{ producto.valor }}</td>
+                          <td>{% if producto.activo == 1 %}<label class="label label-success">Visible</label>{% else %}<label class="label label-warning">No Visible</label>{% endif %}</td>
+                          <td>
+                            <div class="col-md-9">
+                              <a class="btn btn-warning btn-xs" href="{{ path('producto_show', { 'id': producto.id }) }}">Ver</a>
+                              <a class="btn btn-warning btn-xs" href="{{ path('producto_edit', { 'id': producto.id }) }}">editar</a>
+                            </div>
+                          </td>
+                      </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>                            
+    </div>
+</div>
+{% endblock %}
+{% block javascripts %}
+{{parent()}}
+    <script type="text/javascript">
+      $(document).ready(function() {
+          $('#datatable').DataTable();
+      } );
+    </script>
+{% endblock %}
+
+
+
+

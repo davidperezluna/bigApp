@@ -57,7 +57,7 @@ class EmpresaController extends Controller
 
             $fotoLogo = $empresa->getFotoLogo();
             $fotoPortada = $empresa->getFotoPortada();
-
+ 
             if( $fotoLogo->getSize() > 8000000 ) {
               $this->addFlash(
                   'notice',
@@ -72,20 +72,20 @@ class EmpresaController extends Controller
               );
              return $this->redirectToRoute('empresa_new');
             }
-            if ($fotoLogo->guessExtension() != "jpg" and  $fotoLogo->guessExtension() != "png" and  $fotoLogo->guessExtension() != "jpeg") {
-              $this->addFlash(
-                  'notice',
-                  'solo se Admiten los Formatos jpg, jpeg y png!'
-              );
-              return $this->redirectToRoute('empresa_new');
-            }else{
-              $fotoLogoName = md5(uniqid()).$empresa->getNit().'.'.$fotoLogo->guessExtension();
-              $fotoLogo->move(
-                  $this->getParameter('logo_empresa_directory'),
-                  $fotoLogoName
-              );
-              $empresa->setFotoLogo($fotoLogoName);
-            }
+              if ($fotoLogo->guessExtension() != "jpg" and  $fotoLogo->guessExtension() != "png" and  $fotoLogo->guessExtension() != "jpeg") {
+                $this->addFlash(
+                    'notice',
+                    'solo se Admiten los Formatos jpg, jpeg y png!'
+                );
+                return $this->redirectToRoute('empresa_new');
+              }else{
+                $fotoLogoName = md5(uniqid()).$empresa->getNit().'.'.$fotoLogo->guessExtension();
+                $fotoLogo->move(
+                    $this->getParameter('logo_empresa_directory'),
+                    $fotoLogoName
+                );
+                $empresa->setFotoLogo($fotoLogoName);
+              }
 
             $fotoPortada = $empresa->getFotoPortada();
             if ($fotoPortada->guessExtension() != "jpg" and  $fotoPortada->guessExtension() != "png" and  $fotoPortada->guessExtension() != "jpeg") {

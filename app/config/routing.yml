@@ -1,3 +1,35 @@
+app_amigo:
+    resource: "@AppBundle/Controller/AmigoController.php"
+    type:     annotation
+
+app_comentario:
+    resource: "@AppBundle/Controller/ComentarioController.php"
+    type:     annotation
+
+app_publicacion:
+    resource: "@AppBundle/Controller/PublicacionController.php"
+    type:     annotation
+
+app_producto_promocion:
+    resource: "@AppBundle/Controller/productoPromocionController.php"
+    type:     annotation
+
+app_baner_publicidad:
+    resource: "@AppBundle/Controller/BanerPublicidadController.php"
+    type:     annotation
+
+app_producto_imagen:
+    resource: "@AppBundle/Controller/ProductoImagenController.php"
+    type:     annotation
+
+app_producto:
+    resource: "@AppBundle/Controller/ProductoController.php"
+    type:     annotation
+
+app_imagen_empresa:
+    resource: "@AppBundle/Controller/ImagenEmpresaController.php"
+    type:     annotation
+
 app_empresa:
     resource: "@AppBundle/Controller/EmpresaController.php"
     type:     annotation
