@@ -204,7 +204,7 @@ class EmpresaController extends Controller
             $empresa->setFotoLogo($fotoLogoName);
             $this->getDoctrine()->getManager()->flush();
 
-            return $this->redirectToRoute('empresa_show_paginacion', array('id' => $empresa->getId()));
+            return $this->redirectToRoute('empresa_show', array('id' => $empresa->getId()));
         }
 
         return $this->render('AppBundle:empresa:edit.html.twig', array(

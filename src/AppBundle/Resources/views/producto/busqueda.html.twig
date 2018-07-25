@@ -18,11 +18,11 @@
             </div>
 	        <div class="title col-md-6">
 	            <h2>Productos</h2>
-	            <div class="count">
-				    Cantidad <label class="label label-success"> {{ pagination.getTotalItemCount }}</label>
-				</div>
 	        </div>
-	    </div> 
+	    </div>
+	    <div id="map" class="col-md-12" style="height:400px;">
+
+        </div> 
 	    <!-- END HEADING -->
 	      <div class="block-content">
 	        <div class="container">
@@ -62,13 +62,57 @@
 	              </div>
 	        </div> 
 	      </div>
-	      	<div class=" container navigation">
-			    {{ knp_pagination_render(pagination) }}
-			</div>
 	</div>
 	<!-- END BLOCK -->
 
 </div>
 
 
+{% endblock %}
+
+{% block javascripts %}
+
+<script>
+      function initMap() {
+        var pasto = {lat: 1.228489, lng: -77.285937};
+        var map = new google.maps.Map(document.getElementById('map'), {
+          zoom: 10,
+          center: pasto
+        });
+
+        {% for producto in pagination %}
+        var contentString{{producto.empresa.id}} = 
+        '<div class = "text-center">'+
+        '<a href="{{ path('empresa_show', { 'id': producto.empresa.id }) }}">{{producto.empresa.nombre}}</a>'+
+        '<p>{{producto.empresa.descripcion}}</p>'
+    	'</div>';
+    	var infowindow{{producto.empresa.id}} = new google.maps.InfoWindow({
+          content: contentString{{producto.empresa.id}}
+        });
+        var image = {
+	      url: '{{asset('uploads/empresa/fotosLogo/'~producto.empresa.fotoLogo)}}',
+	        // This marker is 20 pixels wide by 32 pixels high.
+	      size: new google.maps.Size(90, 90),
+	      origin: new google.maps.Point(0, 0),
+	      anchor: new google.maps.Point(17, 34),
+	      scaledSize: new google.maps.Size(40, 40)
+	      };
+
+        var marker{{producto.id}} = new google.maps.Marker({
+		    position: {lat: {{producto.empresa.lat}}, lng: {{producto.empresa.lng}} },
+		    map: map,
+		    title: 'Hello World!',
+		    icon:image
+		  });
+
+	    marker{{producto.id}}.addListener('click', function() {
+          infowindow{{producto.empresa.id}}.open(map, marker{{producto.id}});
+        });
+        {% endfor %}
+
+      }
+    </script>     
+  <script async defer
+    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAufs3m98ovPKTMtcRUXbAqQ0H1DpEUseQ&callback=initMap">
+    </script>    
 {% endblock %}

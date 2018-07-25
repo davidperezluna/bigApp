@@ -57,6 +57,27 @@ class ProductoController extends Controller
     }
 
     /**
+     * Lists all producto entities.
+     *
+     * @Route("/busqueda", name="productos_busqueda")
+     * @Method("POST")
+     */
+    public function busqeudaAction(Request $request)
+    {
+
+        
+        $busqueda = $request->request->get("stringBusqueda");
+
+        $em = $this->get('doctrine.orm.entity_manager');
+        $productos = $em->getRepository('AppBundle:Producto')->findProductosPorNombre($busqueda);
+
+        // parameters to template
+        return $this->render('AppBundle:producto:busqueda.html.twig', array(
+            'pagination' => $productos,
+        ));
+    }
+
+    /**
      * Creates a new producto entity.
      *
      * @Route("/new/{id}", name="producto_new")
