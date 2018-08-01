@@ -42,6 +42,29 @@ class EmpresaController extends Controller
     }
 
     /**
+     * Lists all empresas entities.
+     *
+     * @Route("/list", name="empresa_list")
+     * @Method("GET")
+     */
+    public function listAction(Request $request)
+    {
+        $em    = $this->get('doctrine.orm.entity_manager');
+        $dql   = "SELECT e FROM AppBundle:Empresa e";
+        $query = $em->createQuery($dql);
+
+        $paginator  = $this->get('knp_paginator');
+        $pagination = $paginator->paginate(
+            $query, /* query NOT result */
+            $request->query->getInt('page', 1)/*page number*/,
+            4/*limit per page*/
+        );
+
+        // parameters to template
+        return $this->render('AppBundle:empresa:list.html.twig', array('pagination' => $pagination));
+    }
+
+    /**
      * Creates a new empresa entity.
      *
      * @Route("/new", name="empresa_new")

@@ -34,7 +34,7 @@
 	                            {% for imagen in producto.imagenes %}
 	                            {% if loop.last %}
 	                              <a href="#" class="tile-image tile-image-padding tile-image-hover-grayscale preview" data-preview-image="{{asset('uploads/producto/'~ imagen.imagen)}}" data-preview-size="modal-lg">
-	                                  <img src="{{asset('uploads/producto/'~ imagen.imagen)}}" alt="">
+	                                  <img src="{{imagen.imagen}}" alt="">
 	                              </a>
 	                              {% endif %}
 	                              {% endfor %}

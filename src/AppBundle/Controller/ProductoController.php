@@ -91,12 +91,16 @@ class ProductoController extends Controller
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+
+            $dir = $this->get('kernel')->getRootDir().'/../web/uploads/producto/';
+            
             $producto->setActivo(1);
             $producto->setEmpresa($empresa);
             $em = $this->getDoctrine()->getManager();
             $em->persist($producto);
             $productoImagen->setProducto($producto);
             $productoImagen->setImagen("default.jpg");
+            $productoImagen->setImagen($dir."default.jpg");
             $em->persist($productoImagen);
             $em->flush();
 

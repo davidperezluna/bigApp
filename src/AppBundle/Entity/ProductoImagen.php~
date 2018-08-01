@@ -96,28 +96,4 @@ class ProductoImagen
     {
         return $this->producto;
     }
-
-    /**
-     * Set urlImagen
-     *
-     * @param string $urlImagen
-     *
-     * @return ProductoImagen
-     */
-    public function setUrlImagen($urlImagen)
-    {
-        $this->urlImagen = $urlImagen;
-
-        return $this;
-    }
-
-    /**
-     * Get urlImagen
-     *
-     * @return string
-     */
-    public function getUrlImagen()
-    {
-        return $this->urlImagen;
-    }
 }
