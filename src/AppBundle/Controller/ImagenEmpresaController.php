@@ -68,6 +68,7 @@ class ImagenEmpresaController extends Controller
                   $urlImagenName
               );
               $imagenEmpresa->setUrlImagen($urlImagenName);
+              $imagenEmpresa->setUrlImagenEmpresa($this->getParameter('imagen_empresa_directory').$urlImagenName);
             }
 
             $imagenEmpresa->setEmpresa($empresa);

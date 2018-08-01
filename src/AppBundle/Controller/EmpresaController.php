@@ -108,6 +108,7 @@ class EmpresaController extends Controller
                     $fotoLogoName
                 );
                 $empresa->setFotoLogo($fotoLogoName);
+                $empresa->setUrlLogo($this->getParameter('logo_empresa_directory').$fotoLogoName);
               }
 
             $fotoPortada = $empresa->getFotoPortada();
@@ -125,8 +126,8 @@ class EmpresaController extends Controller
                     $fotoPortadaName
                 );
                 $empresa->setFotoPortada($fotoPortadaName);
+                $empresa->setUrlPortada($this->getParameter('portada_empresa_directory').$fotoPortadaName);
             }
-            $empresa->setFotoPortadaCov("");
             $em = $this->getDoctrine()->getManager();
             $em->persist($empresa);
             $em->flush($empresa);

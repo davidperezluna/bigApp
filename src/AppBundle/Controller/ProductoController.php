@@ -96,11 +96,13 @@ class ProductoController extends Controller
             
             $producto->setActivo(1);
             $producto->setEmpresa($empresa);
+            $fecha = new \DateTime("now");
+            $producto->setCreatedAt($fecha);
             $em = $this->getDoctrine()->getManager();
             $em->persist($producto);
             $productoImagen->setProducto($producto);
             $productoImagen->setImagen("default.jpg");
-            $productoImagen->setImagen($dir."default.jpg");
+            $productoImagen->setUrlImagen($dir."default.jpg");
             $em->persist($productoImagen);
             $em->flush();
 
