@@ -24,13 +24,12 @@ class CategoriaController extends FOSRestController
     {
     	
     	$em = $this->getDoctrine()->getManager();
-      $categorias = $em->getRepository('AppBundle:Categoria')->findAll();
-
+      $categorias = $em->getRepository('AppBundle:EmpresaSubCategoria')->findAll();
       foreach ($categorias as $key => $c) {
        $categoriasArray[$key] = array
         (
         'id' => $c->getId(),
-        'nombre' => $c->getNOmbre(), 
+        'nombre' => $c->getNombre(), 
         );
       }
 

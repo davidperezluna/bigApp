@@ -55,10 +55,10 @@ class UsuarioController extends FOSRestController
         $passwordd =$params->password;
         $password = $encoder->encodePassword($passwordd, $user->getSalt());
 
-		$user->setPassword($password);
-		$user->setRolePersona($role);
+        $user->setPassword($password);
+        $user->setRolePersona($role);
 	
-    	$em->persist($user);
+    	  $em->persist($user);
         $em->flush();
 
        	return $response = array(
