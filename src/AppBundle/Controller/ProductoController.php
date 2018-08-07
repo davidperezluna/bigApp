@@ -41,7 +41,12 @@ class ProductoController extends Controller
      */
     public function listAction(Request $request)
     {
+
         $em    = $this->get('doctrine.orm.entity_manager');
+        $municipios = $em->getRepository('AppBundle:Municipio')->findAll();
+        $categorias = $em->getRepository('AppBundle:EmpresaSubCategoria')->findAll();
+
+
         $dql   = "SELECT p FROM AppBundle:Producto p";
         $query = $em->createQuery($dql);
 
@@ -53,7 +58,11 @@ class ProductoController extends Controller
         );
 
         // parameters to template
-        return $this->render('AppBundle:producto:list.html.twig', array('pagination' => $pagination));
+        return $this->render('AppBundle:producto:list.html.twig', array(
+            'pagination' => $pagination,
+            'municipios' => $municipios,
+            'categorias' => $categorias
+        ));
     }
 
     /**
@@ -67,13 +76,20 @@ class ProductoController extends Controller
 
         
         $busqueda = $request->request->get("stringBusqueda");
-
+        $municipioId = $request->request->get("municipioId");
+        $categoriaId = $request->request->get("categoriaId");
+        
         $em = $this->get('doctrine.orm.entity_manager');
-        $productos = $em->getRepository('AppBundle:Producto')->findProductosPorNombre($busqueda);
+        $municipios = $em->getRepository('AppBundle:Municipio')->findAll();
+        $categorias = $em->getRepository('AppBundle:EmpresaSubCategoria')->findAll();
+
+        $productos = $em->getRepository('AppBundle:Producto')->findProductosPorNombreCategoriaMunicipio($busqueda,$municipioId,$categoriaId);
 
         // parameters to template
         return $this->render('AppBundle:producto:busqueda.html.twig', array(
             'pagination' => $productos,
+            'municipios' => $municipios,
+            'categorias' => $categorias
         ));
     }
 
