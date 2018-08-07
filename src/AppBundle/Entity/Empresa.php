@@ -81,9 +81,16 @@ class Empresa
     /**
      * @var string
      *
-     * @ORM\Column(name="fotoPortadaCov", type="string", length=255)
+     * @ORM\Column(name="urlLogo", type="string", length=255)
      */
-    private $fotoPortadaCov;
+    private $urlLogo;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="urlPortada", type="string", length=255)
+     */
+    private $urlPortada;
 
     /**
      * @var string
@@ -985,5 +992,53 @@ class Empresa
     public function getBanersPublicidad()
     {
         return $this->banersPublicidad;
+    }
+
+    /**
+     * Set urlLogo
+     *
+     * @param string $urlLogo
+     *
+     * @return Empresa
+     */
+    public function setUrlLogo($urlLogo)
+    {
+        $this->urlLogo = $urlLogo;
+
+        return $this;
+    }
+
+    /**
+     * Get urlLogo
+     *
+     * @return string
+     */
+    public function getUrlLogo()
+    {
+        return $this->urlLogo;
+    }
+
+    /**
+     * Set urlPortada
+     *
+     * @param string $urlPortada
+     *
+     * @return Empresa
+     */
+    public function setUrlPortada($urlPortada)
+    {
+        $this->urlPortada = $urlPortada;
+
+        return $this;
+    }
+
+    /**
+     * Get urlPortada
+     *
+     * @return string
+     */
+    public function getUrlPortada()
+    {
+        return $this->urlPortada;
     }
 }

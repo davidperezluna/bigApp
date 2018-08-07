@@ -41,7 +41,12 @@ class ProductoController extends Controller
      */
     public function listAction(Request $request)
     {
+
         $em    = $this->get('doctrine.orm.entity_manager');
+        $municipios = $em->getRepository('AppBundle:Municipio')->findAll();
+        $categorias = $em->getRepository('AppBundle:EmpresaSubCategoria')->findAll();
+
+
         $dql   = "SELECT p FROM AppBundle:Producto p";
         $query = $em->createQuery($dql);
 
@@ -53,7 +58,39 @@ class ProductoController extends Controller
         );
 
         // parameters to template
-        return $this->render('AppBundle:producto:list.html.twig', array('pagination' => $pagination));
+        return $this->render('AppBundle:producto:list.html.twig', array(
+            'pagination' => $pagination,
+            'municipios' => $municipios,
+            'categorias' => $categorias
+        ));
+    }
+
+    /**
+     * Lists all producto entities.
+     *
+     * @Route("/busqueda", name="productos_busqueda")
+     * @Method("POST")
+     */
+    public function busqeudaAction(Request $request)
+    {
+
+        
+        $busqueda = $request->request->get("stringBusqueda");
+        $municipioId = $request->request->get("municipioId");
+        $categoriaId = $request->request->get("categoriaId");
+        
+        $em = $this->get('doctrine.orm.entity_manager');
+        $municipios = $em->getRepository('AppBundle:Municipio')->findAll();
+        $categorias = $em->getRepository('AppBundle:EmpresaSubCategoria')->findAll();
+
+        $productos = $em->getRepository('AppBundle:Producto')->findProductosPorNombreCategoriaMunicipio($busqueda,$municipioId,$categoriaId);
+
+        // parameters to template
+        return $this->render('AppBundle:producto:busqueda.html.twig', array(
+            'pagination' => $productos,
+            'municipios' => $municipios,
+            'categorias' => $categorias
+        ));
     }
 
     /**
@@ -70,12 +107,18 @@ class ProductoController extends Controller
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+
+            $dir = $this->get('kernel')->getRootDir().'/../web/uploads/producto/';
+            
             $producto->setActivo(1);
             $producto->setEmpresa($empresa);
+            $fecha = new \DateTime("now");
+            $producto->setCreatedAt($fecha);
             $em = $this->getDoctrine()->getManager();
             $em->persist($producto);
             $productoImagen->setProducto($producto);
             $productoImagen->setImagen("default.jpg");
+            $productoImagen->setUrlImagen($dir."default.jpg");
             $em->persist($productoImagen);
             $em->flush();
 

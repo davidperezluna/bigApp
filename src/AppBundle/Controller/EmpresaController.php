@@ -42,6 +42,29 @@ class EmpresaController extends Controller
     }
 
     /**
+     * Lists all empresas entities.
+     *
+     * @Route("/list", name="empresa_list")
+     * @Method("GET")
+     */
+    public function listAction(Request $request)
+    {
+        $em    = $this->get('doctrine.orm.entity_manager');
+        $dql   = "SELECT e FROM AppBundle:Empresa e";
+        $query = $em->createQuery($dql);
+
+        $paginator  = $this->get('knp_paginator');
+        $pagination = $paginator->paginate(
+            $query, /* query NOT result */
+            $request->query->getInt('page', 1)/*page number*/,
+            4/*limit per page*/
+        );
+
+        // parameters to template
+        return $this->render('AppBundle:empresa:list.html.twig', array('pagination' => $pagination));
+    }
+
+    /**
      * Creates a new empresa entity.
      *
      * @Route("/new", name="empresa_new")
@@ -85,6 +108,7 @@ class EmpresaController extends Controller
                     $fotoLogoName
                 );
                 $empresa->setFotoLogo($fotoLogoName);
+                $empresa->setUrlLogo($this->getParameter('logo_empresa_directory').$fotoLogoName);
               }
 
             $fotoPortada = $empresa->getFotoPortada();
@@ -102,8 +126,8 @@ class EmpresaController extends Controller
                     $fotoPortadaName
                 );
                 $empresa->setFotoPortada($fotoPortadaName);
+                $empresa->setUrlPortada($this->getParameter('portada_empresa_directory').$fotoPortadaName);
             }
-            $empresa->setFotoPortadaCov("");
             $em = $this->getDoctrine()->getManager();
             $em->persist($empresa);
             $em->flush($empresa);
@@ -204,7 +228,7 @@ class EmpresaController extends Controller
             $empresa->setFotoLogo($fotoLogoName);
             $this->getDoctrine()->getManager()->flush();
 
-            return $this->redirectToRoute('empresa_show_paginacion', array('id' => $empresa->getId()));
+            return $this->redirectToRoute('empresa_show', array('id' => $empresa->getId()));
         }
 
         return $this->render('AppBundle:empresa:edit.html.twig', array(
@@ -464,4 +488,6 @@ class EmpresaController extends Controller
               );
 
           }
+
+        
 }

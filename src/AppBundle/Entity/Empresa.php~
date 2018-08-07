@@ -81,9 +81,16 @@ class Empresa
     /**
      * @var string
      *
-     * @ORM\Column(name="fotoPortadaCov", type="string", length=255)
+     * @ORM\Column(name="urlLogo", type="string", length=255)
      */
-    private $fotoPortadaCov;
+    private $urlLogo;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="urlPortada", type="string", length=255)
+     */
+    private $urlPortada;
 
     /**
      * @var string
@@ -951,5 +958,39 @@ class Empresa
     public function getUsuario()
     {
         return $this->usuario;
+    }
+
+    /**
+     * Add banersPublicidad
+     *
+     * @param \AppBundle\Entity\BanerPublicidad $banersPublicidad
+     *
+     * @return Empresa
+     */
+    public function addBanersPublicidad(\AppBundle\Entity\BanerPublicidad $banersPublicidad)
+    {
+        $this->banersPublicidad[] = $banersPublicidad;
+
+        return $this;
+    }
+
+    /**
+     * Remove banersPublicidad
+     *
+     * @param \AppBundle\Entity\BanerPublicidad $banersPublicidad
+     */
+    public function removeBanersPublicidad(\AppBundle\Entity\BanerPublicidad $banersPublicidad)
+    {
+        $this->banersPublicidad->removeElement($banersPublicidad);
+    }
+
+    /**
+     * Get banersPublicidad
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getBanersPublicidad()
+    {
+        return $this->banersPublicidad;
     }
 }

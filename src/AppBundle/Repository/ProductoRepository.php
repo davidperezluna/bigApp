@@ -47,4 +47,24 @@ class ProductoRepository extends EntityRepository
           $productos = $query->getResult();
           return $productos;
   }
+
+  public function findProductosPorNombreCategoriaMunicipio($nombre,$municipioId,$categoriaId)
+  {
+      
+      $query = $this->getEntityManager()
+          ->createQuery(
+              'SELECT p  FROM AppBundle:Producto p
+              JOIN p.empresa e
+              WHERE p.tags  LIKE :nombre
+              AND e.municipio = :municipio
+              AND p.subCategoria =:categoria'
+          )
+          ->setParameter('nombre', '%'.$nombre.'%')
+          ->setParameter('municipio', $municipioId)
+          ->setParameter('categoria', $categoriaId);
+          ;
+
+          $productos = $query->getResult();
+          return $productos;
+  }
 }

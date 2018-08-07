@@ -1,0 +1,61 @@
+{# total items count #}
+{% extends 'base.html.twig' %}
+{% block body %}
+<div class="col-md-12">
+	<!-- BLOCK -->
+	<div class="block block-condensed">
+	    <!-- HEADING -->
+	    <div class="app-heading app-heading-small">
+	    	<div class="col-md-6">
+	    		<form action="#" method="post">
+	                <div class="input-group">
+	                    <span class="input-group-btn">
+	                        <button class="btn btn-default" type="submit">Buscar!</button>
+	                    </span>
+	                    <input type="text" class="form-control" name="stringBusqueda" placeholder="Digite los parametros de busqueda...">
+	                </div>
+                </form>
+            </div>
+	        <div class="title col-md-6">
+	            <h2>Empresas</h2>
+	            <div class="count">
+				    Cantidad <label class="label label-success"> {{ pagination.getTotalItemCount }}</label>
+				</div>
+	        </div>
+	    </div> 
+	    <!-- END HEADING -->
+	      <div class="block-content">
+	        <div class="container">
+	              <div class="row grid">
+	                  {% for empresa in pagination %}
+	                    <div class="col-md-6">
+	                      <div class="tile-basic">
+	                          <div class="tile-image">
+	                              <a href="#" class="tile-image tile-image-padding tile-image-hover-grayscale preview" data-preview-image="{{asset('uploads/empresa/fotosLogo/'~ empresa.fotoLogo)}}" data-preview-size="modal-lg">
+	                                  <img src="{{asset('uploads/empresa/fotosPortada/'~ empresa.fotoPortada)}}" alt="">
+	                              </a>
+	                          </div>
+	                          <div class="tile-content tile-content-condensed-bottom text-center"style="background-color:#edeff0;">
+	                              
+	                              <h5 class="tile-title" style="color:{{empresa.colorPrimario}};">{{empresa.nombre}}</h5>
+	                              <p>{{empresa.descripcion}}</p>
+	                              <a href="{{ path('empresa_show', { 'id': empresa.id }) }}" class="btn btn-warning btn-xs">ver</a>
+	                              <a href="{{ path('empresa_show', { 'id': empresa.id }) }}" class="btn btn-warning btn-xs">ver</a>
+	                              
+	                          </div>
+	                      </div>
+	                    </div>
+	                  {% endfor %}
+	              </div>
+	        </div> 
+	      </div>
+	      	<div class=" container navigation">
+			    {{ knp_pagination_render(pagination) }}
+			</div>
+	</div>
+	<!-- END BLOCK -->
+
+</div>
+
+
+{% endblock %}

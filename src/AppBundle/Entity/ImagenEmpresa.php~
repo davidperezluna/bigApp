@@ -135,28 +135,4 @@ class ImagenEmpresa
    {
        $this->created = new \DateTime("now");
    }
-  
-    /**
-     * Set urlImagenEmpresa
-     *
-     * @param string $urlImagenEmpresa
-     *
-     * @return ImagenEmpresa
-     */
-    public function setUrlImagenEmpresa($urlImagenEmpresa)
-    {
-        $this->urlImagenEmpresa = $urlImagenEmpresa;
-
-        return $this;
-    }
-
-    /**
-     * Get urlImagenEmpresa
-     *
-     * @return string
-     */
-    public function getUrlImagenEmpresa()
-    {
-        return $this->urlImagenEmpresa;
-    }
-}
+  }

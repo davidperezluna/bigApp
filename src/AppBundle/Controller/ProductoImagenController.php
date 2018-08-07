@@ -78,6 +78,7 @@ class ProductoImagenController extends Controller
                   $urlImagenName
               );
               $productoImagen->setImagen($urlImagenName);
+              $productoImagen->setUrlImagen($this->getParameter('imagen_producto_directory').$urlImagenName);
               $productoImagen->setProducto($producto);
             }
 
