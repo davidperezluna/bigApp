@@ -66,10 +66,10 @@ class Producto
     private $activo;
 
     /**
-     * @ORM\ManyToOne(targetEntity="Empresa", inversedBy="productos")
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Empresa", inversedBy="productos")
      */
     protected $empresa;
-
+  
     /**
      * @ORM\ManyToOne(targetEntity="EmpresaSubCategoria", inversedBy="productos")
      */
@@ -175,28 +175,7 @@ class Producto
         return $this->descripcion;
     }
 
-    /**
-     * Set cantidad
-     *
-     * @param integer $cantidad
-     * @return Producto
-     */
-    public function setCantidad($cantidad)
-    {
-        $this->cantidad = $cantidad;
-
-        return $this;
-    }
-
-    /**
-     * Get cantidad
-     *
-     * @return integer
-     */
-    public function getCantidad()
-    {
-        return $this->cantidad;
-    }
+    
 
     /**
      * Set valor
@@ -382,7 +361,7 @@ class Producto
     
     public function getInfo()
     {
-        return $this->referencia +"-"+ $this->nombre;
+        return $this->referencia ."-". $this->nombre;
     }
 
 

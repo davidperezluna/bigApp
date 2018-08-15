@@ -12,22 +12,93 @@ use Doctrine\ORM\EntityRepository;
  */
 class ProductoRepository extends EntityRepository
 {
-  public function findProductosPorNombre($nombre)
+  public function findProductosPorNombre($nombre,$categoriaId,$municipioId)
   {
-      $query = $this->getEntityManager()
-          ->createQuery(
-              'SELECT p , e  FROM AppBundle:Producto p
+
+      if ($nombre!='') {
+            $query = $this->getEntityManager()
+            ->createQuery(
+                'SELECT p  FROM AppBundle:Producto p
+                WHERE p.tags  LIKE :nombre'
+            )
+            ->setParameter('nombre', '%'.$nombre.'%');
+        }
+        if ($categoriaId!='') {
+            $query = $this->getEntityManager()
+            ->createQuery(
+                'SELECT p  FROM AppBundle:Producto p
+                JOIN p.empresa e
+                WHERE p.subCategoria =:categoria'
+            )
+            ->setParameter('categoria', $categoriaId);
+        }
+        if ($municipioId!='') {
+            $query = $this->getEntityManager()
+            ->createQuery(
+                'SELECT p  FROM AppBundle:Producto p
+                JOIN p.empresa e
+                WHERE e.municipio = :municipio'
+            )
+            ->setParameter('municipio', $municipioId);
+        }
+        if (($nombre!='') && ($municipioId !='')) {
+            $query = $this->getEntityManager()
+            ->createQuery(
+              'SELECT p  FROM AppBundle:Producto p
               JOIN p.empresa e
               WHERE p.tags  LIKE :nombre
-              AND p.activo = 1
-              AND e.activo = 1
-              ORDER BY  e.posicionamiento ASC
-              '
+              AND e.municipio = :municipio'
           )
-          ->setParameter('nombre', '%'.$nombre.'%');
-          $productos = $query->getResult();
-
-          return $productos;
+          ->setParameter('nombre', '%'.$nombre.'%')
+          ->setParameter('municipio', $municipioId);
+        }
+        if (($nombre!='') && ($categoriaId !='')) {
+            
+            $query = $this->getEntityManager()
+          ->createQuery(
+              'SELECT p  FROM AppBundle:Producto p
+              JOIN p.empresa e
+              WHERE p.tags  LIKE :nombre
+              AND p.subCategoria =:categoria'
+          )
+          ->setParameter('nombre', '%'.$nombre.'%')
+          ->setParameter('categoria', $categoriaId);
+        }
+        if (($municipioId !='') && ($categoriaId !='')) {
+            
+            $query = $this->getEntityManager()
+          ->createQuery(
+              'SELECT p  FROM AppBundle:Producto p
+              JOIN p.empresa e
+              WHERE e.municipio = :municipio
+              AND p.subCategoria =:categoria'
+          )
+          ->setParameter('municipio', $municipioId)
+          ->setParameter('categoria', $categoriaId);
+        }
+        if (($municipioId !='') && ($categoriaId !='') && ($nombre!='')) {
+            
+            $query = $this->getEntityManager()
+            ->createQuery(
+                'SELECT p  FROM AppBundle:Producto p
+                JOIN p.empresa e
+                WHERE p.tags  LIKE :nombre
+                AND e.municipio = :municipio
+                AND p.subCategoria =:categoria'
+            )
+            ->setParameter('nombre', '%'.$nombre.'%')
+            ->setParameter('municipio', $municipioId)
+            ->setParameter('categoria', $categoriaId);
+        }
+        if (($municipioId =='') && ($categoriaId =='') && ($nombre=='')) {
+            
+            $query = $this->getEntityManager()
+            ->createQuery(
+                'SELECT p  FROM AppBundle:Producto p'
+            );
+        }
+        $productos = $query->getResult();
+        return $productos;
 
   }
 

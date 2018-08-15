@@ -2,7 +2,7 @@
 
 namespace AppBundle\ControllerApi;
 
-use AppBundle\Entity\Categoria;
+use AppBundle\Entity\Municipio;
 use FOS\RestBundle\Controller\FOSRestController;
 use FOS\RestBundle\Controller\Annotations\Route;
 use FOS\RestBundle\Controller\Annotations\Get;
@@ -12,30 +12,30 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
 /**
- * Categoria controller.
+ * Municipio controller.
  *
  */
-class CategoriaController extends FOSRestController
+class MunicipioController extends FOSRestController
 {
     /**
-     * @Rest\Get("/categoria/index")
+     * @Rest\Get("/municipio/index")
      */
     public function getIndexAction()
     {
     	
     	$em = $this->getDoctrine()->getManager();
-      $categorias = $em->getRepository('AppBundle:EmpresaSubCategoria')->findAll();
-      foreach ($categorias as $key => $c) {
-       $categoriasArray[$key] = array
+      $municipios = $em->getRepository('AppBundle:Municipio')->findAll();
+      foreach ($municipios as $key => $m) {
+       $municipiosArray[$key] = array
         (
-        'id' => $c->getId(),
-        'nombre' => $c->getNombre(), 
+        'id' => $m->getId(),
+        'nombre' => $m->getNombre(), 
         );
       }
 
       	return $response = array(
       		'status' => "success",
-      		'categorias' => $categoriasArray
+      		'municipios' => $municipiosArray
       	);
     }
 

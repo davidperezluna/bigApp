@@ -5085,7 +5085,7 @@
             d : 'un día',
             dd : '%d días',
             M : 'un mes',
-            MM : '%d meses',
+            MM : '%d meses', 
             y : 'un año',
             yy : '%d años'
         },
