@@ -1,3 +1,7 @@
+app_subasta:
+    resource: "@AppBundle/Controller/SubastaController.php"
+    type:     annotation
+
 app_amigo:
     resource: "@AppBundle/Controller/AmigoController.php"
     type:     annotation

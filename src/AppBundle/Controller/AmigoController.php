@@ -26,7 +26,7 @@ class AmigoController extends Controller
 
         $amigos = $em->getRepository('AppBundle:Amigo')->findAll();
 
-        return $this->render('amigo/index.html.twig', array(
+        return $this->render('AppBundle:amigo:index.html.twig', array(
             'amigos' => $amigos,
         ));
     }
@@ -63,7 +63,7 @@ class AmigoController extends Controller
     {
         $deleteForm = $this->createDeleteForm($amigo);
 
-        return $this->render('amigo/show.html.twig', array(
+        return $this->render('AppBundle:amigo:show.html.twig', array(
             'amigo' => $amigo,
             'delete_form' => $deleteForm->createView(),
         ));
@@ -87,7 +87,7 @@ class AmigoController extends Controller
             return $this->redirectToRoute('amigo_edit', array('id' => $amigo->getId()));
         }
 
-        return $this->render('amigo/edit.html.twig', array(
+        return $this->render('AppBundle:amigo:edit.html.twig', array(
             'amigo' => $amigo,
             'edit_form' => $editForm->createView(),
             'delete_form' => $deleteForm->createView(),

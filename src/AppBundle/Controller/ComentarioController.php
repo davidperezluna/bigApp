@@ -27,7 +27,7 @@ class ComentarioController extends Controller
 
         $comentarios = $em->getRepository('AppBundle:Comentario')->findAll();
 
-        return $this->render('comentario/index.html.twig', array(
+        return $this->render('AppBundle:comentario:index.html.twig', array(
             'comentarios' => $comentarios,
         ));
     }
@@ -68,7 +68,7 @@ class ComentarioController extends Controller
     {
         $deleteForm = $this->createDeleteForm($comentario);
 
-        return $this->render('comentario/show.html.twig', array(
+        return $this->render('AppBundle:comentario:show.html.twig', array(
             'comentario' => $comentario,
             'delete_form' => $deleteForm->createView(),
         ));
@@ -92,7 +92,7 @@ class ComentarioController extends Controller
             return $this->redirectToRoute('comentario_edit', array('id' => $comentario->getId()));
         }
 
-        return $this->render('comentario/edit.html.twig', array(
+        return $this->render('AppBundle:comentario:edit.html.twig', array(
             'comentario' => $comentario,
             'edit_form' => $editForm->createView(),
             'delete_form' => $deleteForm->createView(),
