@@ -61,7 +61,7 @@ class ProductoController extends FOSRestController
       $em = $this->getDoctrine()->getManager();
       $data = $request->getContent();
       $params = json_decode($data);
-      $productos = $em->getRepository('AppBundle:Producto')->findProductosPorNombre($params->tags);
+      $productos = $em->getRepository('AppBundle:Producto')->findProductosPorNombre($params->tags,$params->categoriaId,$params->municipioId);
       if ($productos != null) {
         foreach ($productos as $key => $p) {
           foreach ($p->getImagenes() as $keyImegen => $imagen) {
@@ -98,7 +98,7 @@ class ProductoController extends FOSRestController
       $em = $this->getDoctrine()->getManager();
       $data = $request->getContent();
       $params = json_decode($data);
-      $productos = $em->getRepository('AppBundle:Producto')->findProductosPorNombre($params->tags);
+      $productos = $em->getRepository('AppBundle:Producto')->findProductosPorNombre($params->tags,$params->categoriaId,$params->municipioId);
       if ($productos != null) {
         foreach ($productos as $key => $p) {
           foreach ($p->getImagenes() as $keyImegen => $imagen) {
