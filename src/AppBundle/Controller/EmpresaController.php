@@ -52,6 +52,7 @@ class EmpresaController extends Controller
         $em    = $this->get('doctrine.orm.entity_manager');
         $dql   = "SELECT e FROM AppBundle:Empresa e";
         $query = $em->createQuery($dql);
+        $municipios = $em->getRepository('AppBundle:Municipio')->findAll();
 
         $paginator  = $this->get('knp_paginator');
         $pagination = $paginator->paginate(
@@ -61,7 +62,40 @@ class EmpresaController extends Controller
         );
 
         // parameters to template
-        return $this->render('AppBundle:empresa:list.html.twig', array('pagination' => $pagination));
+        return $this->render('AppBundle:empresa:list.html.twig', array(
+            'pagination' => $pagination,
+            'municipios' => $municipios
+        ));
+    }
+
+    /**
+     * Lists all producto entities.
+     *
+     * @Route("/busqueda", name="empresa_busqueda")
+     * @Method("POST")
+     */
+    public function buscarEmpresaAction(Request $request)
+    {
+
+        
+        $busqueda = $request->request->get("stringBusqueda");
+        $municipioId = $request->request->get("municipioId");
+
+        
+        if ($municipioId == null) {
+           $municipioId = 1;
+        }
+        $em = $this->get('doctrine.orm.entity_manager');
+        $municipios = $em->getRepository('AppBundle:Municipio')->findAll();
+
+        $empresas = $em->getRepository('AppBundle:Empresa')->finEmpresaNombre($busqueda,$municipioId);
+
+
+        // parameters to template
+        return $this->render('AppBundle:empresa:busqueda.html.twig', array(
+            'municipios' => $municipios,
+            'pagination' => $empresas
+        ));
     }
 
     /**

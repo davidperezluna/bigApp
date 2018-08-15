@@ -28,6 +28,7 @@
             <a href="{{ path('producto_delete', { 'id': producto.id }) }}" class="btn btn-danger btn-xs"><span class="icon-cross"></span></a>
             <a href="{{ path('productoimagen_new', { 'id': producto.id }) }}" class="btn btn-info btn-xs"><span class="icon-picture"></span></a>
             <a href="{{ path('empresa_show', { 'id': producto.empresa.id }) }}" class="btn btn-success btn-xs"><span class="icon-undo"></span></a>
+            <a href="{{ path('empresa_show_location', { 'id': producto.empresa.id }) }}" class="btn btn-primary btn-xs"><span class="icon-map-marker"></span></a>
         </div>
     </div>
 </div>

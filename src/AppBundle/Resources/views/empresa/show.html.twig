@@ -26,6 +26,7 @@
                             <a href="#" style="color:{{empresa.colorPrimario}}">{{empresa.nombre}}</a>
                             <span style="color:{{empresa.colorPrimario}}">{{empresa.correo}}</span>
                             <span class="label label-success" style="background-color:{{empresa.colorPrimario}} !important">Visitas: {{empresa.visitas}}</span>
+                            
                         </div>
                     </div>                        
                 </div>
@@ -48,6 +49,8 @@
                       <div class="list-group-item"><span style="color:{{empresa.colorPrimario}}" class="icon-smartphone"></span> {{empresa.celular}}</div>
                       <div class="list-group-item"><span style="color:{{empresa.colorPrimario}}" class="icon-flag"></span> {{empresa.nit}}</div>
                       <div class="list-group-item"><span style="color:{{empresa.colorPrimario}}" class="icon-link"></span> {{empresa.paginaWeb}}</div>
+                      <div class="list-group-item"><span style="color:{{empresa.colorPrimario}}" class="icon-map-marker"></span> <a target="_blank" href="{{ path('empresa_show_location', { 'id': empresa.id }) }}">Navegar</a></div>
+                      
                   </div>
                 </div>
                 <div class="col-md-10">

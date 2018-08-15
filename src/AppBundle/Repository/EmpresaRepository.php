@@ -12,4 +12,20 @@ use Doctrine\ORM\EntityRepository;
  */
 class EmpresaRepository extends EntityRepository
 {
+    public function finEmpresaNombre($nombre,$municipioId)
+  {
+      
+      $query = $this->getEntityManager()
+          ->createQuery(
+              'SELECT e  FROM AppBundle:Empresa e
+              WHERE e.nombre  LIKE :nombre
+              AND e.municipio = :municipio'
+          )
+          ->setParameter('nombre', '%'.$nombre.'%')
+          ->setParameter('municipio', $municipioId)
+          ;
+
+          $productos = $query->getResult();
+          return $productos;
+  }
 }
