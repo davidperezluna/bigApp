@@ -184,14 +184,16 @@ class EmpresaController extends Controller
     public function showAction(Request $request,Empresa $empresa)
     {
       $em = $this->getDoctrine()->getManager();
+      $subastas = $em->getRepository('AppBundle:Subasta')->findSubastaPorEmpresa($empresa->getId());
       $vistas = $empresa->getVisitas() + 1;
       $empresa->setVisitas($vistas);
       $em->flush($empresa);
-
-
      
       // parameters to template
-      return $this->render('AppBundle:empresa:show.html.twig', array('empresa'=>$empresa));
+      return $this->render('AppBundle:empresa:show.html.twig', array(
+          'empresa'=>$empresa,
+          'subastas'=>$subastas
+        ));
     }
 
     /**

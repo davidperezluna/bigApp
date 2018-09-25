@@ -46,9 +46,9 @@ class Subasta
     protected $categoria;
 
      /**
-     * @ORM\ManyToOne(targetEntity="Empresa", inversedBy="subastas")
+     * @ORM\ManyToOne(targetEntity="Producto", inversedBy="subastas")
      */
-    protected $empresa;
+    protected $producto;
 
      /**
      * @ORM\ManyToOne(targetEntity="Municipio", inversedBy="subastas")
@@ -162,29 +162,7 @@ class Subasta
         return $this->usuario;
     }
 
-    /**
-     * Set empresa
-     *
-     * @param \AppBundle\Entity\Empresa $empresa
-     *
-     * @return Subasta
-     */
-    public function setEmpresa(\AppBundle\Entity\Empresa $empresa = null)
-    {
-        $this->empresa = $empresa;
-
-        return $this;
-    }
-
-    /**
-     * Get empresa
-     *
-     * @return \AppBundle\Entity\Empresa
-     */
-    public function getEmpresa()
-    {
-        return $this->empresa;
-    }
+    
 
     /**
      * Set municipio
@@ -208,5 +186,29 @@ class Subasta
     public function getMunicipio()
     {
         return $this->municipio;
+    }
+
+    /**
+     * Set producto
+     *
+     * @param \AppBundle\Entity\Producto $producto
+     *
+     * @return Subasta
+     */
+    public function setProducto(\AppBundle\Entity\Producto $producto = null)
+    {
+        $this->producto = $producto;
+
+        return $this;
+    }
+
+    /**
+     * Get producto
+     *
+     * @return \AppBundle\Entity\Producto
+     */
+    public function getProducto()
+    {
+        return $this->producto;
     }
 }

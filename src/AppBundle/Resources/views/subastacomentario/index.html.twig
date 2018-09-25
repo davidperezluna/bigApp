@@ -1,0 +1,41 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <h1>Subastacomentarios list</h1>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Fecha</th>
+                <th>Contenido</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for subastaComentario in subastaComentarios %}
+            <tr>
+                <td><a href="{{ path('subastacomentario_show', { 'id': subastaComentario.id }) }}">{{ subastaComentario.id }}</a></td>
+                <td>{% if subastaComentario.fecha %}{{ subastaComentario.fecha|date('Y-m-d H:i:s') }}{% endif %}</td>
+                <td>{{ subastaComentario.contenido }}</td>
+                <td>
+                    <ul>
+                        <li>
+                            <a href="{{ path('subastacomentario_show', { 'id': subastaComentario.id }) }}">show</a>
+                        </li>
+                        <li>
+                            <a href="{{ path('subastacomentario_edit', { 'id': subastaComentario.id }) }}">edit</a>
+                        </li>
+                    </ul>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <ul>
+        <li>
+            <a href="{{ path('subastacomentario_new') }}">Create a new subastaComentario</a>
+        </li>
+    </ul>
+{% endblock %}

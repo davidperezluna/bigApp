@@ -1,0 +1,43 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <h1>Chatusuariousuarios list</h1>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Mensaje</th>
+                <th>Createdat</th>
+                <th>Visto</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for chatUsuarioUsuario in chatUsuarioUsuarios %}
+            <tr>
+                <td><a href="{{ path('chatusuariousuario_show', { 'id': chatUsuarioUsuario.id }) }}">{{ chatUsuarioUsuario.id }}</a></td>
+                <td>{{ chatUsuarioUsuario.mensaje }}</td>
+                <td>{{ chatUsuarioUsuario.createdAt }}</td>
+                <td>{% if chatUsuarioUsuario.visto %}Yes{% else %}No{% endif %}</td>
+                <td>
+                    <ul>
+                        <li>
+                            <a href="{{ path('chatusuariousuario_show', { 'id': chatUsuarioUsuario.id }) }}">show</a>
+                        </li>
+                        <li>
+                            <a href="{{ path('chatusuariousuario_edit', { 'id': chatUsuarioUsuario.id }) }}">edit</a>
+                        </li>
+                    </ul>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <ul>
+        <li>
+            <a href="{{ path('chatusuariousuario_new') }}">Create a new chatUsuarioUsuario</a>
+        </li>
+    </ul>
+{% endblock %}

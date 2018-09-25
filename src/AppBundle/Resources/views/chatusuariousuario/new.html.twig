@@ -1,0 +1,102 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+<div class="">
+    <div class="">
+        <!-- CONTENT CONTAINER -->
+        <div class="container">
+            <div class="block block-condensed">
+                <div class="app-heading app-heading-small margin-bottom-0">                                        
+                    <div class="title">
+                        <div class="contact contact-rounded contact-bordered contact-lg margin-bottom-0">
+                            <img src="{{asset('uploads/usuario/fotosPerfil/'~ direccion.fotoPerfil)}}">
+                            <div class="contact-container">
+                                <a href="#">{{direccion.nombres}}</a>
+                                <span>{{direccion.email}}</span>
+                            </div>
+                        </div>
+                    </div>                 
+                </div>
+                <div class="block-divider"></div>
+                <div class="block-content">                                                                                
+                    <div class="messages recarga">
+                    {% for chat in chats %}
+                        {% if chat.direccion.id == app.user.id %}
+                        <div class="messages-item inbox">
+                            <div class="user"><img src="{{asset('uploads/usuario/fotosPerfil/'~ chat.direccion.fotoPerfil)}}" alt=""></div>
+                            <div class="text">{{chat.mensaje}}</div>
+                            <div class="date">{{chat.createdAt | date("Y-m-d")}}</div>
+                        </div>
+                        {% else %}
+                        <div class="messages-item">
+                            <div class="user"><img src="{{asset('uploads/usuario/fotosPerfil/'~ chat.direccion.fotoPerfil)}}" alt=""></div>
+                            <div class="text">{{chat.mensaje}}</div>
+                            <div class="date">{{chat.createdAt | date("Y-m-d")}}</div>
+                        </div>  
+                        {% endif %}
+                        
+                        
+                    {% endfor %}
+                    </div>
+                </div>                                                                                                            
+            </div>
+            <div class="block block-condensed block-arrow-top">
+                <div class="block-content padding-top-15">
+                        <div class="form-group">
+                            <div class="input-group">
+                                <input id="mensaje" type="text" class="form-control" name="message" placeholder="Message...">
+                                <div class="input-group-btn">
+                                    <button class="btn btn-default" id="enviar">Send Message</button>
+                                </div>
+                            </div>
+                        </div>
+                </div>
+            </div>
+            
+        </div>
+        <!-- CONTENT CONTAINER -->
+    </div>
+    
+</div>
+{% endblock %}
+{% block javascripts %}
+{{parent()}}
+<script>
+$( document ).ready(function() {
+		registrarMensajes();
+    setInterval(function() {
+        recargar();
+    },20000); 
+});
+
+var registrarMensajes = function(){
+		$("#enviar").on("click",function(e){
+			e.preventDefault();
+				var mensaje = $("#mensaje").val();
+				var idUsuario = {{direccion.id}};
+				var url = "{{path('registrar_mensajes',{'id':'ID'})}}";
+
+				$.ajax({
+						type: 'GET',
+						data: {'mensaje':mensaje},
+						cache: "false",
+						url: url.replace('ID' , idUsuario),
+						dataType : 'json',
+						success: function(data) {
+							$("#mensaje").val("");
+						},
+						error: function() {
+								console.log('error');
+						}
+				});
+            setTimeout(recargar, 300); 
+              
+		});
+        
+	}
+var recargar = function(){
+    location.reload();
+}  
+
+</script>
+{% endblock %}

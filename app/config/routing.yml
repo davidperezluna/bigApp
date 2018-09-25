@@ -1,3 +1,11 @@
+app_chat_usuario_usuario:
+    resource: "@AppBundle/Controller/ChatUsuarioUsuarioController.php"
+    type:     annotation
+
+app_subasta_comentario:
+    resource: "@AppBundle/Controller/SubastaComentarioController.php"
+    type:     annotation
+
 app_subasta:
     resource: "@AppBundle/Controller/SubastaController.php"
     type:     annotation

@@ -47,7 +47,7 @@ class SubastaController extends Controller
             $fecha = new \DateTime('now');
             $user = $this->getUser();
             $em = $this->getDoctrine()->getManager();
-            $productos = $em->getRepository('AppBundle:Producto')->findProductosPorNombreCategoriaMunicipio(
+            $productos = $em->getRepository('AppBundle:Producto')->findProductosPorNombre(
                 $subastum->getPeticion(),
                 $subastum->getMunicipio()->getId(),
                 $subastum->getCategoria()->getId()
@@ -57,7 +57,7 @@ class SubastaController extends Controller
                 $subastumBd = new Subasta();
                 $subastumBd->setCreatedAt($fecha);
                 $subastumBd->setUsuario($user);
-                $subastumBd->setEmpresa($producto->getEmpresa());
+                $subastumBd->setProducto($producto);
                 $subastumBd->setPeticion($subastum->getPeticion());
                 $subastumBd->setMunicipio($subastum->getMunicipio());
                 $em->persist($subastumBd);
@@ -84,8 +84,18 @@ class SubastaController extends Controller
     {
         $deleteForm = $this->createDeleteForm($subastum);
 
+        $em = $this->getDoctrine()->getManager();
+
+        $comentarios = $em->getRepository('AppBundle:SubastaComentario')->findBy(
+            array(
+                'subasta' => $subastum->getId()
+            ), 
+            array('fecha' => 'DESC'));
+
+
         return $this->render('AppBundle:subasta:show.html.twig', array(
             'subastum' => $subastum,
+            'comentarios' => $comentarios,
             'delete_form' => $deleteForm->createView(),
         ));
     }
@@ -118,21 +128,23 @@ class SubastaController extends Controller
     /**
      * Deletes a subastum entity.
      *
-     * @Route("/{id}", name="subasta_delete")
-     * @Method("DELETE")
+     * @Route("/delete/{id}", name="subasta_delete")
+     * @Method("GET")
      */
     public function deleteAction(Request $request, Subasta $subastum)
     {
-        $form = $this->createDeleteForm($subastum);
-        $form->handleRequest($request);
-
-        if ($form->isSubmitted() && $form->isValid()) {
             $em = $this->getDoctrine()->getManager();
+            $cometarios = $em->getRepository('AppBundle:SubastaComentario')->findBySubasta($subastum->getId());
+
+            foreach ($cometarios as $key => $c) {
+                $em->remove($c);
+
+            }
             $em->remove($subastum);
             $em->flush();
-        }
+        
 
-        return $this->redirectToRoute('subasta_index');
+        return $this->redirectToRoute('empresa_show', array('id' => $subastum->getProducto()->getEmpresa()->getId()));
     }
 
     /**

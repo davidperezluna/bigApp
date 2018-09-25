@@ -17,6 +17,7 @@
 				</div>
 				<div class="col-md-2">
 					<select class="form-control s2-select-search" name="municipioId">
+						<option value="">Seleccionar una opcion</option>
 						{% for municipio in municipios %}
 							<option value="{{municipio.id}}">{{municipio.nombre}}</option>
 						{% endfor %}
@@ -24,6 +25,7 @@
 				</div>
 				<div class="col-md-2">
 					<select class="form-control s2-select-search" name="categoriaId">
+						<option value="">Seleccionar una opcion</option>
 						{% for categoria in categorias %}
 							<option value="{{categoria.id}}">{{categoria.nombre}}</option>
 						{% endfor %}
@@ -42,7 +44,7 @@
 	        <div class="container">
 	              <div class="row grid">
 	                  {% for producto in pagination %}
-	                    <div class="col-md-3">
+	                    <div class="col-md-4">
 	                      <div class="tile-basic">
 	                          <div class="tile-image">
 	                            {% for imagen in producto.imagenes %}
@@ -68,8 +70,12 @@
 	                              <span class="tile-subtitle">{{producto.valor}}</span>
 	                              <h5 class="tile-title" style="color:{{producto.empresa.colorPrimario}};">{{producto.nombre}}</h5>
 	                              <p>{{producto.descripcion}}</p>
-	                              <a href="{{ path('producto_show', { 'id': producto.id }) }}" class="btn btn-warning btn-xs">ver</a>
-	                          </div>
+								  
+	                              <a href="{{ path('producto_show', { 'id': producto.id }) }}" class="btn btn-info btn-clean " data-toggle="tooltip" data-placement="top" title="Ver Producto"><span class="fa fa-hand-pointer-o"></span></a>
+	                              <a href="{{ path('chatusuariousuario_new', { 'id': producto.empresa.usuario.id }) }}" class="btn btn-warning btn-clean " data-toggle="tooltip" data-placement="top" title="Contacta en Tiempo Real"><span class="fa fa-wechat"></span></a>
+	                              <a href="{{ path('empresa_show_location', { 'id': producto.empresa.id }) }}" class="btn btn-success btn-clean " data-toggle="tooltip" data-placement="top" title="ver Ubicación" target="_blank"><span class="fa fa-map-marker"></span></a>
+	                          	
+							  </div>
 	                      </div>
 	                    </div>
 	                  {% endfor %}

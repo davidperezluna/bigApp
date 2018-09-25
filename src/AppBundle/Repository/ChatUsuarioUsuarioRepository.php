@@ -15,7 +15,6 @@ class ChatUsuarioUsuarioRepository extends EntityRepository
   public function findComentariosNoVistosPorUsuario($usuario , $yo)
   {
 
-      $canal = $usuario->getIdentificacion().$yo->getIdentificacion();
 
       $query = $this->getEntityManager()
           ->createQuery(
