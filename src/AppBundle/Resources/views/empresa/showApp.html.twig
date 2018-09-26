@@ -1,8 +1,34 @@
-{% extends 'base.html.twig' %}
-
-{% block body %}
-
-<div class="block" style="background-color:#C5CAE9;">
+<html lang="es">
+    <head>                        
+        <title>Big App</title>
+        {% block stylesheets %}{% endblock %}            
+        
+        <!-- META SECTION -->
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        
+        <link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
+        <link rel="icon" href="favicon.ico" type="image/x-icon">
+        <!-- END META SECTION -->
+        <!-- CSS INCLUDE -->        
+        <link href="{{ asset('build/css/styles.css') }}" type="text/css" rel="stylesheet" />
+        <link href="{{ asset('build/css/buttons.dataTables.min.css') }}" type="text/css" rel="stylesheet" />
+        <style>
+        .app .tile-basic .tile-content {
+            padding: 10px !important;
+        }
+        </style>
+       
+        <!-- EOF CSS INCLUDE -->
+    </head>
+<body>
+<!-- APP WRAPPER -->
+        <div class="app">           
+            <!-- START APP CONTAINER -->
+            <div class="app-container">
+                <div class="container">
+                <div class="block" style="background-color:#C5CAE9;">
     <div class="app-heading app-heading-small app-heading-condensed">
         <div class="title">
            
@@ -294,14 +320,38 @@
         </div>
     </div>            
 </div>
-<!-- END MODAL PREVIEW -->
+                </div>
+            </div>
+        </div>
 
-{% endblock %}
+</body>
 
-{% block stylesheets %}
-{{parent()}}
+<!-- START SCRIPTS -->
+        
+        <script src="{{ asset('build/js/vendor/jquery/jquery.min.js') }}" type="text/javascript"></script>
+        <script src="{{ asset('build/js/vendor/jquery/jquery-migrate.min.js') }}" type="text/javascript"></script>
+        <script src="{{ asset('build/js/vendor/jquery/jquery-ui.min.js') }}" type="text/javascript"></script>
+        <script src="{{ asset('build/js/vendor/bootstrap/bootstrap.min.js') }}" type="text/javascript"></script>
+        <script src="{{ asset('build/js/vendor/moment/moment.min.js') }}" type="text/javascript"></script>
+        <script src="{{ asset('build/js/vendor/customscrollbar/jquery.mCustomScrollbar.min.js') }}" type="text/javascript"></script>
+        <!-- END IMPORTANT SCRIPTS -->
+        <!-- END DATA TABLES -->
+        <!-- DATA TABLES-->
+        <script src="{{ asset('build/js/vendor/datatables/jquery.dataTables.min.js') }}" type="text/javascript"></script>
+        <script src="{{ asset('build/js/vendor/datatables/dataTables.bootstrap.min.js') }}" type="text/javascript"></script>
 
-<script>
+        <!-- DATA TABLES export data-->
+       <script src="{{ asset('build/js/vendor/datatables/dataTables.buttons.min.js') }}" type="text/javascript"></script>
+        <script src="{{ asset('build/js/vendor/datatables/buttons.flash.min.js') }}" type="text/javascript"></script>
+        <script src="{{ asset('build/js/vendor/datatables/buttons.html5.min.js') }}" type="text/javascript"></script>
+        <script src="{{ asset('build/js/vendor/datatables/jszip.min.js') }}" type="text/javascript"></script>
+        <script src="{{ asset('build/js/vendor/datatables/pdfmake.min.js') }}" type="text/javascript"></script>
+        <script src="{{ asset('build/js/vendor/datatables/vfs_fonts.js') }}" type="text/javascript"></script>
+        <script src="{{ asset('build/js/vendor/datatables/buttons.html5.min.js') }}" type="text/javascript"></script>
+        <script src="{{ asset('build/js/vendor/datatables/buttons.print.min.js') }}" type="text/javascript"></script>
+        <!-- NOTIFICACIONES-->
+        <script src="{{ asset('build/js/vendor/noty/jquery.noty.packaged.js') }}" type="text/javascript"></script>
+        <script>
 
       function initMap() {
         var uluru = {lat: {{empresa.lat}}, lng: {{empresa.lng}}};
@@ -331,5 +381,12 @@
           $('#datatable').DataTable();
       } );
     </script>
-
-{% endblock %}
+        
+        <!-- END NOTIFICACIONES -->
+        <!-- APP SCRIPTS -->
+        
+        <script src="{{ asset('build/js/app.js') }}" type="text/javascript"></script>
+        <script src="{{ asset('build/js/app_plugins.js') }}" type="text/javascript"></script>
+        <script src="{{ asset('build/js/app_demo.js') }}" type="text/javascript"></script>
+        <script src="{{ asset('build/js/vendor/isotope/isotope.pkgd.min.js') }}" type="text/javascript"></script>
+        <!-- END SCRIPTS -->

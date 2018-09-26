@@ -715,13 +715,13 @@ div.mce-fullscreen {
 }
 .mce-notification-warning *,
 .mce-notification-warning .mce-progress .mce-text {
-    color: #8a6d3b
+    color: #f9711b
 }
 .mce-notification-warning .mce-progress .mce-bar-container {
     border-color: #faebcc
 }
 .mce-notification-warning .mce-progress .mce-bar-container .mce-bar {
-    background-color: #8a6d3b
+    background-color: #f9711b
 }
 .mce-notification-error *,
 .mce-notification-error .mce-progress .mce-text {

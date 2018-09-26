@@ -197,6 +197,23 @@ class EmpresaController extends Controller
     }
 
     /**
+     * Finds and displays a empresa entity.
+     *
+     * @Route("/show/app/{id}", name="empresa_show_app")
+     * @Method("GET")
+     */
+    public function showAppAction(Request $request,Empresa $empresa)
+    {
+      $em = $this->getDoctrine()->getManager();
+      $subastas = $em->getRepository('AppBundle:Subasta')->findSubastaPorEmpresa($empresa->getId());
+      // parameters to template
+      return $this->render('AppBundle:empresa:showApp.html.twig', array(
+          'empresa'=>$empresa,
+          'subastas'=>$subastas
+        ));
+    }
+
+    /**
      * Displays a form to edit an existing empresa entity.
      *
      * @Route("/{id}/edit", name="empresa_edit")
