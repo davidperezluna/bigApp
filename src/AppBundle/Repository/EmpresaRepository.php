@@ -12,20 +12,43 @@ use Doctrine\ORM\EntityRepository;
  */
 class EmpresaRepository extends EntityRepository
 {
-    public function finEmpresaNombre($nombre,$municipioId)
+
+    public function findEmpresaPorNombre($nombre,$municipioId)
   {
-      
-      $query = $this->getEntityManager()
-          ->createQuery(
+      if ($nombre!="") {
+            $query = $this->getEntityManager()
+            ->createQuery(
+                'SELECT e  FROM AppBundle:Empresa e
+                WHERE e.nombre  LIKE :nombre'
+            )
+            ->setParameter('nombre', '%'.$nombre.'%');
+        }
+        if ($municipioId!="") {
+            $query = $this->getEntityManager()
+            ->createQuery(
+                'SELECT e  FROM AppBundle:Empresa e
+                WHERE e.municipio = :municipio'
+            )
+            ->setParameter('municipio', $municipioId);
+        }
+        if (($nombre!="") && ($municipioId !="")) {
+            $query = $this->getEntityManager()
+            ->createQuery(
               'SELECT e  FROM AppBundle:Empresa e
               WHERE e.nombre  LIKE :nombre
               AND e.municipio = :municipio'
           )
           ->setParameter('nombre', '%'.$nombre.'%')
-          ->setParameter('municipio', $municipioId)
-          ;
-
-          $productos = $query->getResult();
-          return $productos;
+          ->setParameter('municipio', $municipioId);
+        }
+        if (($municipioId =='') && ($nombre=='')) {
+            
+            $query = $this->getEntityManager()
+            ->createQuery(
+                'SELECT e  FROM AppBundle:Empresa e'
+            );
+        }
+        $productos = $query->getResult();
+        return $productos;
   }
 }

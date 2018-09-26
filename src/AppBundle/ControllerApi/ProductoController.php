@@ -16,7 +16,7 @@ use Symfony\Component\HttpFoundation\Response;
  *
  */
 class ProductoController extends FOSRestController
-{
+{ 
     /**
      * @Rest\Get("/producto/index")
      */
@@ -38,7 +38,7 @@ class ProductoController extends FOSRestController
                 'imagen' => $imagen->getImagen(),
                 'valor' => $p->getValor(),
                 'subCategoria' => $p->getSubCategoria()->getNombre(),
-                'fecha' => '2016-06-25 20:52:00',
+                'fecha' => $p->getCreatedAt(),
                 );
             }
           }  

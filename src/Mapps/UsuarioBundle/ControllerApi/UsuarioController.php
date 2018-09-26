@@ -17,71 +17,48 @@ use Symfony\Component\HttpFoundation\Response;
  */
 class UsuarioController extends FOSRestController
 {
+    
+
     /**
      * @Rest\Post("/usuario/logeado")
      */
-    public function getLoginAction(Request $request)
-    {
-    	
-      $data = $request->getContent();
-    	$params = json_decode($data);
-    	$em = $this->getDoctrine()->getManager();
-      $usuario = $em->getRepository('MappsUsuarioBundle:User')->findOneByUsername($params->username);
-
-      return $usuario = array('usuario' =>  $usuario );
-    }
-
-    /**
-     * @Rest\Post("/usuario/new")
-     */
-    public function postNewUserAction(Request $request)
-    {	
-    	$em = $this->getDoctrine()->getManager();
-    	$user = new User();
-    	$data = $request->getContent();
-    	$params = json_decode($data);
-		  $role = 'ROLE_USER';
-    	$user->setNombres($params->nombres);
-    	$user->setEmail($params->email);
-    	$user->setApellidos($params->apellidos);
-    	$user->setIdentificacion($params->identificacion);
-    	$user->setCelular($params->celular);
-		  $user->setDireccion($params->direccion);
-		  $user->setUsername($params->identificacion);
-		  $user->setEnabled(1);
-
-    	$factory = $this->get("security.encoder_factory");
-        $encoder = $factory->getEncoder($user);
-        $passwordd =$params->password;
-        $password = $encoder->encodePassword($passwordd, $user->getSalt());
-
-        $user->setPassword($password);
-        $user->setRolePersona($role);
-	
-    	  $em->persist($user);
-        $em->flush();
-
-       	return $response = array(
-      		'status' => "success",
-      		'msj' => "Usuario Creado"
-      	);
-    	
-    }
-
-    /**
-     * @Rest\Get("/usuario/index/")
-     */
-    public function getIndexUserAction(Request $request)
+    public function getUserLogeadoAction(Request $request)
     { 
-      
+      $data = $request->getContent();
+      $params = json_decode($data);
       $em = $this->getDoctrine()->getManager();
-      $usuarios = $em->getRepository('MappsUsuarioBundle:User')->findAll();
+      $usuario = $em->getRepository('MappsUsuarioBundle:User')->findOneByUsername($params->username);
+      $publicaciones = $em->getRepository('AppBundle:publicacion')->findByUsuarioEmisor($usuario->getId());
 
+      if ($publicaciones != null) {
+        foreach ($publicaciones as $key => $p) {
+            $publicacionesArray[$key] = array(
+            'contenido' => $p->getContenido(), 
+            'id' => $p->getId(), 
+            'imagen' => $p->getImagen(), 
+            'urlVideo' => $p->getUrlVideoYutube(), 
+            'fecha' => $p->getCreatedAt(), 
+            );
+        }
+      }else{
+        $publicacionesArray = null;
+      }
+      
+
+      $usuarioArray = array(
+      'username' => $usuario->getUsername(), 
+      'fotoPerfil' => $usuario->getFotoPerfil(), 
+      'fotoPortada' => $usuario->getFotoPortada(), 
+      'nombres' => $usuario->getNombres(), 
+      'apellidos' => $usuario->getApellidos(), 
+      );
+      
       $response = array(
-        'status' => "success",
-        'msj' => "Lista de Usuarios",
-        "data" => $usuarios
-    );
+          'status' => "success",
+          'msj' => "Lista de Usuarios",
+          'usuario' => $usuarioArray,
+          'publicaciones' => $publicacionesArray,
+      );
       return $response;
     }
 }
