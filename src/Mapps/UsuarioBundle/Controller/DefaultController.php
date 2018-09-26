@@ -12,7 +12,7 @@ class DefaultController extends Controller
      */
     public function indexAction()
     {
-
+ 
         $em = $this->getDoctrine()->getManager();
         $productos = $em->getRepository('AppBundle:Producto')->findBy(array(), array('id' => 'DESC'),3);
         $amigos = $em->getRepository('AppBundle:Amigo')->findBy(array(

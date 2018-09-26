@@ -21,7 +21,7 @@ class CategoriaController extends FOSRestController
      * @Rest\Get("/categoria/index")
      */
     public function getIndexAction()
-    {
+    { 
     	
     	$em = $this->getDoctrine()->getManager();
       $categorias = $em->getRepository('AppBundle:EmpresaSubCategoria')->findAll();
