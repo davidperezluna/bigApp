@@ -1,0 +1,74 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+<div class="col-md-4">
+    <div class="tile-basic">
+        <div class="tile-image">
+        {% for imagen in subastum.producto.imagenes %}
+        {% if loop.last %}
+            <a href="#" class="tile-image tile-image-padding tile-image-hover-grayscale preview" data-preview-image="{{asset('uploads/producto/'~ imagen.imagen)}}" data-preview-size="modal-lg">
+                <img src="{{asset('uploads/producto/'~ imagen.imagen)}}" alt="">
+            </a>
+            {% endif %}
+            {% endfor %}
+            <div class="tile-image-container text-right">
+                {% if subastum.producto.subCategoria.id == 1 %}
+                <span class="label label-success">
+                {% elseif subastum.producto.subCategoria.id == 2 %}
+                <span class="label label-warning">
+                {% else %}
+                <span class="label label-danger">
+                {% endif %}
+                {{subastum.producto.subCategoria.nombre}}
+                </span>
+            </div>
+        </div>
+        <div class="tile-content tile-content-condensed-bottom text-center"style="background-color:#edeff0;">
+            <span class="tile-subtitle">{{subastum.producto.valor}}</span>
+            <h5 class="tile-title" style="color:{{subastum.producto.empresa.colorPrimario}};">{{subastum.producto.nombre}}</h5>
+            <p>El usuario {{subastum.usuario.nombres}} esta interesado en este producto puedes contactarlo 
+            directamente, hacer comentarios sobre esta publicacion o visitar su perfil de usuario</p>
+            
+        </div>
+    </div>
+</div>
+<div class="col-md-8">
+<div class="block">
+    <div class="comments">
+            
+            {% for comentario in comentarios %}
+              <div class="comment">
+                <div class="contact contact-rounded contact-lg">
+                    <img src="{{asset('uploads/usuario/fotosPerfil/'~ comentario.usuarioEmisor.fotoPerfil)}}">
+                    <div class="contact-container">
+                        <a href="#">{{comentario.usuarioEmisor.nombres}}</a>
+                        <span>{{comentario.contenido}}</span>
+                    </div>
+                </div>
+            </div>  
+            {% endfor %} 
+            <div class="comment">
+                <div class="contact contact-rounded contact-lg">
+                    <img src="{{asset('uploads/usuario/fotosPerfil/'~ subastum.usuario.fotoPerfil)}}">
+                    <div class="contact-container">
+                        <a href="#">{{subastum.usuario.nombres}}</a>
+                        <span>Estoy interesado en el producto {{subastum.producto.nombre}}</span>
+                    </div>
+                </div>
+            </div>  
+            <div class="form">
+                <form class="" action="{{path('subastacomentario_new',{'id':subastum.id})}}" method="post">
+                    <div class="form-group">
+                        <div class="input-group">
+                                <input type="text" class="form-control" placeholder="Comentar..." name="contenido">
+                            <div class="input-group-btn">
+                                <button type="submit" class="btn btn-default">Envair</button>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

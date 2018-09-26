@@ -27,4 +27,26 @@ class DefaultController extends Controller
         ));
         
     }
+
+     /**
+     * @Route("/perfil/{id}" , name="perfil")
+     */
+    public function perfilAction($id)
+    {
+
+        $em = $this->getDoctrine()->getManager();
+        $productos = $em->getRepository('AppBundle:Producto')->findBy(array(), array('id' => 'DESC'),3);
+        $amigos = $em->getRepository('AppBundle:Amigo')->findBy(array(
+            'usuario' => $id
+        ), array('id' => 'DESC'),3);
+
+        $user = $em->getRepository('MappsUsuarioBundle:User')->find($id);
+        
+    	return $this->render('MappsUsuarioBundle:Default:index.html.twig', array(
+            'productos' => $productos,
+            'amigos' => $amigos,
+            'user' => $user,
+        ));
+        
+    }
 }

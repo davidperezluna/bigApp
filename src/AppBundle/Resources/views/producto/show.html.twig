@@ -24,10 +24,12 @@
             <span class="tile-subtitle">{{producto.valor}}</span>
             <h5 class="tile-title" style="color:{{producto.empresa.colorPrimario}};">{{producto.nombre}}</h5>
             <p>{{producto.descripcion}}</p>
-            <a href="{{ path('producto_edit', { 'id': producto.id }) }}" class="btn btn-warning btn-xs"><span class="icon-pencil"></span></a>
-            <a href="{{ path('producto_delete', { 'id': producto.id }) }}" class="btn btn-danger btn-xs"><span class="icon-cross"></span></a>
-            <a href="{{ path('productoimagen_new', { 'id': producto.id }) }}" class="btn btn-info btn-xs"><span class="icon-picture"></span></a>
-            <a href="{{ path('empresa_show', { 'id': producto.empresa.id }) }}" class="btn btn-success btn-xs"><span class="icon-undo"></span></a>
+            <a data-toggle="tooltip" data-placement="top" title="Editar Producto" href="{{ path('producto_edit', { 'id': producto.id }) }}" class="btn btn-primary btn-xs"><span class="icon-pencil"></span></a>
+            <a data-toggle="tooltip" data-placement="top" title="Eliminar Producto" href="{{ path('producto_delete', { 'id': producto.id }) }}" class="btn btn-primary btn-xs"><span class="icon-cross"></span></a>
+            <a data-toggle="tooltip" data-placement="top" title="Agregar Imagen" href="{{ path('productoimagen_new', { 'id': producto.id }) }}" class="btn btn-primary btn-xs"><span class="icon-picture"></span></a>
+            <a data-toggle="tooltip" data-placement="top" title="Ver Empresa" href="{{ path('empresa_show', { 'id': producto.empresa.id }) }}" class="btn btn-primary btn-xs"><span class="icon-undo"></span></a>
+	        <a href="{{ path('chatusuariousuario_new', { 'id': producto.empresa.usuario.id }) }}" class="btn btn-primary btn-xs" data-toggle="tooltip" data-placement="top" title="Contacta en Tiempo Real"><span class="icon-bullhorn"></span></a>
+	        <a href="{{ path('empresa_show_location', { 'id': producto.empresa.id }) }}" class="btn btn-primary btn-xs" data-toggle="tooltip" data-placement="top" title="ver Ubicación" target="_blank"><span class="icon-map-marker"></span></a>
         </div>
     </div>
 </div>

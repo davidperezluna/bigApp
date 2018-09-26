@@ -54,7 +54,7 @@ class ProductoController extends Controller
         $pagination = $paginator->paginate(
             $query, /* query NOT result */
             $request->query->getInt('page', 1)/*page number*/,
-            4/*limit per page*/
+            3/*limit per page*/
         );
 
         // parameters to template
@@ -78,12 +78,13 @@ class ProductoController extends Controller
         $busqueda = $request->request->get("stringBusqueda");
         $municipioId = $request->request->get("municipioId");
         $categoriaId = $request->request->get("categoriaId");
+
         
         $em = $this->get('doctrine.orm.entity_manager');
         $municipios = $em->getRepository('AppBundle:Municipio')->findAll();
         $categorias = $em->getRepository('AppBundle:EmpresaSubCategoria')->findAll();
 
-        $productos = $em->getRepository('AppBundle:Producto')->findProductosPorNombreCategoriaMunicipio($busqueda,$municipioId,$categoriaId);
+        $productos = $em->getRepository('AppBundle:Producto')->findProductosPorNombre($busqueda,$categoriaId,$municipioId);
 
         // parameters to template
         return $this->render('AppBundle:producto:busqueda.html.twig', array(

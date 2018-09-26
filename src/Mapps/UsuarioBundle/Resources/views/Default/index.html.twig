@@ -22,17 +22,16 @@
            <div class="app-content-separate-content">
 			    <div class="list-group list-group-noborder">
 			        <div class="list-group-title">Perfil</div>
-			        <a href="{{ path('empresa_index') }}" class="list-group-item text-bold active">Empresas</a>
+			        <a href="{{ path('empresa_list') }}" class="list-group-item text-bold active">Empresas</a>
 			        <a href="{{ path('producto_list') }}" class="list-group-item text-bold">Productos <span class="badge badge-success"></a>
+                    {% if app.user.id == user.id %}
+                    <a href="{{ path('subasta_new') }}" class="list-group-item text-bold">Subasta <span class="badge badge-success"></a>
+                    {% endif %}
 			        <a href="#" class="list-group-item text-bold">Mensajes <span class="badge badge-danger"></a>
-			        <div class="list-group-title">Cuenta</div>
-			        <a href="#" class="list-group-item text-bold">Buscador</a>
-			        <a href="#" class="list-group-item text-bold">Configracion</a>
 			    </div>
 			    <div class="app-heading app-heading-small heading-transparent">                                
 			        <div class="title">
 			            <h3>Amigos</h3>
-			            <a href="#">Ver Todos</a> 
 			        </div>                                                 
 			    </div>
 			    <div class="row">
@@ -41,7 +40,7 @@
 			            <div class="contact contact-single contact-bordered contact-rounded">
 			                <img src="{{asset('uploads/usuario/fotosPerfil/'~ amigo.amigo.fotoPerfil)}}">
 			                <div class="contact-container">
-			                    <a href="#">{{amigo.amigo.nombres}}</a>                
+			                    <a href="{{ path('perfil', { 'id': amigo.amigo.id }) }}">{{amigo.amigo.nombres}}</a>                
 			                </div>
 			            </div>
 			        </div>
@@ -51,7 +50,7 @@
 
 			<div class="title">
 	            <h3>Productos</h3>
-	            <a href="#">Ver Todos</a> 
+	            <a  href="{{ path('producto_list') }}">Ver Todos</a> 
 	        </div> 
 			<br>
 			{% for producto in productos %}
@@ -106,10 +105,11 @@
             <div class="row margin-bottom-20">
             	{% if app.user.id != user.id %}
                 <div class="col-xs-6">
-                    <button class="btn btn-primary btn-block btn-icon-fixed"><span class="fa fa-user-plus"></span> Añadir</button>
+                    <a href="{{path('amigo_new',{'amigoId':user.id})}}" class="btn btn-primary btn-block btn-icon-fixed" data-toggle="tooltip" data-placement="top" title="Añadir Amigo"><span class="fa fa-user-plus"></span> Añadir</a>                                                
                 </div>
-                <div class="col-xs-6">                                                
-                    <button class="btn btn-primary btn-block btn-icon-fixed"><span class="fa fa-comments"></span> Mensaje</button>
+                <div class="col-xs-6">
+                    <a href="{{ path('chatusuariousuario_new', { 'id': user.id }) }}" class="btn btn-primary btn-block btn-icon-fixed" data-toggle="tooltip" data-placement="top" title="Contacta en Tiempo Real"><span class="fa fa-comments"></span> Mensaje</a>                                                
+                    
                 </div>
                 {% else %}
                 <div class="col-xs-12">

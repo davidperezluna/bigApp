@@ -57,7 +57,11 @@
 	                              <span class="tile-subtitle">{{producto.valor}}</span>
 	                              <h5 class="tile-title" style="color:{{producto.empresa.colorPrimario}};">{{producto.nombre}}</h5>
 	                              <p>{{producto.descripcion}}</p>
-	                              <a href="{{ path('producto_show', { 'id': producto.id }) }}" class="btn btn-warning btn-xs">ver</a>
+	                          		
+	                             <a href="{{ path('producto_show', { 'id': producto.id }) }}" class="btn btn-warning btn-xs" data-toggle="tooltip" data-placement="top" title="Ver Producto"><span class="fa fa-hand-pointer-o"></span></a>
+	                              <a href="{{ path('chatusuariousuario_new', { 'id': producto.empresa.usuario.id }) }}" class="btn btn-warning btn-xs" data-toggle="tooltip" data-placement="top" title="Contacta en Tiempo Real"><span class="fa fa-wechat"></span></a>
+	                              <a href="{{ path('empresa_show_location', { 'id': producto.empresa.id }) }}" class="btn btn-warning btn-xs" data-toggle="tooltip" data-placement="top" title="ver Ubicación" target="_blank"><span class="fa fa-map-marker"></span></a>
+	                          	
 	                          </div>
 	                      </div>
 	                    </div>
