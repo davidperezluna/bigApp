@@ -12,7 +12,6 @@ use Doctrine\ORM\EntityRepository;
  */
 class EmpresaRepository extends EntityRepository
 {
-<<<<<<< HEAD
 
     public function findEmpresaPorNombre($nombre,$municipioId)
   {
@@ -35,19 +34,11 @@ class EmpresaRepository extends EntityRepository
         if (($nombre!="") && ($municipioId !="")) {
             $query = $this->getEntityManager()
             ->createQuery(
-=======
-    public function finEmpresaNombre($nombre,$municipioId)
-  {
-      
-      $query = $this->getEntityManager()
-          ->createQuery(
->>>>>>> 356f9372a20170dda02e0945068b818f7be736de
               'SELECT e  FROM AppBundle:Empresa e
               WHERE e.nombre  LIKE :nombre
               AND e.municipio = :municipio'
           )
           ->setParameter('nombre', '%'.$nombre.'%')
-<<<<<<< HEAD
           ->setParameter('municipio', $municipioId);
         }
         if (($municipioId =='') && ($nombre=='')) {
@@ -59,12 +50,5 @@ class EmpresaRepository extends EntityRepository
         }
         $productos = $query->getResult();
         return $productos;
-=======
-          ->setParameter('municipio', $municipioId)
-          ;
-
-          $productos = $query->getResult();
-          return $productos;
->>>>>>> 356f9372a20170dda02e0945068b818f7be736de
   }
 }

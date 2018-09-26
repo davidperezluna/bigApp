@@ -12,7 +12,7 @@ use Symfony\Component\HttpFoundation\Response;
 use ThumbAndCrop;
 use Symfony\Component\HttpFoundation\JsonResponse;
 
-/**
+/** 
  * Empresa controller.
  *
  * @Route("empresa")
