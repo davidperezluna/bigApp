@@ -55,6 +55,13 @@ class Subasta
      */
     protected $municipio;
 
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="estado", type="string", length=100)
+     */
+    private $estado;
+
 
     /**
      * Get id
@@ -186,5 +193,29 @@ class Subasta
     public function getMunicipio()
     {
         return $this->municipio;
+    }
+
+    /**
+     * Set producto
+     *
+     * @param \AppBundle\Entity\Producto $producto
+     *
+     * @return Subasta
+     */
+    public function setProducto(\AppBundle\Entity\Producto $producto = null)
+    {
+        $this->producto = $producto;
+
+        return $this;
+    }
+
+    /**
+     * Get producto
+     *
+     * @return \AppBundle\Entity\Producto
+     */
+    public function getProducto()
+    {
+        return $this->producto;
     }
 }

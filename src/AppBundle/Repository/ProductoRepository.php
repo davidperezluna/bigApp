@@ -19,7 +19,9 @@ class ProductoRepository extends EntityRepository
             $query = $this->getEntityManager()
             ->createQuery(
                 'SELECT p  FROM AppBundle:Producto p
-                WHERE p.tags  LIKE :nombre'
+                WHERE p.tags  LIKE :nombre
+                ORDER BY p.valor asc
+                '
             )
             ->setParameter('nombre', '%'.$nombre.'%');
         }
@@ -28,7 +30,9 @@ class ProductoRepository extends EntityRepository
             ->createQuery(
                 'SELECT p  FROM AppBundle:Producto p
                 JOIN p.empresa e
-                WHERE p.subCategoria =:categoria'
+                WHERE p.subCategoria =:categoria
+                ORDER BY p.valor asc
+                '
             )
             ->setParameter('categoria', $categoriaId);
         }
@@ -37,7 +41,9 @@ class ProductoRepository extends EntityRepository
             ->createQuery(
                 'SELECT p  FROM AppBundle:Producto p
                 JOIN p.empresa e
-                WHERE e.municipio = :municipio'
+                WHERE e.municipio = :municipio
+                ORDER BY p.valor asc
+                '
             )
             ->setParameter('municipio', $municipioId);
         }
@@ -47,7 +53,9 @@ class ProductoRepository extends EntityRepository
               'SELECT p  FROM AppBundle:Producto p
               JOIN p.empresa e
               WHERE p.tags  LIKE :nombre
-              AND e.municipio = :municipio'
+              AND e.municipio = :municipio
+              ORDER BY p.valor asc
+              '
           )
           ->setParameter('nombre', '%'.$nombre.'%')
           ->setParameter('municipio', $municipioId);
@@ -59,7 +67,9 @@ class ProductoRepository extends EntityRepository
               'SELECT p  FROM AppBundle:Producto p
               JOIN p.empresa e
               WHERE p.tags  LIKE :nombre
-              AND p.subCategoria =:categoria'
+              AND p.subCategoria =:categoria
+              ORDER BY p.valor asc
+              '
           )
           ->setParameter('nombre', '%'.$nombre.'%')
           ->setParameter('categoria', $categoriaId);
@@ -71,7 +81,9 @@ class ProductoRepository extends EntityRepository
               'SELECT p  FROM AppBundle:Producto p
               JOIN p.empresa e
               WHERE e.municipio = :municipio
-              AND p.subCategoria =:categoria'
+              AND p.subCategoria =:categoria
+              ORDER BY p.valor asc
+              '
           )
           ->setParameter('municipio', $municipioId)
           ->setParameter('categoria', $categoriaId);
@@ -84,7 +96,9 @@ class ProductoRepository extends EntityRepository
                 JOIN p.empresa e
                 WHERE p.tags  LIKE :nombre
                 AND e.municipio = :municipio
-                AND p.subCategoria =:categoria'
+                AND p.subCategoria =:categoria
+                ORDER BY p.valor asc
+                '
             )
             ->setParameter('nombre', '%'.$nombre.'%')
             ->setParameter('municipio', $municipioId)
@@ -94,7 +108,9 @@ class ProductoRepository extends EntityRepository
             
             $query = $this->getEntityManager()
             ->createQuery(
-                'SELECT p  FROM AppBundle:Producto p'
+                'SELECT p  FROM AppBundle:Producto p
+                ORDER BY p.valor asc
+                '
             );
         }
         $productos = $query->getResult();

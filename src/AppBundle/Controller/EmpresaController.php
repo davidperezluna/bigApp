@@ -3,6 +3,7 @@
 namespace AppBundle\Controller;
 
 use AppBundle\Entity\Empresa;
+use AppBundle\Entity\EmpresaRedes;
 use MappsUsuarioBundle\Entity\User;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
@@ -69,6 +70,34 @@ class EmpresaController extends Controller
     }
 
     /**
+     * listar mis empresas
+     *
+     * @Route("/list/empresa/usuario/{id}", name="empresa_list_by_usuario")
+     * @Method("GET")
+     */
+    public function listMisEmpresasAction(Request $request,$id)
+    {
+        $em    = $this->get('doctrine.orm.entity_manager');
+        $dql   = "SELECT e FROM AppBundle:Empresa e
+                  where e.usuario = $id  
+        ";
+        $query = $em->createQuery($dql);
+        $municipios = $em->getRepository('AppBundle:Municipio')->findAll();
+
+        $paginator  = $this->get('knp_paginator');
+        $pagination = $paginator->paginate(
+            $query, /* query NOT result */
+            $request->query->getInt('page', 1)/*page number*/,
+            4/*limit per page*/
+        );
+        return $this->render('AppBundle:empresa:list.html.twig', array(
+            'pagination' => $pagination,
+            'municipios' => $municipios
+            
+        ));
+    }
+
+    /**
      * Lists all producto entities.
      *
      * @Route("/busqueda", name="empresa_busqueda")
@@ -88,7 +117,7 @@ class EmpresaController extends Controller
         $em = $this->get('doctrine.orm.entity_manager');
         $municipios = $em->getRepository('AppBundle:Municipio')->findAll();
 
-        $empresas = $em->getRepository('AppBundle:Empresa')->finEmpresaNombre($busqueda,$municipioId);
+        $empresas = $em->getRepository('AppBundle:Empresa')->findEmpresaPorNombre($busqueda,$municipioId);
 
 
         // parameters to template
@@ -292,23 +321,107 @@ class EmpresaController extends Controller
             'delete_form' => $deleteForm->createView(),
         ));
     }
+    
+
+    /**
+     * editar imagenes empresa.
+     *
+     * @Route("/{id}/edit/imagenes", name="empresa_edit_imagenes")
+     * @Method({"GET", "POST"})
+     */
+    public function editImagenesAction(Request $request, Empresa $empresa)
+    {
+        $deleteForm = $this->createDeleteForm($empresa);
+        $editForm = $this->createForm('AppBundle\Form\EditImagenesEmpresaType', $empresa);
+        $editForm->handleRequest($request);
+
+        $fotoLogoOld = $empresa->getFotoLogo();
+        $fotoPortadaOld = $empresa->getFotoPortada();
+
+        if ($editForm->isSubmitted() && $editForm->isValid()) {
+
+            $fotoLogo = $empresa->getFotoLogo();
+            $fotoPortada = $empresa->getFotoPortada();
+
+            if ($fotoLogo != null) {
+                if( $fotoLogo->getSize() > 8000000 ) {
+                $this->addFlash(
+                    'notice',
+                    'Tamaño del Logo excedido el tamaño debe ser de 10 mb maximo!'
+                );
+               return $this->redirectToRoute('empresa_edit', array('id' => $empresa->getId()));
+              }
+            }
+            if ($fotoPortada != null) {
+              
+               if( $fotoPortada->getSize() > 8000000 ) {
+                $this->addFlash(
+                    'notice',
+                    'Tamaño de foto de portada excedido el tamaño debe ser de 10 mb maximo!'
+                );
+               return $this->redirectToRoute('empresa_edit', array('id' => $empresa->getId()));
+              }
+            }
+
+            $fotoLogo = $empresa->getFotoLogo();
+            if ($fotoLogo == null) {
+              $fotoLogoName = $request->request->get("fotoLogoOld");
+
+            }else{
+              $fotoLogoName = md5(uniqid()).$empresa->getNit().'.'.$fotoLogo->guessExtension();
+              $fotoLogo->move(
+                  $this->getParameter('logo_empresa_directory'),
+                  $fotoLogoName
+              );
+            }
+
+            $fotoPortada = $empresa->getFotoPortada();
+            if ($fotoPortada == null) {
+                $fotoPortadaName = $request->request->get("fotoPortadaOld");
+
+            }else{
+              $fotoPortadaName = md5(uniqid()).$empresa->getNit().'.'.$fotoPortada->guessExtension();
+              $fotoPortada->move(
+                  $this->getParameter('portada_empresa_directory'),
+                  $fotoPortadaName
+              );
+            }
+            $empresa->setFotoPortada($fotoPortadaName);
+            $empresa->setFotoPortadaCov("");
+            $empresa->setFotoLogo($fotoLogoName);
+            $this->getDoctrine()->getManager()->flush();
+
+            return $this->redirectToRoute('empresa_show', array('id' => $empresa->getId()));
+        }
+
+        return $this->render('AppBundle:empresa:editImagenes.html.twig', array(
+            'empresa' => $empresa,
+            'fotoLogoOld' => $fotoLogoOld,
+            'fotoPortadaOld' => $fotoPortadaOld,
+            'edit_form' => $editForm->createView(),
+            'delete_form' => $deleteForm->createView(),
+        ));
+    }
+    
 
     /**
      * Deletes a empresa entity.
      *
-     * @Route("/{id}", name="empresa_delete")
-     * @Method("DELETE")
+     * @Route("/delete/{id}", name="empresa_delete")
+     * @Method("GET")
      */
     public function deleteAction(Request $request, Empresa $empresa)
     {
-        $form = $this->createDeleteForm($empresa);
-        $form->handleRequest($request);
-
-        if ($form->isSubmitted() && $form->isValid()) {
-            $em = $this->getDoctrine()->getManager();
-            $em->remove($empresa);
-            $em->flush();
+       
+        $em = $this->getDoctrine()->getManager();
+        if ($empresa->getActivo() == true) {
+            $empresa->setActivo(false);
+        }else{
+            $empresa->setActivo(true); 
         }
+        
+        $em->flush();
+
 
         return $this->redirectToRoute('empresa_index');
     }
@@ -370,7 +483,7 @@ class EmpresaController extends Controller
         }
 
         /**
-         * Lists all empresa entities.
+         * cambiar colores.
          *
          * @Route("/empresa/cambiar/colores/{id}", name="empresa_cambiar_colores")
          * @Method("POST")
@@ -382,11 +495,48 @@ class EmpresaController extends Controller
               $em = $this->getDoctrine()->getManager();
               $empresa->setColorPrimario($request->request->get("colorPrimario"));
               $empresa->setColorSecundario($request->request->get("colorSecundario"));
+
               $em->flush($empresa);
 
-              return $this->redirectToRoute('empresa_show_paginacion', array('id' => $empresa->getId()));
+              return $this->redirectToRoute('empresa_show', array('id' => $empresa->getId()));
 
           }
+
+        /**
+         * agregar redes.
+         *
+         * @Route("/empresa/agregar/redes/{id}", name="empresa_agregar_redes")
+         * @Method("POST")
+         */
+
+        public function EmpresaAgregarRedesAction(Request $request,Empresa $empresa)
+        {
+            $em = $this->getDoctrine()->getManager();
+            
+            $urlFacebook= $request->request->get("facebook");
+            if ($urlFacebook != "") {
+                $red = new EmpresaRedes();
+                $nombre = "facebook";
+                $red->setNombre($nombre);
+                $red->setUrlRedSocial($urlFacebook);
+                $red->setEmpresa($empresa);
+                $em->persist($red);
+                $em->flush($red);
+            }
+            $urlTweeter = $request->request->get("tweeter");
+            if ($urlTweeter != "") {
+                $red = new EmpresaRedes();
+                $nombre = "twitter";
+                $red->setNombre($nombre);
+                $red->setUrlRedSocial($urlTweeter);
+                $red->setEmpresa($empresa);
+                $em->persist($red);
+                $em->flush($red);
+            }
+
+            return $this->redirectToRoute('empresa_show', array('id' => $empresa->getId()));
+
+        }
 
           /**
            * Lists all empresa entities.

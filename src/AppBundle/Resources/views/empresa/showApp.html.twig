@@ -6,7 +6,7 @@
             <!-- START APP CONTAINER -->
             <div class="app-container">
                 <div class="container">
-                <div class="block" style="background-color:#C5CAE9;">
+                <div class="block" style="background-color:#231f20;">
     <div class="app-heading app-heading-small app-heading-condensed">
         <div class="title">
            
@@ -19,6 +19,7 @@
             <li><a href="#pills-5" data-toggle="tab">Productos</a></li>
             <li><a href="#pills-6" data-toggle="tab">Promociones</a></li>
             <li><a href="#pills-7" data-toggle="tab">Peticiones <label class="label label-danger">{{subastas|length}}</labels></a></li>
+            
         </ul>
         <div class="tab-content">
             <div class="tab-pane active" id="pills-4">
@@ -123,10 +124,9 @@
                                     <div class="col-md-3 col-ms-4">
                                         <div class="tile-basic">
                                             <a href="#" class="tile-image tile-image-padding tile-image-hover-grayscale preview" data-preview-image="{{asset('uploads/empresa/imagenes/'~ imagen.urlImagen)}}" data-preview-size="modal-lg">
-                                                <img src="{{asset('uploads/empresa/imagenes/'~ imagen.urlImagen)}}" alt="">
+                                                <img height="200" src="{{asset('uploads/empresa/imagenes/'~ imagen.urlImagen)}}" alt="">
                                             </a>
                                             <div class="tile-content tile-content-condensed-bottom text-center">
-                                                 <a href="{{ path('imagenempresa_delete', { 'id': imagen.id }) }}" class="btn btn-danger btn-xs"><span class="fa fa-close"></span> Eliminar</a>
                                             </div>
                                         </div>
                                     </div>
@@ -184,7 +184,8 @@
                                                   <span class="tile-subtitle">{{producto.valor}}</span>
                                                   <h5 class="tile-title" style="color:{{empresa.colorPrimario}};">{{producto.nombre}}</h5>
                                                   <p>{{producto.descripcion}}</p>
-                                                  <a href="{{ path('producto_show', { 'id': producto.id }) }}" class="btn btn-warning btn-xs">ver</a>
+                                                    <a href="{{ path('producto_show', { 'id': producto.id }) }}" class="btn btn-info btn-clean " data-toggle="tooltip" data-placement="top" title="Ver Producto"><span class="fa fa-hand-pointer-o"></span></a>
+                                                    {# <a href="{{ path('subasta_delete', { 'id': subasta.id }) }}" class="btn btn-danger btn-clean " data-toggle="tooltip" data-placement="top" title="Eliminar Peticion"><span class="fa fa-close"></span></a> #}
                                               </div>
                                           </div>
                                         </div>
@@ -256,33 +257,51 @@
                         <!-- END HEADING -->
                             <div class="block-content">
                                 <div class="container">
-                                    <div class="table-responsive">
-                                        <table class="table table-bordered no-margin-bottom datatable" >
-                                            <thead>
-                                                <tr>
-                                                    <th>Usuario</th>
-                                                    <th>Producto</th>
-                                                    <th>Acciones</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                            {% for subasta in subastas %}
-                                            <tr>
-                                                <td>{{ subasta.usuario.nombres }} {{ subasta.usuario.apellidos }}</td>
-                                                <td>{{ subasta.producto.referencia }}-{{ subasta.producto.nombre }}</td>
-                                                <td><a class="btn btn-warning btn-xs" href="{{ path('subasta_show', { 'id': subasta.id }) }}">Ver</a>
-                                                <a class="btn btn-danger btn-xs" href="{{ path('subasta_delete', { 'id': subasta.id }) }}">Eliminar</a></td>
-                                            </tr>
-                                            {% endfor %}
-                                            </tbody>
-                                        </table>
-                                    </div>    
+                                    {% for subasta in subastas %}
+                                        <div class="col-md-4">
+                                        <div class="tile-basic">
+                                            <div class="tile-image">
+                                                {% for imagen in subasta.producto.imagenes %}
+                                                {% if loop.last %}
+                                                <a href="#" class="tile-image tile-image-padding tile-image-hover-grayscale preview" data-preview-image="{{asset('uploads/producto/'~ imagen.imagen)}}" data-preview-size="modal-lg">
+                                                    <img src="{{asset('uploads/producto/'~ imagen.imagen)}}" alt=""> 
+                                                </a>
+                                                {% endif %}
+                                                {% endfor %}
+                                                <div class="tile-image-container text-right">
+                                                    {% if subasta.producto.subCategoria.id == 1 %}
+                                                    <span class="label label-success">
+                                                    {% elseif subasta.producto.subCategoria.id == 2 %}
+                                                    <span class="label label-warning">
+                                                    {% else %}
+                                                    <span class="label label-danger">
+                                                    {% endif %}
+                                                    {{subasta.producto.subCategoria.nombre}}
+                                                    </span>
+                                                </div>
+                                            </div>
+                                            <div class="tile-content tile-content-condensed-bottom text-center"style="background-color:#edeff0;">
+                                                <span class="tile-subtitle">{{subasta.producto.valor}}</span>
+                                                <h5 class="tile-title" style="color:{{subasta.producto.empresa.colorPrimario}};">{{subasta.producto.nombre}}</h5>
+                                                <p>{{subasta.usuario.nombres}} {{subasta.usuario.apellidos}}</p>
+                                                <a href="{{ path('subasta_show', { 'id': subasta.id }) }}" class="btn btn-info btn-clean " data-toggle="tooltip" data-placement="top" title="Ver Peticion"><span class="fa fa-hand-pointer-o"></span></a>
+                                            </div>
+                                        </div>
+                                        </div>
+                                    {% endfor %}  
                                 </div>
                             </div> 
                         </div>
+                        
                     </div>
                     <!-- END BLOCK -->
                 </div> 
+            
+            
+            
+            
+            
+            
             </div>
         </div>
     </div>                                    

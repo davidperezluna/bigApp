@@ -35,7 +35,15 @@
 <div class="col-md-8">
 <div class="block">
     <div class="comments">
-            
+            <div class="comment">
+                <div class="contact contact-rounded contact-lg">
+                    <img src="{{asset('uploads/usuario/fotosPerfil/'~ subastum.usuario.fotoPerfil)}}">
+                    <div class="contact-container">
+                        <a href="#">{{subastum.usuario.nombres}}</a>
+                        <span>Estoy interesado en el producto {{subastum.producto.nombre}}</span>
+                    </div>
+                </div>
+            </div> 
             {% for comentario in comentarios %}
               <div class="comment">
                 <div class="contact contact-rounded contact-lg">
@@ -47,15 +55,7 @@
                 </div>
             </div>  
             {% endfor %} 
-            <div class="comment">
-                <div class="contact contact-rounded contact-lg">
-                    <img src="{{asset('uploads/usuario/fotosPerfil/'~ subastum.usuario.fotoPerfil)}}">
-                    <div class="contact-container">
-                        <a href="#">{{subastum.usuario.nombres}}</a>
-                        <span>Estoy interesado en el producto {{subastum.producto.nombre}}</span>
-                    </div>
-                </div>
-            </div>  
+             
             <div class="form">
                 <form class="" action="{{path('subastacomentario_new',{'id':subastum.id})}}" method="post">
                     <div class="form-group">

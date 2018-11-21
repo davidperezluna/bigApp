@@ -1,6 +1,16 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
+{% for flash_message in app.session.flashbag.get('notice') %}
+    <div class="alert alert-success alert-icon-block alert-dismissible" role="alert">
+        <div class="alert-icon">
+            <span class="icon-checkmark-circle"></span> 
+        </div>
+        <strong>{{ flash_message }}</strong>
+        <a class="btn btn-primary btn-clean" style="margin-left:5%" href = "{{path('empresa_show',{'id':peticiones[0].producto.empresa.id})}}">Ver Peticiones</a>
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span class="fa fa-times"></span></button>
+    </div>
+{% endfor %}
 <div class="app-heading app-heading-background app-heading-light" style="background: url({{asset('uploads/usuario/fotosPortada/'~ user.fotoPortada)}}) center center no-repeat;">
     <div class="contact contact-rounded contact-bordered contact-xlg status-online margin-bottom-0">
         <img src="{{asset('uploads/usuario/fotosPerfil/'~ user.fotoPerfil)}}">
@@ -22,7 +32,8 @@
            <div class="app-content-separate-content">
 			    <div class="list-group list-group-noborder">
 			        <div class="list-group-title">Perfil</div>
-			        <a href="{{ path('empresa_list') }}" class="list-group-item text-bold active">Empresas</a>
+			        <a href="{{ path('empresa_new',{'id':user.id}) }}" class="list-group-item text-bold active">Crear Empresa</a>
+			        <a href="{{ path('empresa_list_by_usuario',{'id':user.id}) }}" class="list-group-item text-bold">Mis Empresas</a>
 			        <a href="{{ path('producto_list') }}" class="list-group-item text-bold">Productos <span class="badge badge-success"></a>
                     {% if app.user.id == user.id %}
                     <a href="{{ path('subasta_new') }}" class="list-group-item text-bold">Subasta <span class="badge badge-success"></a>
@@ -80,7 +91,9 @@
                           <span class="tile-subtitle">{{producto.valor}}</span>
                           <h5 class="tile-title" style="color:{{producto.empresa.colorPrimario}};">{{producto.nombre}}</h5>
                           <p>{{producto.descripcion}}</p>
-                          <a href="{{ path('producto_show', { 'id': producto.id }) }}" class="btn btn-warning btn-xs">ver</a>
+                            <a href="{{ path('producto_show', { 'id': producto.id }) }}" class="btn btn-info btn-clean " data-toggle="tooltip" data-placement="top" title="Ver Producto"><span class="fa fa-hand-pointer-o"></span></a>
+	                        <a href="{{ path('chatusuariousuario_new', { 'id': producto.empresa.usuario.id }) }}" class="btn btn-warning btn-clean " data-toggle="tooltip" data-placement="top" title="Contacta en Tiempo Real"><span class="fa fa-wechat"></span></a>
+	                        <a href="{{ path('empresa_show_location', { 'id': producto.empresa.id }) }}" class="btn btn-success btn-clean " data-toggle="tooltip" data-placement="top" title="ver Ubicación" target="_blank"><span class="fa fa-map-marker"></span></a>
                       </div>
                   </div>
                 </div>
@@ -179,5 +192,5 @@
 {% endblock %}
 {% block javascripts %}
 {{parent()}}
-   
+
 {% endblock %}

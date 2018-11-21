@@ -11,7 +11,7 @@ use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
 
-class UserType extends AbstractType
+class UserAppType extends AbstractType
 {
     /**
      * {@inheritdoc}
@@ -23,10 +23,8 @@ class UserType extends AbstractType
         ->add('apellidos')
         ->add('celular')
         ->add('email', EmailType::class)
-        
         ->add('rolePersona', ChoiceType::class, array(
             'choices'  => array(
-                'Administrador' => "ROLE_ADMIN",
                 'Usuario' => "ROLE_USER",
                 'Empresa' => "ROLE_EMPRESA",
             ),
@@ -58,6 +56,5 @@ class UserType extends AbstractType
     {
         return 'mapps_usuariobundle_user';
     }
-
 
 }

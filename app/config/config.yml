@@ -6,7 +6,7 @@ imports:
 # Put parameters here that don't need to change on each machine where the app is deployed
 # https://symfony.com/doc/current/best_practices/configuration.html#application-related-configuration
 parameters:
-    locale: en
+    locale: es
     perfil_usuario_directory: '%kernel.root_dir%/../web/uploads/usuario/fotosPerfil'
     portada_usuario_directory: '%kernel.root_dir%/../web/uploads/usuario/fotosPortada'
 
@@ -21,7 +21,7 @@ parameters:
 
 framework:
     #esi: ~
-    translator: { fallback: en }
+    translator: { fallback: es }
 
     serializer: true
     secret: '%secret%'
