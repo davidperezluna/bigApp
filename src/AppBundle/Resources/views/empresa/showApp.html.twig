@@ -19,9 +19,79 @@
             <li><a href="#pills-5" data-toggle="tab">Productos</a></li>
             <li><a href="#pills-6" data-toggle="tab">Promociones</a></li>
             <li><a href="#pills-7" data-toggle="tab">Peticiones <label class="label label-danger">{{subastas|length}}</labels></a></li>
-            
+            <li><a href="#pills-8" data-toggle="tab">Configuración</a></li>
         </ul>
         <div class="tab-content">
+            <div class="tab-pane" id="pills-8">
+                <div class="col-md-12">
+                    <!-- BLOCK -->
+                    <div class="block block-condensed">
+                        <!-- HEADING -->
+                        <div class="app-heading app-heading-small">
+                            <div class="title">
+                                <h2>Configuracion de empresa</h2>
+                                <p>Aqui podras personalizar tu perfil empresa en BigApp</p>
+                            </div>
+                            <div class="block-content">
+                                <div class="container">
+                                    <div class="col-md-12">
+                                        <div class="block">                        
+                                            <div class="app-heading app-heading-small">                                
+                                                <div class="title">
+                                                    <h2>Personalizar Colores</h2>
+                                                </div>                                
+                                            </div>
+                                            <div class="block-content">
+                                            <form class="form-horizontal" action="{{ path('empresa_cambiar_colores', { 'id': empresa.id }) }}" method="POST">
+                                                <div class="form-group">
+                                                    <label class="col-md-2 control-label">Color Primario</label>
+                                                    <div class="col-md-10">
+                                                        <input type="text" class="form-control bs-colorpicker-lg" name="colorPrimario">
+                                                    </div>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label class="col-md-2 control-label">Color Secundario</label>
+                                                    <div class="col-md-10">
+                                                        <input type="text" class="form-control bs-colorpicker-lg" name="colorSecundario">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                                <input type="submit" value="Enviar" class="btn btn-primary pull-right">
+                                            </form>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-12">
+                                        <div class="block">                        
+                                            <div class="app-heading app-heading-small">                                
+                                                <div class="title">
+                                                    <h2>Agregar Redes</h2>
+                                                </div>                                
+                                            </div>
+                                            <div class="block-content">
+                                                <form class="form-horizontal" action="{{ path('empresa_agregar_redes', { 'id': empresa.id }) }}" method="POST">
+                                                    <div class="form-group">
+                                                        <label class="col-md-2 control-label">Facebook</label>
+                                                        <div class="col-md-10">
+                                                            <input type="text" class="form-control" name="facebook">
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label class="col-md-2 control-label">Tweeter</label>
+                                                        <div class="col-md-10">
+                                                            <input type="text" class="form-control" name="tweeter">
+                                                        </div>
+                                                    </div>
+                                            </div>
+                                            <input type="submit" value="Enviar" class="btn btn-primary pull-right">
+                                                </form>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div> 
+            </div>
             <div class="tab-pane active" id="pills-4">
                 <div class="app-heading app-heading-background app-heading-light" style="background: url({{asset('uploads/empresa/fotosportada/'~ empresa.fotoPortada)}}) center center no-repeat;">
                     <div class="contact contact-rounded contact-bordered contact-xlg status-online margin-bottom-0">
@@ -244,65 +314,60 @@
                 </div> 
             </div>
             <div class="tab-pane" id="pills-7">
-            <div class="col-md-12">
-                    <!-- BLOCK -->
-                    <div class="block block-condensed">
-                        <!-- HEADING -->
-                        <div class="app-heading app-heading-small">
-                            <div class="title">
-                                <h2>Peticiones de Usuarios</h2>
-                                <p>Aqui encontraras las peticiones de los usuarios de Big App</p>
+                <div class="col-md-12">
+                        <!-- BLOCK -->
+                        <div class="block block-condensed">
+                            <!-- HEADING -->
+                            <div class="app-heading app-heading-small">
+                                <div class="title">
+                                    <h2>Peticiones de Usuarios</h2>
+                                    <p>Aqui encontraras las peticiones de los usuarios de Big App</p>
+                                </div>
                             </div>
-                        </div>
-                        <!-- END HEADING -->
-                            <div class="block-content">
-                                <div class="container">
-                                    {% for subasta in subastas %}
-                                        <div class="col-md-4">
-                                        <div class="tile-basic">
-                                            <div class="tile-image">
-                                                {% for imagen in subasta.producto.imagenes %}
-                                                {% if loop.last %}
-                                                <a href="#" class="tile-image tile-image-padding tile-image-hover-grayscale preview" data-preview-image="{{asset('uploads/producto/'~ imagen.imagen)}}" data-preview-size="modal-lg">
-                                                    <img src="{{asset('uploads/producto/'~ imagen.imagen)}}" alt=""> 
-                                                </a>
-                                                {% endif %}
-                                                {% endfor %}
-                                                <div class="tile-image-container text-right">
-                                                    {% if subasta.producto.subCategoria.id == 1 %}
-                                                    <span class="label label-success">
-                                                    {% elseif subasta.producto.subCategoria.id == 2 %}
-                                                    <span class="label label-warning">
-                                                    {% else %}
-                                                    <span class="label label-danger">
+                            <!-- END HEADING -->
+                                <div class="block-content">
+                                    <div class="container">
+                                        {% for subasta in subastas %}
+                                            <div class="col-md-4">
+                                            <div class="tile-basic">
+                                                <div class="tile-image">
+                                                    {% for imagen in subasta.producto.imagenes %}
+                                                    {% if loop.last %}
+                                                    <a href="#" class="tile-image tile-image-padding tile-image-hover-grayscale preview" data-preview-image="{{asset('uploads/producto/'~ imagen.imagen)}}" data-preview-size="modal-lg">
+                                                        <img src="{{asset('uploads/producto/'~ imagen.imagen)}}" alt=""> 
+                                                    </a>
                                                     {% endif %}
-                                                    {{subasta.producto.subCategoria.nombre}}
-                                                    </span>
+                                                    {% endfor %}
+                                                    <div class="tile-image-container text-right">
+                                                        {% if subasta.producto.subCategoria.id == 1 %}
+                                                        <span class="label label-success">
+                                                        {% elseif subasta.producto.subCategoria.id == 2 %}
+                                                        <span class="label label-warning">
+                                                        {% else %}
+                                                        <span class="label label-danger">
+                                                        {% endif %}
+                                                        {{subasta.producto.subCategoria.nombre}}
+                                                        </span>
+                                                    </div>
+                                                </div>
+                                                <div class="tile-content tile-content-condensed-bottom text-center"style="background-color:#edeff0;">
+                                                    <span class="tile-subtitle">{{subasta.producto.valor}}</span>
+                                                    <h5 class="tile-title" style="color:{{subasta.producto.empresa.colorPrimario}};">{{subasta.producto.nombre}}</h5>
+                                                    <p>{{subasta.usuario.nombres}} {{subasta.usuario.apellidos}}</p>
+                                                    <a href="{{ path('subasta_show', { 'id': subasta.id }) }}" class="btn btn-info btn-clean " data-toggle="tooltip" data-placement="top" title="Ver Peticion"><span class="fa fa-hand-pointer-o"></span></a>
                                                 </div>
                                             </div>
-                                            <div class="tile-content tile-content-condensed-bottom text-center"style="background-color:#edeff0;">
-                                                <span class="tile-subtitle">{{subasta.producto.valor}}</span>
-                                                <h5 class="tile-title" style="color:{{subasta.producto.empresa.colorPrimario}};">{{subasta.producto.nombre}}</h5>
-                                                <p>{{subasta.usuario.nombres}} {{subasta.usuario.apellidos}}</p>
-                                                <a href="{{ path('subasta_show', { 'id': subasta.id }) }}" class="btn btn-info btn-clean " data-toggle="tooltip" data-placement="top" title="Ver Peticion"><span class="fa fa-hand-pointer-o"></span></a>
                                             </div>
-                                        </div>
-                                        </div>
-                                    {% endfor %}  
-                                </div>
-                            </div> 
+                                        {% endfor %}  
+                                    </div>
+                                </div> 
+                            </div>
                         </div>
-                        
-                    </div>
-                    <!-- END BLOCK -->
-                </div> 
-            
-            
-            
-            
-            
-            
+                        <!-- END BLOCK -->
+                    </div> 
+                </div>
             </div>
+            
         </div>
     </div>                                    
 
