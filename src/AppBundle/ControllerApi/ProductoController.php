@@ -35,7 +35,10 @@ class ProductoController extends FOSRestController
                 'descripcion' => $p->getDescripcion(),
                 'nombreEmpresa' => $p->getEmpresa()->getNombre(),
                 'logoEmpresa' => $p->getEmpresa()->getFotoLogo(),
+                'lat' => $p->getEmpresa()->getLat(),
+                'lng' => $p->getEmpresa()->getLng(),
                 'imagen' => $imagen->getImagen(),
+                'valor' => $p->getValor(),
                 'valor' => $p->getValor(),
                 'subCategoria' => $p->getSubCategoria()->getNombre(),
                 'fecha' => $p->getCreatedAt(),
@@ -74,8 +77,11 @@ class ProductoController extends FOSRestController
                 'logoEmpresa' => $p->getEmpresa()->getFotoLogo(),
                 'imagen' => $imagen->getImagen(),
                 'valor' => $p->getValor(),
+                'lat' => $p->getEmpresa()->getLat(),
+                'lng' => $p->getEmpresa()->getLng(),
+                'valor' => $p->getValor(),
                 'subCategoria' => $p->getSubCategoria()->getNombre(),
-                'fecha' => '1994-03-01',
+                'fecha' => $p->getCreatedAt(),
                 );
             }
           }
@@ -111,8 +117,11 @@ class ProductoController extends FOSRestController
                 'logoEmpresa' => $p->getEmpresa()->getFotoLogo(),
                 'imagen' => $imagen->getImagen(),
                 'valor' => $p->getValor(),
+                'lat' => $p->getEmpresa()->getLat(),
+                'lng' => $p->getEmpresa()->getLng(),
+                'valor' => $p->getValor(),
                 'subCategoria' => $p->getSubCategoria()->getNombre(),
-                'fecha' => '1994-03-01',
+                'fecha' => $p->getCreatedAt(),
                 );
             }
           }
