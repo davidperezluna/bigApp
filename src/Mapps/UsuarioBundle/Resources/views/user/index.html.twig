@@ -25,6 +25,11 @@
                           <td>{{usuario.celular}}</td>                      
                           <td>
                             <a class="btn btn-warning btn-line btn-xs" href="{{ path('user_edit', { 'id': usuario.id }) }}"><span class="fa fa-pencil"></span>Editar</a>
+                            {% if usuario.isEnabled %}
+                            <a class="btn btn-danger btn-line btn-xs" href="{{ path('user_delete', { 'id': usuario.id }) }}"><span class="fa fa-close"></span>Bannear</a>
+                            {% else %}
+                            <a class="btn btn-success btn-line btn-xs" href="{{ path('user_delete', { 'id': usuario.id }) }}"><span class="fa fa-close"></span>Habilitar</a>   
+                            {% endif %}
                           </td>                      
                       </tr>
                     {% endfor %}

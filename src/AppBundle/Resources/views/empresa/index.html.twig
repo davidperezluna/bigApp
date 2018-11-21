@@ -10,8 +10,6 @@
                      <thead>
                         <tr>
                           <th>Nombre</th>
-                          <th>Correo</th>
-                          <th>Telefono</th>
                           <th>Celular</th>
                           <th>Nit</th>
                           <th>Estado</th>
@@ -22,15 +20,15 @@
                     {% for empresa in empresas %}
                       <tr>
                           <td>{{ empresa.nombre }}</td>
-                          <td>{{ empresa.correo }}</td>
-                          <td>{{ empresa.telefono }}</td>
                           <td>{{ empresa.celular }}</td>
                           <td>{{ empresa.nit }}</td>
-                          <td>{% if empresa.activo == 1 %}<label class="label label-success">Visible</label>{% else %}<label class="label label-warning">No Visible</label>{% endif %}</td>
+                          <td>{% if empresa.activo == 1 %}<label class="label label-success">Activo</label>{% else %}<label class="label label-danger">Inactivo</label>{% endif %}</td>
                           <td>
                             <div class="col-md-9">
-                              <a class="btn btn-warning btn-xs" href="{{ path('empresa_show', { 'id': empresa.id }) }}">Ver</a>
-                              <a class="btn btn-warning btn-xs" href="{{ path('empresa_edit', { 'id': empresa.id }) }}">editar</a>
+                              <a data-toggle="tooltip" data-placement="top" title="Ver" class="btn btn-info" href="{{ path('empresa_show', { 'id': empresa.id }) }}"><i class="fa fa-eye"></i></a>
+                              <a data-toggle="tooltip" data-placement="top" title="Editar" class="btn btn-warning" href="{{ path('empresa_edit', { 'id': empresa.id }) }}"><i class="fa fa-edit"></i></a>
+                              
+                              {% if empresa.activo == 1 %}<a data-toggle="tooltip" data-placement="top" title="Desactivar" class="btn btn-danger" href="{{ path('empresa_delete', { 'id': empresa.id }) }}"><i class="fa fa-close"></i></a>{% else %}<a data-toggle="tooltip" data-placement="top" title="Activar" class="btn btn-success" href="{{ path('empresa_delete', { 'id': empresa.id }) }}"><i class="fa fa-play"></i></a>{% endif %}
                             </div>
                           </td>
                       </tr>

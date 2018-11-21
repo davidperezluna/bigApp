@@ -35,7 +35,7 @@
 	        <div class="container">
 	              <div class="row grid">
 	                  {% for empresa in pagination %}
-	                    <div class="col-md-6">
+	                    <div class="col-md-4">
 	                      <div class="tile-basic">
 	                          <div class="tile-image">
 	                              <a href="#" class="tile-image tile-image-padding tile-image-hover-grayscale preview" data-preview-image="{{asset('uploads/empresa/fotosLogo/'~ empresa.fotoLogo)}}" data-preview-size="modal-lg">
@@ -45,9 +45,9 @@
 	                          <div class="tile-content tile-content-condensed-bottom text-center"style="background-color:#edeff0;">
 	                              
 	                              <h5 class="tile-title" style="color:{{empresa.colorPrimario}};">{{empresa.nombre}}</h5>
-	                              <p>{{empresa.descripcion}}</p>
-	                              <a href="{{ path('empresa_show', { 'id': empresa.id }) }}" class="btn btn-warning btn-xs">Ver</a>
-	                              <a target="_blank" href="{{ path('empresa_show_location', { 'id': empresa.id }) }}" class="btn btn-warning btn-xs">Navegar</a>
+	                              <hr>
+								<a href="{{ path('empresa_show', { 'id': empresa.id }) }}" class="btn btn-info btn-clean " data-toggle="tooltip" data-placement="top" title="Ver Empresa"><span class="fa fa-hand-pointer-o"></span></a>
+	                            <a href="{{ path('empresa_show_location', { 'id': empresa.id }) }}" class="btn btn-success btn-clean " data-toggle="tooltip" data-placement="top" title="ver Ubicación" target="_blank"><span class="fa fa-map-marker"></span></a>
 	                              
 	                          </div>
 	                      </div>

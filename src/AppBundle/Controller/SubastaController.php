@@ -90,7 +90,7 @@ class SubastaController extends Controller
             array(
                 'subasta' => $subastum->getId()
             ), 
-            array('fecha' => 'DESC'));
+            array('id' => 'ASC'));
 
 
         return $this->render('AppBundle:subasta:show.html.twig', array(

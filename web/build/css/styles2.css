@@ -866,8 +866,6 @@ pre code {
 .col-lg-12 {
   position: relative;
   min-height: 1px;
-  padding-left: 15px;
-  padding-right: 15px;
 }
 .col-xs-1,
 .col-xs-2,
@@ -21574,7 +21572,7 @@ body a:hover {
   float: left;
   width: 100%;
   position: relative;
-  background: #EDEFF0;
+  background: #231f20;
 }
 .app .app-container .app-sidebar {
   float: left;
@@ -24038,7 +24036,7 @@ input[type="file"] {
 .btn.btn-default.btn-clean:active,
 .btn.btn-default.btn-clean:active:focus {
   color: #454545;
-  background: ##231f20;
+  background: #FFF;
   border-color: #FFF;
   border-color: #bec7ce;
   color: #2b2b2b;
@@ -25923,13 +25921,12 @@ input[type="file"] {
   position: relative;
   float: left;
   width: 100%;
-  padding: 10px 20px 20px;
+  padding: 0px;
   margin-bottom: 15px;
   background: #FFF;
-  border: 1px solid #DBE0E4;
+  
   -webkit-border-radius: 5px;
   -moz-border-radius: 5px;
-  border-radius: 5px;
 }
 .app .block .app-heading {
   background: transparent;
@@ -26577,6 +26574,7 @@ input[type="file"] {
   }
   .nav.nav-justified > li > a {
     border: 1px solid #DBE0E4;
+    color:white;
   }
   .tab-content.tab-content-bordered {
     border: 1px solid #DBE0E4;

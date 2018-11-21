@@ -54,14 +54,52 @@ class UserController extends Controller
             $user->setUsername($user->getEmail());
             $user->setFotoPerfil("user.png");
             $user->setFotoPortada("portadaDefault.jpg");
-            $user->setEnabled(1);
+
+            $user->setEnabled(0);
+
             $em->persist($user);
             $em->flush();
 
-            return $this->redirectToRoute('user_index');
+            return $this->redirectToRoute("/login");
         }
 
         return $this->render('MappsUsuarioBundle:user:new.html.twig', array(
+            'user' => $user,
+            'form' => $form->createView(),
+        ));
+    }
+
+    /**
+     * Creates a new user entity.
+     *
+     * @Route("/new/app", name="user_new_app")
+     * @Method({"GET", "POST"})
+     */
+    public function newAppAction(Request $request)
+    {
+        $user = new User();
+        $form = $this->createForm('Mapps\UsuarioBundle\Form\UserAppType', $user);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $em = $this->getDoctrine()->getManager();
+            $factory = $this->get("security.encoder_factory");
+            $encoder = $factory->getEncoder($user);
+            $passwordd =$user->getPassword();
+            $password = $encoder->encodePassword($passwordd, $user->getSalt());
+            $user->setPassword($password);
+            $user->setUsername($user->getEmail());
+            $user->setFotoPerfil("user.png");
+            $user->setFotoPortada("portadaDefault.jpg");
+            $em->persist($user);
+            $em->flush();
+            $user->setEnabled(0);
+            $em->flush();
+
+            return $this->redirectToRoute("user_confirmation");
+        }
+
+        return $this->render('MappsUsuarioBundle:user:new.app.html.twig', array(
             'user' => $user,
             'form' => $form->createView(),
         ));
@@ -116,21 +154,34 @@ class UserController extends Controller
     /**
      * Deletes a user entity.
      *
-     * @Route("/{id}", name="user_delete")
-     * @Method("DELETE")
+     * @Route("/{id}/baneo/usuario", name="user_delete")
+     * @Method("GET")
      */
     public function deleteAction(Request $request, User $user)
     {
-        $form = $this->createDeleteForm($user);
-        $form->handleRequest($request);
+        
+        $em = $this->getDoctrine()->getManager();
 
-        if ($form->isSubmitted() && $form->isValid()) {
-            $em = $this->getDoctrine()->getManager();
-            $em->remove($user);
-            $em->flush();
+        if($user->isEnabled()){
+            $user->setEnabled(false);
+        }else{
+            $user->setEnabled(true);
         }
+        
+        $em->flush();
 
         return $this->redirectToRoute('user_index');
+    }
+
+    /**
+     * Deletes a user entity.
+     *
+     * @Route("/confirmacion/", name="user_confirmation")
+     * @Method("GET")
+     */
+    public function confirmationAction(Request $request)
+    {
+        return $this->render('MappsUsuarioBundle:user:confirmacion.html.twig');
     }
 
     /**

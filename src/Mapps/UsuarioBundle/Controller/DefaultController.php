@@ -20,8 +20,18 @@ class DefaultController extends Controller
         ), array('id' => 'DESC'),3);
 
     	$user = $this->getUser();
+        $peticiones = $em->getRepository('AppBundle:Subasta')->findByUsuario($user->getId());
+        $numeroPeticiones = count($peticiones) -1;
+        if ($peticiones) {
+            $this->addFlash(
+                'notice',
+                'Uste tiene '.$numeroPeticiones.' nuevas peticiones de subasta!'
+            );
+        }
+
     	return $this->render('MappsUsuarioBundle:Default:index.html.twig', array(
             'productos' => $productos,
+            'peticiones' => $peticiones,
             'amigos' => $amigos,
             'user' => $user,
         ));
