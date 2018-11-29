@@ -1,41 +1,38 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
-    <h1>Subastas list</h1>
-
-    <table>
-        <thead>
-            <tr>
-                <th>Id</th>
-                <th>Createdat</th>
-                <th>Peticion</th>
-                <th>Actions</th>
-            </tr>
-        </thead>
-        <tbody>
-        {% for subastum in subastas %}
-            <tr>
-                <td><a href="{{ path('subasta_show', { 'id': subastum.id }) }}">{{ subastum.id }}</a></td>
-                <td>{% if subastum.createdAt %}{{ subastum.createdAt|date('Y-m-d H:i:s') }}{% endif %}</td>
-                <td>{{ subastum.peticion }}</td>
-                <td>
-                    <ul>
-                        <li>
-                            <a href="{{ path('subasta_show', { 'id': subastum.id }) }}">show</a>
-                        </li>
-                        <li>
-                            <a href="{{ path('subasta_edit', { 'id': subastum.id }) }}">edit</a>
-                        </li>
-                    </ul>
-                </td>
-            </tr>
-        {% endfor %}
-        </tbody>
-    </table>
-
-    <ul>
-        <li>
-            <a href="{{ path('subasta_new') }}">Create a new subastum</a>
-        </li>
-    </ul>
+{% for subasta in subastas %}
+    <div class="col-md-4">
+        <div class="tile-basic">
+            <div class="tile-image">
+                {% for imagen in subasta.producto.imagenes %}
+                {% if loop.last %}
+                <a href="#" class="tile-image tile-image-padding tile-image-hover-grayscale preview" data-preview-image="{{asset('uploads/producto/'~ imagen.imagen)}}" data-preview-size="modal-lg">
+                    <img src="{{asset('uploads/producto/'~ imagen.imagen)}}" alt=""> 
+                </a>
+                {% endif %}
+                {% endfor %}
+                <div class="tile-image-container text-right">
+                    {% if subasta.producto.subCategoria.id == 1 %}
+                    <span class="label label-success">
+                    {% elseif subasta.producto.subCategoria.id == 2 %}
+                    <span class="label label-warning">
+                    {% else %}
+                    <span class="label label-danger">
+                    {% endif %}
+                    {{subasta.producto.subCategoria.nombre}}
+                    </span>
+                </div>
+            </div>
+            <div class="tile-content tile-content-condensed-bottom text-center"style="background-color:#edeff0;">
+                <span class="tile-subtitle">{{subasta.producto.valor}}</span>
+                <h5 class="tile-title" style="color:{{subasta.producto.empresa.colorPrimario}};">{{subasta.producto.nombre}}</h5>
+                <p>{{subasta.usuario.nombres}} {{subasta.usuario.apellidos}}</p>
+                <a href="{{ path('subasta_show', { 'id': subasta.id }) }}" class="btn btn-info btn-clean " data-toggle="tooltip" data-placement="top" title="Ver Peticion"><span class="fa fa-hand-pointer-o"></span></a>
+                <a href="{{ path('subasta_delete', { 'id': subasta.id }) }}" class="btn btn-danger btn-clean " data-toggle="tooltip" data-placement="top" title="Eliminar Peticion"><span class="fa fa-close"></span></a>
+                <a href="{{ path('subasta_entregado_ok', { 'id': subasta.id }) }}" class="btn btn-success btn-clean " data-toggle="tooltip" data-placement="top" title="Marcar como entregado"><span class="fa fa-calendar-check-o"></span></a>
+            </div>
+        </div>
+    </div>
+{% endfor %}
 {% endblock %}

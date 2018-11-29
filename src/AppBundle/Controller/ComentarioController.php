@@ -52,7 +52,7 @@ class ComentarioController extends Controller
         $em->persist($comentario);
         $em->flush();
 
-        return $this->redirectToRoute('homepage');
+        return $this->redirectToRoute('perfil', array('id' => $publicacion->getUsuarioReceptor()->getId()));
         
 
         

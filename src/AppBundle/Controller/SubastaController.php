@@ -17,14 +17,19 @@ class SubastaController extends Controller
     /**
      * Lists all subastum entities.
      *
-     * @Route("/", name="subasta_index")
+     * @Route("/{userId}", name="subasta_index")
      * @Method("GET")
      */
-    public function indexAction()
+    public function indexAction($userId)
     {
         $em = $this->getDoctrine()->getManager();
 
-        $subastas = $em->getRepository('AppBundle:Subasta')->findAll();
+        $subastas = $em->getRepository('AppBundle:Subasta')->findBy(
+            array(
+                'usuario' => $userId,
+                'estado'=>"solicitado"
+                )
+        );
 
         return $this->render('AppBundle:subasta:index.html.twig', array(
             'subastas' => $subastas,
@@ -60,6 +65,7 @@ class SubastaController extends Controller
                 $subastumBd->setProducto($producto);
                 $subastumBd->setPeticion($subastum->getPeticion());
                 $subastumBd->setMunicipio($subastum->getMunicipio());
+                $subastumBd->setCategoria($subastum->getCategoria());
                 $em->persist($subastumBd);
                 $em->flush();
             }
@@ -145,6 +151,20 @@ class SubastaController extends Controller
         
 
         return $this->redirectToRoute('empresa_show', array('id' => $subastum->getProducto()->getEmpresa()->getId()));
+    }
+
+    /**
+     * marcar como entregado.
+     *
+     * @Route("/entregado/{id}", name="subasta_entregado_ok")
+     * @Method("GET")
+     */
+    public function entregadoAction(Request $request, Subasta $subastum)
+    {
+            $em = $this->getDoctrine()->getManager();
+            $subastum->setEstado("entregado");
+            $em->flush($subastum);
+        return $this->redirectToRoute('subasta_index', array('userId' => $subastum->getUsuario()->getId()));
     }
 
     /**

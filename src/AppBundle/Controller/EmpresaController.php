@@ -442,46 +442,7 @@ class EmpresaController extends Controller
         ;
     }
 
-    /**
-     * Lists all empresa entities.
-     *
-     * @Route("/show/paginacion/anonimo/{id}", name="empresa_show_paginacion_anonimo")
-     * @Method("GET")
-     */
-
-      public function showPaginacionAnonimoAction(Request $request,Empresa $empresa)
-        {
-          $em    = $this->getDoctrine()->getManager();
-          $ban = false;
-          $planEmpresa = $em->getRepository('AppBundle:PlanEmpresa')->findOneByEmpresa($empresa->getId());
-                  $plan = $planEmpresa->getPlan();
-                  $planesServicios = $plan->getPlanesServicios();
-
-                  foreach ($planesServicios as $key => $ps) {
-                    if ($ps->getServicio()->getNombre() == "Localizacion") {
-                      $ban = true;
-                    }
-                  }
-            $vistas = $empresa->getVisitas() + 1;
-            $empresa->setVisitas($vistas);
-            $em->flush($empresa);
-            $planEmpresa = $em->getRepository('AppBundle:PlanEmpresa')->findOneByEmpresa($empresa->getId());
-            $plan = $planEmpresa->getPlan();
-            $planesServicios = $plan->getPlanesServicios();
-
-            $productos = $em->getRepository('AppBundle:Producto')->findAll();
-            $sectores = $em->getRepository('AppBundle:Sector')->findAll();
-            // parameters to template
-            return $this->render('AppBundle:empresa:show.anonimo.html.twig', array(
-              'pagination' => $productos,
-              'empresa'=>$empresa,
-              'sectores' => $sectores,
-              'planServicios' => $planesServicios,
-              'ban'=>$ban,
-              )
-            );
-        }
-
+    
         /**
          * cambiar colores.
          *
@@ -675,21 +636,6 @@ class EmpresaController extends Controller
               ));
               return($data);
             }
-          }
-
-          /**
-           * Lists all empresa entities.
-           *
-           * @Route("/show/loacation/movil/{id}", name="empresa_show_location_movil")
-           * @Method("GET")
-           */
-          public function showLocationMovilAction(Empresa $empresa){
-              return $this->render('AppBundle:empresa:show.location.movil.html.twig',
-                array(
-                  'empresa'=>$empresa,
-                )
-              );
-
           }
 
         

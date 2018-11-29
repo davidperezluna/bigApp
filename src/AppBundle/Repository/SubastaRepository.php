@@ -18,9 +18,11 @@ class SubastaRepository extends \Doctrine\ORM\EntityRepository
         ->createQuery(
             'SELECT s  FROM AppBundle:Subasta s
             JOIN s.producto p
-            WHERE p.empresa  = :empresaId'
+            WHERE p.empresa  = :empresaId
+            AND s.estado = :solicitado'
         )
-        ->setParameter('empresaId', $empresaId);
+        ->setParameter('empresaId', $empresaId)
+        ->setParameter('solicitado', "solicitado")
         ;
 
         $subastas = $query->getResult();
