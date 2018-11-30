@@ -87,9 +87,9 @@ class PublicacionController extends Controller
 
             $publicacion->setUrlVideoYutube($urlVideo);
             $em->persist($publicacion);
-            $em->flush();
+            $em->flush(); 
 
-            return $this->redirectToRoute('homepage');
+            return $this->redirectToRoute('perfil', array('id' => $receptor->getId()));
         }
 
         return $this->render('AppBundle:publicacion:new.html.twig', array(

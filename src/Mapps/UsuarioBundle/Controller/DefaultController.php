@@ -51,9 +51,11 @@ class DefaultController extends Controller
         ), array('id' => 'DESC'),3);
 
         $user = $em->getRepository('MappsUsuarioBundle:User')->find($id);
+        $peticiones = $em->getRepository('AppBundle:Subasta')->findByUsuario($user->getId());
         
     	return $this->render('MappsUsuarioBundle:Default:index.html.twig', array(
             'productos' => $productos,
+            'peticiones' => $peticiones,
             'amigos' => $amigos,
             'user' => $user,
         ));
