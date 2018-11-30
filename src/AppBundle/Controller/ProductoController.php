@@ -149,6 +149,22 @@ class ProductoController extends Controller
     }
 
     /**
+     * Finds and displays a producto entity.
+     *
+     * @Route("/movil/{id}", name="producto_show_movil")
+     * @Method("GET")
+     */
+    public function showMovilAction(Producto $producto)
+    {
+        $deleteForm = $this->createDeleteForm($producto);
+
+        return $this->render('AppBundle:producto:show.movil.html.twig', array(
+            'producto' => $producto,
+            'delete_form' => $deleteForm->createView(),
+        ));
+    }
+
+    /**
      * Displays a form to edit an existing producto entity.
      *
      * @Route("/{id}/edit", name="producto_edit")

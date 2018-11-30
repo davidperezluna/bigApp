@@ -31,6 +31,7 @@ class ProductoController extends FOSRestController
             if ($keyImegen==0) {
               $productosArray[$key] = array
                 (
+                'id' => $p->getId(), 
                 'nombre' => $p->getNombre(), 
                 'descripcion' => $p->getDescripcion(),
                 'nombreEmpresa' => $p->getEmpresa()->getNombre(),
@@ -71,6 +72,7 @@ class ProductoController extends FOSRestController
             if ($keyImegen==0) {
               $productosArray[$key] = array
                 (
+                'id' => $p->getId(),
                 'nombre' => $p->getNombre(), 
                 'descripcion' => $p->getDescripcion(),
                 'nombreEmpresa' => $p->getEmpresa()->getNombre(),
@@ -111,6 +113,7 @@ class ProductoController extends FOSRestController
             if ($keyImegen==0) {
               $productosArray[$key] = array
                 (
+                'id' => $p->getId(),
                 'nombre' => $p->getNombre(), 
                 'descripcion' => $p->getDescripcion(),
                 'nombreEmpresa' => $p->getEmpresa()->getNombre(),

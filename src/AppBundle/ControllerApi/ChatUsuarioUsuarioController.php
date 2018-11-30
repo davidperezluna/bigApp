@@ -28,20 +28,17 @@ class ChatUsuarioUsuarioController extends FOSRestController
       $params = json_decode($data);
       $em = $this->getDoctrine()->getManager();
       $usuario = $em->getRepository('MappsUsuarioBundle:User')->findOneByUsername($params->username);
-      $publicaciones = $em->getRepository('AppBundle:publicacion')->findByUsuarioEmisor($usuario->getId());
+      $mensajes = $em->getRepository('AppBundle:chatUsuarioUsuario')->findByUsuario($usuario->getId());
 
-      if ($publicaciones != null) {
-        foreach ($publicaciones as $key => $p) {
-            $publicacionesArray[$key] = array(
-            'contenido' => $p->getContenido(), 
-            'id' => $p->getId(), 
-            'imagen' => $p->getImagen(), 
-            'urlVideo' => $p->getUrlVideoYutube(), 
-            'fecha' => $p->getCreatedAt(), 
+      if ($mensajes != null) {
+        foreach ($mensajes as $key => $mensaje) {
+            $mensajesArray[$key] = array(
+            'toUserId' => $mensaje->getDireccion()->getId(),
+            'toUserName' => $mensaje->getUsuario()->getUsername(),
             );
         }
       }else{
-        $publicacionesArray = null;
+        $mensajesArray = null;
       }
       
 
@@ -57,7 +54,7 @@ class ChatUsuarioUsuarioController extends FOSRestController
           'status' => "success",
           'msj' => "Lista de Usuarios",
           'usuario' => $usuarioArray,
-          'publicaciones' => $publicacionesArray,
+          'mensajes' => $mensajesArray,
       );
       return $response;
     }
