@@ -38,6 +38,8 @@ class UsuarioController extends FOSRestController
             'imagen' => $p->getImagen(), 
             'urlVideo' => $p->getUrlVideoYutube(), 
             'fecha' => $p->getCreatedAt(), 
+            'fotoPerfil'=> $p->getUsuarioEmisor()->getFotoPerfil(),
+            'nombres'=> $p->getUsuarioEmisor()->getNombres()
             );
         }
       }else{
@@ -61,4 +63,45 @@ class UsuarioController extends FOSRestController
       );
       return $response;
     }
+
+
+    /**
+     * @Rest\Post("/usuario/new")
+     */
+    public function postUserNewAction(Request $request)
+    { 
+      $em = $this->getDoctrine()->getManager();
+      $data = $request->getContent();
+      $params = json_decode($data);
+
+      $user = new User();
+      $factory = $this->get("security.encoder_factory");
+      $encoder = $factory->getEncoder($user);
+      $passwordd =$params->password;
+      $password = $encoder->encodePassword($passwordd, $user->getSalt());
+
+
+      $user->setUsername($params->username);
+      $user->setNombres($params->nombres);
+      $user->setApellidos($params->apellidos);
+      $user->setEmail($params->email);
+      $user->setCelular($params->celular);
+      $user->setPassword($password);
+      $user->setEnabled(0);
+      $user->setFotoPerfil("user.png");
+      $user->setFotoPortada("portadaDefault.jpg");
+      
+      $em->persist($user);
+      $em->flush();
+      $user->setEnabled(0);
+      $em->flush($user);
+      
+      
+      $response = array(
+          'status' => "success",
+          'msj' => "Usuario Creado",
+      );
+      return $response;
+    }
+
 }

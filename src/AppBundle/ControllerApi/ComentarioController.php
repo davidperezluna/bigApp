@@ -26,12 +26,14 @@ class ComentarioController extends FOSRestController
       $helpers = $this->get("app.helpers");
       $data = $request->getContent();
       $params = json_decode($data);
+      
       $comentarios = $em->getRepository('AppBundle:Comentario')->findByPublicacion($params->publicacionId);
      
       if ($comentarios != null) {
         foreach ($comentarios as $key => $comentario) {
           $comentariosArray[$key] = array
             (
+            'id' => $comentario->getId(), 
             'contenido' => $comentario->getContenido(), 
             'username' => $comentario->getUsuario()->getUsername(), 
             'imagen' => $comentario->getUsuario()->getFotoPerfil(), 
@@ -46,4 +48,26 @@ class ComentarioController extends FOSRestController
         'datos' => $comentariosArray,
       );
     }
-  }
+
+  /**
+     * @Rest\Post("/comentario/publicacion/delete")
+     */
+    public function postEliminarComentarioAction(Request $request)
+    {
+      $em = $this->getDoctrine()->getManager();
+      $helpers = $this->get("app.helpers");
+      $data = $request->getContent();
+      $params = json_decode($data);
+      
+      $comentario = $em->getRepository('AppBundle:Comentario')->find($params->comentarioId);
+     
+      $em->remove($comentario);
+      $em->flush();
+
+      return $response = array(
+        'status' => "success",
+        'msj' => "comentario eliminado",
+        
+      );
+    }
+}
