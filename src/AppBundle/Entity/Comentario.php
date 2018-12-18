@@ -46,7 +46,7 @@ class Comentario
     /**
      * @var \DateTime
      *
-     * @ORM\Column(name="createdAt", type="date")
+     * @ORM\Column(name="createdAt", type="datetime")
      */
     private $createdAt;
 
@@ -85,10 +85,13 @@ class Comentario
         return $this->id;
     }
 
+    
+
     /**
      * Set contenido
      *
      * @param string $contenido
+     *
      * @return Comentario
      */
     public function setContenido($contenido)
@@ -112,6 +115,7 @@ class Comentario
      * Set calificacion
      *
      * @param integer $calificacion
+     *
      * @return Comentario
      */
     public function setCalificacion($calificacion)
@@ -135,6 +139,7 @@ class Comentario
      * Set activo
      *
      * @param boolean $activo
+     *
      * @return Comentario
      */
     public function setActivo($activo)
@@ -158,6 +163,7 @@ class Comentario
      * Set createdAt
      *
      * @param \DateTime $createdAt
+     *
      * @return Comentario
      */
     public function setCreatedAt($createdAt)
@@ -181,6 +187,7 @@ class Comentario
      * Set updatedAt
      *
      * @param \DateTime $updatedAt
+     *
      * @return Comentario
      */
     public function setUpdatedAt($updatedAt)
@@ -200,55 +207,11 @@ class Comentario
         return $this->updatedAt;
     }
 
-    
-
-    /**
-     * Set publicacion
-     *
-     * @param \AppBundle\Entity\Publicacion $publicacion
-     * @return Comentario
-     */
-    public function setPublicacion(\AppBundle\Entity\Publicacion $publicacion = null)
-    {
-        $this->publicacion = $publicacion;
-
-        return $this;
-    }
-
-    /**
-     * Get publicacion
-     *
-     * @return \AppBundle\Entity\Publicacion
-     */
-    public function getPublicacion()
-    {
-        return $this->publicacion;
-    }
-
-    /**
-    * Gets triggered only on insert
-
-    * @ORM\PrePersist
-    */
-   public function onPrePersist()
-   {
-       $this->createdAt = new \DateTime("now");
-   }
-
-   /**
-    * Gets triggered every time on update
-
-    * @ORM\PreUpdate
-    */
-   public function onPreUpdate()
-   {
-       $this->updatedAt = new \DateTime("now");
-   }
-
     /**
      * Set visto
      *
      * @param boolean $visto
+     *
      * @return Comentario
      */
     public function setVisto($visto)
@@ -266,6 +229,30 @@ class Comentario
     public function getVisto()
     {
         return $this->visto;
+    }
+
+    /**
+     * Set publicacion
+     *
+     * @param \AppBundle\Entity\Publicacion $publicacion
+     *
+     * @return Comentario
+     */
+    public function setPublicacion(\AppBundle\Entity\Publicacion $publicacion = null)
+    {
+        $this->publicacion = $publicacion;
+
+        return $this;
+    }
+
+    /**
+     * Get publicacion
+     *
+     * @return \AppBundle\Entity\Publicacion
+     */
+    public function getPublicacion()
+    {
+        return $this->publicacion;
     }
 
     /**

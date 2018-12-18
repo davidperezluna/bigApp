@@ -83,7 +83,7 @@ class PublicacionController extends Controller
             $publicacion->setActivo(true);
 
             $urlVideo = $publicacion->getUrlVideoyutube();
-            $urlVideo = str_replace("watch?v=", "embed/", $urlVideo);
+            $urlVideo = str_replace("https://www.youtube.com/watch?v=", "", $urlVideo);
 
             $publicacion->setUrlVideoYutube($urlVideo);
             $em->persist($publicacion);
