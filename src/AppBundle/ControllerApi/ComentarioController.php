@@ -27,7 +27,11 @@ class ComentarioController extends FOSRestController
       $data = $request->getContent();
       $params = json_decode($data);
       
-      $comentarios = $em->getRepository('AppBundle:Comentario')->findByPublicacion($params->publicacionId);
+      $comentarios = $em->getRepository('AppBundle:Comentario')->findBy(
+        array('publicacion' => $params->publicacionId),
+        array('createdAt' => 'DESC')
+
+      );
      
       if ($comentarios != null) {
         foreach ($comentarios as $key => $comentario) {
@@ -67,6 +71,39 @@ class ComentarioController extends FOSRestController
       return $response = array(
         'status' => "success",
         'msj' => "comentario eliminado",
+        
+      );
+    }
+
+  /**
+     * @Rest\Post("/comentario/new")
+     */
+    public function postCrearComentarioAction(Request $request)
+    {
+      $em = $this->getDoctrine()->getManager();
+      $data = $request->getContent();
+      $params = json_decode($data);
+      
+      $comentario = new Comentario();
+      $fechaHoy = new \DateTime("now");
+      $usuario = $em->getRepository('MappsUsuarioBundle:User')->findOneByUsername($params->usuario);
+      $publicacion = $em->getRepository('AppBundle:Publicacion')->find($params->publicacionId);
+
+
+      $comentario->setUsuario($usuario);
+      $comentario->setContenido($params->contenido);
+      $comentario->setPublicacion($publicacion);
+      $comentario->setCalificacion(0);
+      $comentario->setActivo(1);
+      $comentario->setCreatedAt($fechaHoy);
+      $comentario->setVisto(0);
+     
+      $em->persist($comentario);
+      $em->flush();
+
+      return $response = array(
+        'status' => "success",
+        'msj' => "comentario Creado",
         
       );
     }

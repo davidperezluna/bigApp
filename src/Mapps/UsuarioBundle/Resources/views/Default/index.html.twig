@@ -133,7 +133,7 @@
                                       {% if publicacion.imagen != null %}
                                       <img src="{{asset('uploads/publicaciones/'~ publicacion.imagen)}}" alt="">
                                       {% elseif publicacion.urlVideoYutube != null %}
-                                      <iframe width="100%" height="315" src="{{publicacion.urlVideoYutube}}" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+                                      <iframe width="100%" height="315" src="https://www.youtube.com/embed/{{publicacion.urlVideoYutube}}" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
                                       {% else %}
                                       {% endif %} 
                                   </div>

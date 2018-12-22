@@ -28,7 +28,10 @@ class UsuarioController extends FOSRestController
       $params = json_decode($data);
       $em = $this->getDoctrine()->getManager();
       $usuario = $em->getRepository('MappsUsuarioBundle:User')->findOneByUsername($params->username);
-      $publicaciones = $em->getRepository('AppBundle:publicacion')->findByUsuarioEmisor($usuario->getId());
+      $publicaciones = $em->getRepository('AppBundle:publicacion')->findBy(
+        array('usuarioReceptor'=> $usuario->getId()), 
+        array('createdAt' => 'DESC')
+      );
 
       if ($publicaciones != null) {
         foreach ($publicaciones as $key => $p) {
