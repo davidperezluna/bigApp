@@ -17,6 +17,61 @@ use Symfony\Component\HttpFoundation\Response;
  */
 class ProductoController extends FOSRestController
 { 
+
+  /**
+     * @Rest\POST("/producto/list/paginator")
+     */
+  public function postListAction(Request $request)
+  {
+
+      $data = $request->getContent();
+      $params = json_decode($data);
+      $em    = $this->get('doctrine.orm.entity_manager');
+      $dql   = "SELECT p FROM AppBundle:Producto p";
+      $query = $em->createQuery($dql);
+
+      $paginator  = $this->get('knp_paginator');
+      $pagination = $paginator->paginate(
+          $query, /* query NOT result */
+          $request->query->getInt('page', $params->idPagina)/*page number*/,
+          5/*limit per page*/
+      );
+
+      $productos = $query->getResult();
+
+      if ($productos != null) {
+        foreach ($productos as $key => $p) {
+          foreach ($p->getImagenes() as $keyImegen => $imagen) {
+            if ($keyImegen==0) {
+              $productosArray[$key] = array
+                (
+                'id' => $p->getId(), 
+                'idEmpresa' => $p->getEmpresa()->getId(), 
+                'nombre' => $p->getNombre(), 
+                'descripcion' => $p->getDescripcion(),
+                'nombreEmpresa' => $p->getEmpresa()->getNombre(),
+                'logoEmpresa' => $p->getEmpresa()->getFotoLogo(),
+                'lat' => $p->getEmpresa()->getLat(),
+                'lng' => $p->getEmpresa()->getLng(),
+                'imagen' => $imagen->getImagen(),
+                'valor' => $p->getValor(),
+                'subCategoria' => $p->getSubCategoria()->getNombre(),
+                'fecha' => $p->getCreatedAt(),
+                );
+            }
+          }  
+        }
+      }else{
+        $productosArray = null;
+      }
+
+      return $response = array(
+        'status' => "success",
+        'datos' => $productosArray,
+      );
+      // parameters to template
+  }
+
     /**
      * @Rest\Get("/producto/index")
      */
@@ -32,6 +87,7 @@ class ProductoController extends FOSRestController
               $productosArray[$key] = array
                 (
                 'id' => $p->getId(), 
+                'idEmpresa' => $p->getEmpresa()->getId(),
                 'nombre' => $p->getNombre(), 
                 'descripcion' => $p->getDescripcion(),
                 'nombreEmpresa' => $p->getEmpresa()->getNombre(),
@@ -73,6 +129,7 @@ class ProductoController extends FOSRestController
               $productosArray[$key] = array
                 (
                 'id' => $p->getId(),
+                'idEmpresa' => $p->getEmpresa()->getId(),
                 'nombre' => $p->getNombre(), 
                 'descripcion' => $p->getDescripcion(),
                 'nombreEmpresa' => $p->getEmpresa()->getNombre(),
@@ -114,6 +171,7 @@ class ProductoController extends FOSRestController
               $productosArray[$key] = array
                 (
                 'id' => $p->getId(),
+                'idEmpresa' => $p->getEmpresa()->getId(),
                 'nombre' => $p->getNombre(), 
                 'descripcion' => $p->getDescripcion(),
                 'nombreEmpresa' => $p->getEmpresa()->getNombre(),

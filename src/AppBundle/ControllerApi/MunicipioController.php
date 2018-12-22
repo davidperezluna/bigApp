@@ -35,7 +35,7 @@ class MunicipioController extends FOSRestController
 
       	return $response = array(
       		'status' => "success",
-      		'municipios' => $municipiosArray
+      		'datos' => $municipiosArray
       	);
     }
 

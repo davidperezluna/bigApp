@@ -35,7 +35,7 @@ class CategoriaController extends FOSRestController
 
       	return $response = array(
       		'status' => "success",
-      		'categorias' => $categoriasArray
+      		'datos' => $categoriasArray
       	);
     }
 

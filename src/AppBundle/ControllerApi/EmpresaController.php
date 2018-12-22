@@ -18,6 +18,52 @@ use Symfony\Component\HttpFoundation\Response;
 class EmpresaController extends FOSRestController
 {
     /**
+     * @Rest\POST("/empresa/list/paginator")
+     */
+    public function postIndexPaginatorAction(Request $request)
+    {
+      $data = $request->getContent();
+      $params = json_decode($data);
+      $em    = $this->get('doctrine.orm.entity_manager');
+      $dql   = "SELECT e FROM AppBundle:Empresa e";
+      $query = $em->createQuery($dql);
+
+      $paginator  = $this->get('knp_paginator');
+      $pagination = $paginator->paginate(
+          $query, /* query NOT result */
+          $request->query->getInt('page', $params->idPagina)/*page number*/,
+          5/*limit per page*/
+      );
+
+      $empresas = $query->getResult();
+
+      if ($empresas != null) {
+        foreach ($empresas as $key => $empresa) {
+          $empresasArray[$key] = array
+            (
+            'descripcion' => $empresa->getDescripcion(),
+            'id' => $empresa->getId(),
+            'nombreEmpresa' => $empresa->getNombre(),
+            'logoEmpresa' => $empresa->getFotoLogo(),
+            'portadaEmpresa' => $empresa->getFotoPortada(),
+            'nombreMunicipio' => $empresa->getMunicipio()->getNombre(),
+            'lat' => $empresa->getLat(),
+            'lng' => $empresa->getLng(),
+            'fecha' => $empresa->getCreatedAt(),
+
+            );
+        }
+      }else{
+        $empresasArray = null;
+      }
+
+      return $response = array(
+        'status' => "success",
+        'datos' => $empresasArray,
+      );
+    }
+    
+    /**
      * @Rest\Get("/empresa/index")
      */
     public function getIndexAction()
@@ -34,6 +80,8 @@ class EmpresaController extends FOSRestController
             'nombreEmpresa' => $empresa->getNombre(),
             'logoEmpresa' => $empresa->getFotoLogo(),
             'nombreMunicipio' => $empresa->getMunicipio()->getNombre(),
+            'lat' => $empresa->getLat(),
+            'lng' => $empresa->getLng(),
             'fecha' => $empresa->getCreatedAt(),
             );
         }
@@ -66,6 +114,8 @@ class EmpresaController extends FOSRestController
             'nombreEmpresa' => $empresa->getNombre(),
             'logoEmpresa' => $empresa->getFotoLogo(),
             'nombreMunicipio' => $empresa->getMunicipio()->getNombre(),
+            'lat' => $empresa->getLat(),
+            'lng' => $empresa->getLng(),
             'fecha' => $empresa->getCreatedAt(),
             );
         }
