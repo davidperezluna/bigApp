@@ -107,4 +107,95 @@ class UsuarioController extends FOSRestController
       return $response;
     }
 
+
+    /**
+     * @Rest\Post("/usuario/fotosperfil")
+     */
+    public function postFotosPerfilAction(Request $request)
+    { 
+        
+        $em = $this->getDoctrine()->getManager();
+
+        $imagen = $request->files->get("ionicfile");
+
+        $tipo = $request->request->get("tipo");
+        $username = $request->request->get("usuario");
+
+        $usuario = $em->getRepository('MappsUsuarioBundle:User')->findOneByUsername($username);
+
+        if($tipo == "portada"){
+          $rutaSubida = $this->getParameter('portada_usuario_directory');
+        }else{
+          $rutaSubida = $this->getParameter('perfil_usuario_directory');
+          
+        }
+        
+
+        $urlImagenName =  md5(uniqid()).'.'.$imagen->guessExtension();
+        $imagen->move(
+            $rutaSubida,
+            $urlImagenName
+        );
+
+        if($tipo=="portada"){
+          $usuario->setFotoPortada($urlImagenName);
+        }else{
+          $usuario->setFotoPerfil($urlImagenName);
+        }
+
+        $em->persist($usuario);
+        $em->flush(); 
+
+        return $response = array(
+            'status' => "success",
+            'datos' => $urlImagenName,
+        );
+    }
+
+
+    /**
+     * @Rest\POST("/usuario/publicaciones/list/paginator")
+     */
+  public function postListPublicacionesAction(Request $request)
+  {
+
+      $data = $request->getContent();
+      $params = json_decode($data);
+      $em    = $this->get('doctrine.orm.entity_manager');
+      $dql   = "SELECT p FROM AppBundle:Publicacion p order by p.createdAt desc";
+      $query = $em->createQuery($dql);
+
+     
+      $paginator  = $this->get('knp_paginator');
+      $pagination = $paginator->paginate(
+          $query, /* query NOT result */
+          $request->query->getInt('page', $params->idPagina)/*page number*/,
+          3/*limit per page*/
+      );
+
+      $publicaciones = $query->getResult();
+
+      if ($publicaciones != null) {
+        foreach ($publicaciones as $key => $p) {
+            $publicacionesArray[$key] = array(
+            'contenido' => $p->getContenido(), 
+            'id' => $p->getId(), 
+            'imagen' => $p->getImagen(), 
+            'urlVideo' => $p->getUrlVideoYutube(), 
+            'fecha' => $p->getCreatedAt(), 
+            'fotoPerfil'=> $p->getUsuarioEmisor()->getFotoPerfil(),
+            'nombres'=> $p->getUsuarioEmisor()->getNombres()
+            );
+        }
+      }else{
+        $publicacionesArray = null;
+      }
+
+      return $response = array(
+        'status' => "success",
+        'publicaciones' => $publicacionesArray,
+      );
+      // parameters to template
+  }
+
 }
