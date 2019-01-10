@@ -45,10 +45,6 @@ class Subasta
      */
     protected $categoria;
 
-     /**
-     * @ORM\ManyToOne(targetEntity="Producto", inversedBy="subastas")
-     */
-    protected $producto;
 
      /**
      * @ORM\ManyToOne(targetEntity="Municipio", inversedBy="subastas")
@@ -63,10 +59,12 @@ class Subasta
     private $estado;
 
 
+    
+
     /**
      * Get id
      *
-     * @return int
+     * @return integer
      */
     public function getId()
     {
@@ -122,6 +120,30 @@ class Subasta
     }
 
     /**
+     * Set estado
+     *
+     * @param string $estado
+     *
+     * @return Subasta
+     */
+    public function setEstado($estado)
+    {
+        $this->estado = $estado;
+
+        return $this;
+    }
+
+    /**
+     * Get estado
+     *
+     * @return string
+     */
+    public function getEstado()
+    {
+        return $this->estado;
+    }
+
+    /**
      * Set categoria
      *
      * @param \AppBundle\Entity\EmpresaSubCategoria $categoria
@@ -144,32 +166,6 @@ class Subasta
     {
         return $this->categoria;
     }
-
-    /**
-     * Set usuario
-     *
-     * @param \Mapps\UsuarioBundle\Entity\User $usuario
-     *
-     * @return Subasta
-     */
-    public function setUsuario(\Mapps\UsuarioBundle\Entity\User $usuario = null)
-    {
-        $this->usuario = $usuario;
-
-        return $this;
-    }
-
-    /**
-     * Get usuario
-     *
-     * @return \Mapps\UsuarioBundle\Entity\User
-     */
-    public function getUsuario()
-    {
-        return $this->usuario;
-    }
-
-    
 
     /**
      * Set municipio
@@ -196,50 +192,26 @@ class Subasta
     }
 
     /**
-     * Set producto
+     * Set usuario
      *
-     * @param \AppBundle\Entity\Producto $producto
+     * @param \Mapps\UsuarioBundle\Entity\User $usuario
      *
      * @return Subasta
      */
-    public function setProducto(\AppBundle\Entity\Producto $producto = null)
+    public function setUsuario(\Mapps\UsuarioBundle\Entity\User $usuario = null)
     {
-        $this->producto = $producto;
+        $this->usuario = $usuario;
 
         return $this;
     }
 
     /**
-     * Get producto
+     * Get usuario
      *
-     * @return \AppBundle\Entity\Producto
+     * @return \Mapps\UsuarioBundle\Entity\User
      */
-    public function getProducto()
+    public function getUsuario()
     {
-        return $this->producto;
-    }
-
-    /**
-     * Set estado
-     *
-     * @param string $estado
-     *
-     * @return Subasta
-     */
-    public function setEstado($estado)
-    {
-        $this->estado = $estado;
-
-        return $this;
-    }
-
-    /**
-     * Get estado
-     *
-     * @return string
-     */
-    public function getEstado()
-    {
-        return $this->estado;
+        return $this->usuario;
     }
 }

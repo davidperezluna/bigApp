@@ -3,6 +3,7 @@
 namespace AppBundle\ControllerApi;
 
 use AppBundle\Entity\Subasta;
+use AppBundle\Entity\SubastaProducto;
 use FOS\RestBundle\Controller\FOSRestController;
 use FOS\RestBundle\Controller\Annotations\Route;
 use FOS\RestBundle\Controller\Annotations\Get;
@@ -29,7 +30,11 @@ class SubastaController extends FOSRestController
 
         $em = $this->getDoctrine()->getManager();
         $usuario = $em->getRepository('MappsUsuarioBundle:User')->findOneByUsername($params->username);
-        $subastas = $em->getRepository('AppBundle:Subasta')->findByUsuario($usuario->getId());
+
+        $subastas = $em->getRepository('AppBundle:Subasta')->findBy(
+            array('usuario'=> $usuario->getId()), 
+            array('createdAt' => 'DESC')
+          );
        
         foreach ($subastas as $key => $subasta) {
         $subastasArray[$key] = array
@@ -53,5 +58,50 @@ class SubastaController extends FOSRestController
             'usuario' => $usuarioArray,
       		'subastas' => $subastasArray
       	);
+    }
+
+    /**
+     * @Rest\Post("/subasta/new")
+     */
+    public function postCrearSubastaAction(Request $request)
+    {
+      $em = $this->getDoctrine()->getManager();
+      $data = $request->getContent();
+      $params = json_decode($data);
+      $fechaHoy = new \DateTime("now");
+      
+      $fechaHoy = new \DateTime("now");
+      $usuario = $em->getRepository('MappsUsuarioBundle:User')->findOneByUsername($params->usuario);
+
+      $municipio = $em->getRepository('AppBundle:Municipio')->find($params->municipio);
+      $categoria = $em->getRepository('AppBundle:EmpresaSubCategoria')->find($params->categoria);
+
+      $productos = $em->getRepository('AppBundle:Producto')->findProductosPorNombreCategoriaMunicipio($params->contenido,$params->municipio,$params->categoria);
+        
+      $subasta = new Subasta();
+      $subasta->setUsuario($usuario);
+      $subasta->setMunicipio($municipio);
+      $subasta->setCategoria($categoria);
+      $subasta->setCreatedAt($fechaHoy);
+      $subasta->setPeticion($params->contenido);
+      $subasta->setEstado('solicitado');
+     
+      $em->persist($subasta);
+      $em->flush(); 
+
+      foreach ($productos as $key => $producto) {
+          $subastaProducto = new SubastaProducto();
+          $subastaProducto->setEmpresa($producto->getEmpresa());
+          $subastaProducto->setProducto($producto);
+          $subastaProducto->setSubasta($subasta);
+          $em->persist($subastaProducto);
+          $em->flush(); 
+      }
+
+      return $response = array(
+        'status' => "success",
+        'msj' => "subasta creada",
+        
+      );
     }
 }
