@@ -17,7 +17,7 @@ class SubastaController extends Controller
     /**
      * Lists all subastum entities.
      *
-     * @Route("/{userId}", name="subasta_index")
+     * @Route("/index/by/user/{userId}", name="subasta_index")
      * @Method("GET")
      */
     public function indexAction($userId)
@@ -39,7 +39,7 @@ class SubastaController extends Controller
     /**
      * Creates a new subastum entity.
      *
-     * @Route("/new/", name="subasta_new")
+     * @Route("/new", name="subasta_new")
      * @Method({"GET", "POST"})
      */
     public function newAction(Request $request)
@@ -48,6 +48,30 @@ class SubastaController extends Controller
         $form = $this->createForm('AppBundle\Form\SubastaType', $subastum);
         $form->handleRequest($request);
 
+        if ($form->isSubmitted() && $form->isValid()) {
+            $fecha = new \DateTime('now');
+            $user = $this->getUser();
+            $em = $this->getDoctrine()->getManager();
+            $productos = $em->getRepository('AppBundle:Producto')->findProductosPorNombre(
+                $subastum->getPeticion(),
+                $subastum->getMunicipio()->getId(),
+                $subastum->getCategoria()->getId()
+            );
+
+            foreach ($productos as $key => $producto) {
+                $subastumBd = new Subasta();
+                $subastumBd->setCreatedAt($fecha);
+                $subastumBd->setUsuario($user);
+                $subastumBd->setProducto($producto);
+                $subastumBd->setPeticion($subastum->getPeticion());
+                $subastumBd->setMunicipio($subastum->getMunicipio());
+                $em->persist($subastumBd);
+                $em->flush();
+            }
+            
+
+            return $this->redirectToRoute('homepage');
+        }
 
         return $this->render('AppBundle:subasta:new.html.twig', array(
             'subastum' => $subastum,
@@ -72,7 +96,6 @@ class SubastaController extends Controller
                 'subasta' => $subastum->getId()
             ), 
             array('id' => 'ASC'));
-
 
         return $this->render('AppBundle:subasta:show.html.twig', array(
             'subastum' => $subastum,
