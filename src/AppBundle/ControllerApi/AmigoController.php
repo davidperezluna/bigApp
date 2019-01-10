@@ -31,9 +31,19 @@ class AmigoController extends FOSRestController
 
         $user = $em->getRepository('MappsUsuarioBundle:User')->findOneByEmail($stringBusqueda);
 
+        $userArray = array(
+            'id'=> $user->getId(),
+            'username' => $user->getUsername(), 
+            'fotoPerfil' => $user->getFotoPerfil(), 
+            'fotoPortada' => $user->getFotoPortada(), 
+            'nombres' => $user->getNombres(), 
+            'apellidos' => $user->getApellidos(), 
+
+        );
+
         return $response = array(
             'status' => "success",
-            'user' => $user,
+            'user' => $userArray,
         );
     }
 
