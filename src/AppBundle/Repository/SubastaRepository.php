@@ -22,8 +22,7 @@ class SubastaRepository extends \Doctrine\ORM\EntityRepository
             AND s.estado = :solicitado'
         )
         ->setParameter('empresaId', $empresaId)
-        ->setParameter('solicitado', "solicitado")
-        ;
+        ->setParameter('solicitado', "solicitado");
 
         $subastas = $query->getResult();
         return $subastas;

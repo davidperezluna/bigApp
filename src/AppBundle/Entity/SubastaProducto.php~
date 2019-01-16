@@ -1,0 +1,50 @@
+<?php
+
+namespace AppBundle\Entity;
+
+use Doctrine\ORM\Mapping as ORM;
+
+/**
+ * SubastaProducto
+ *
+ * @ORM\Table(name="subasta_producto")
+ * @ORM\Entity(repositoryClass="AppBundle\Repository\SubastaProductoRepository")
+ */
+class SubastaProducto
+{
+    /**
+     * @var int
+     *
+     * @ORM\Column(name="id", type="integer")
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="AUTO")
+     */
+    private $id;
+
+     /**
+     * @ORM\ManyToOne(targetEntity="Subasta", inversedBy="comentariosSubastas")
+     */
+    protected $subasta;
+
+     /**
+     * @ORM\ManyToOne(targetEntity="Producto")
+     */
+    protected $producto;
+
+     /**
+     * @ORM\ManyToOne(targetEntity="Empresa")
+     */
+    protected $empresa;
+
+
+    /**
+     * Get id
+     *
+     * @return int
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
+}
+
