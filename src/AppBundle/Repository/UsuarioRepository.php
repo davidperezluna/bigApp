@@ -25,4 +25,7 @@ class UsuarioRepository extends EntityRepository
           $comentarios = $query->getResult();
           return $comentarios;
   }
+
+  
+
 }

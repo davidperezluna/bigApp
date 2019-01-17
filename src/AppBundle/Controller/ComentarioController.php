@@ -42,12 +42,14 @@ class ComentarioController extends Controller
     {
         $comentario = new Comentario();
         $em = $this->getDoctrine()->getManager();
+        $fechaHoy = new \DateTime("now");
         $usuario = $em->getRepository('MappsUsuarioBundle:User')->find($userId);
         $comentario->setContenido($request->request->get("contenido"));
         $comentario->setUsuario($usuario);
         $comentario->setPublicacion($publicacion);
         $comentario->setCalificacion(0);
         $comentario->setActivo(1);
+        $comentario->setCreatedAt($fechaHoy);
         $em = $this->getDoctrine()->getManager();
         $em->persist($comentario);
         $em->flush();
