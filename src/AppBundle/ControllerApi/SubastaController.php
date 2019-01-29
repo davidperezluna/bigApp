@@ -69,8 +69,6 @@ class SubastaController extends FOSRestController
       $data = $request->getContent();
       $params = json_decode($data);
       $fechaHoy = new \DateTime("now");
-      
-      $fechaHoy = new \DateTime("now");
       $usuario = $em->getRepository('MappsUsuarioBundle:User')->findOneByUsername($params->usuario);
 
       $municipio = $em->getRepository('AppBundle:Municipio')->find($params->municipio);
