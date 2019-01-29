@@ -3,6 +3,7 @@
 namespace AppBundle\Controller;
 
 use AppBundle\Entity\Subasta;
+use AppBundle\Entity\SubastaProducto;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;use Symfony\Component\HttpFoundation\Request;
@@ -52,23 +53,26 @@ class SubastaController extends Controller
             $fecha = new \DateTime('now');
             $user = $this->getUser();
             $em = $this->getDoctrine()->getManager();
-            $productos = $em->getRepository('AppBundle:Producto')->findProductosPorNombre(
+            $productos = $em->getRepository('AppBundle:Producto')->findProductosPorNombreCategoriaMunicipio(
                 $subastum->getPeticion(),
                 $subastum->getMunicipio()->getId(),
                 $subastum->getCategoria()->getId()
             );
+            
+            $fecha = new \DateTime("now");
+            $subastum->setCreatedAt($fecha);
+            $subastum->setEstado("solicitado");
+            $em->persist($subastum);
+            $em->flush();
 
             foreach ($productos as $key => $producto) {
-                $subastumBd = new Subasta();
-                $subastumBd->setCreatedAt($fecha);
-                $subastumBd->setUsuario($user);
-                $subastumBd->setProducto($producto);
-                $subastumBd->setPeticion($subastum->getPeticion());
-                $subastumBd->setMunicipio($subastum->getMunicipio());
-                $em->persist($subastumBd);
-                $em->flush();
+                $subastaProducto = new SubastaProducto();
+                $subastaProducto->setEmpresa($producto->getEmpresa());
+                $subastaProducto->setProducto($producto);
+                $subastaProducto->setSubasta($subastum);
+                $em->persist($subastaProducto);
+                $em->flush(); 
             }
-            
 
             return $this->redirectToRoute('homepage');
         }

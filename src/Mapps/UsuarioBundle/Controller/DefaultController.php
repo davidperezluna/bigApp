@@ -19,8 +19,9 @@ class DefaultController extends Controller
             'usuario' => $this->getUser()->getId()
         ), array('id' => 'DESC'),3);
 
-    	$user = $this->getUser();
-        $peticiones = $em->getRepository('AppBundle:Subasta')->findByUsuario($user->getId());
+        $user = $this->getUser();
+        $empresa = $em->getRepository('AppBundle:Empresa')->findOneByUsuario($user->getId());
+        $peticiones = $em->getRepository('AppBundle:SubastaProducto')->findByEmpresa($empresa->getId());
         $numeroPeticiones = count($peticiones) -1;
         if ($peticiones) {
             $this->addFlash(
@@ -31,6 +32,7 @@ class DefaultController extends Controller
 
     	return $this->render('MappsUsuarioBundle:Default:index.html.twig', array(
             'productos' => $productos,
+            'empresa' => $empresa,
             'peticiones' => $peticiones,
             'amigos' => $amigos,
             'user' => $user,

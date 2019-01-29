@@ -10,5 +10,22 @@ namespace AppBundle\Repository;
  */
 class SubastaProductoRepository extends \Doctrine\ORM\EntityRepository
 {
+
+    public function findSubastaPorEmpresa($empresaId)
+    {
+        
+    $query = $this->getEntityManager()
+        ->createQuery(
+            'SELECT se  FROM AppBundle:SubastaProducto se
+            JOIN se.subasta s
+            WHERE se.empresa  = :empresaId
+            AND s.estado = :solicitado'
+        )
+        ->setParameter('empresaId', $empresaId)
+        ->setParameter('solicitado', "solicitado");
+
+        $subastas = $query->getResult();
+        return $subastas;
+    }
     
 }

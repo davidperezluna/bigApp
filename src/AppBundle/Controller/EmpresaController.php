@@ -213,7 +213,7 @@ class EmpresaController extends Controller
     public function showAction(Request $request,Empresa $empresa)
     {
       $em = $this->getDoctrine()->getManager();
-      $subastas = $em->getRepository('AppBundle:Subasta')->findSubastaPorEmpresa($empresa->getId());
+      $subastas = $em->getRepository('AppBundle:SubastaProducto')->findSubastaPorEmpresa($empresa->getId());
       $vistas = $empresa->getVisitas() + 1;
       $empresa->setVisitas($vistas);
       $em->flush($empresa);
