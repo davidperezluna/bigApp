@@ -37,15 +37,17 @@ class ChatUsuarioUsuarioController extends FOSRestController
         foreach ($conversaciones as $key => $conversacion) {
           if ($conversacion->getUsuarioUno()->getId() == $usuario->getId()) {
             $conversacionesArray[$key] = array(
-              'Id' => $conversacion->getId(),
+              'conversacionId' => $conversacion->getId(),
               'nombre' => $conversacion->getUsuarioDos()->getNombres(),
               'foto' => $conversacion->getUsuarioDos()->getFotoPerfil(),
+              'usuarioId' => $conversacion->getUsuarioDos()->getId(),
             );
           }else{
             $conversacionesArray[$key] = array(
-              'Id' => $conversacion->getId(),
+              'conversacionId' => $conversacion->getId(),
               'nombre' => $conversacion->getUsuarioUno()->getNombres(),
               'foto' => $conversacion->getUsuarioUno()->getFotoPerfil(),
+              'usuarioId' => $conversacion->getUsuarioUno()->getId(),
             );
           }
         }
