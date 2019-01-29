@@ -210,11 +210,11 @@ class UsuarioController extends FOSRestController
       $data = $request->getContent();
       $params = json_decode($data);
 
-      $usuario = $em->getRepository('MappsUsuarioBundle:User')->findOneByUsername($username);
+      $usuario = $em->getRepository('MappsUsuarioBundle:User')->findOneByUsername($params->username);
       $playerId = $params->playerId;
 
       $usuario->setPlayerId($playerId);
-      $em->flush($user);
+      $em->flush($usuario);
       
       
       $response = array(

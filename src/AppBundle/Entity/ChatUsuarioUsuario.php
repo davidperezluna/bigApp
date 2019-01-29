@@ -47,6 +47,11 @@ class ChatUsuarioUsuario
      */
     protected $direccion;
 
+    /**
+     * @ORM\ManyToOne(targetEntity="Conversacion", inversedBy="empresas")
+     */
+    protected $conversacion;
+
 
     /**
      * @var bool
