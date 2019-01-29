@@ -18,6 +18,7 @@ use Symfony\Component\HttpFoundation\Response;
  */
 class ChatUsuarioUsuarioController extends FOSRestController
 {
+
     /**
      * @Rest\Post("/chatUsuario/usuario")
      */
@@ -28,53 +29,39 @@ class ChatUsuarioUsuarioController extends FOSRestController
       $params = json_decode($data);
       $em = $this->getDoctrine()->getManager();
       $usuario = $em->getRepository('MappsUsuarioBundle:User')->findOneByUsername($params->username);
-      $mensajes = $em->getRepository('AppBundle:chatUsuarioUsuario')->findByUsuario($usuario->getId());
-
-      if ($mensajes != null) {
-        foreach ($mensajes as $key => $mensaje) {
-            $mensajesArray[$key] = array(
-            'toUserId' => $mensaje->getDireccion()->getId(),
-            'toUserName' => $mensaje->getUsuario()->getUsername(),
+      $conversaciones = $em->getRepository('AppBundle:Conversacion')->findConversacion($usuario->getId());
+      
+      $conversacionesArray = null;
+      
+      if ($conversaciones != null) {
+        foreach ($conversaciones as $key => $conversacion) {
+          if ($conversacion->getUsuarioUno()->getId() == $usuario->getId()) {
+            $conversacionesArray[$key] = array(
+              'Id' => $conversacion->getId(),
+              'nombre' => $conversacion->getUsuarioDos()->getNombres(),
+              'foto' => $conversacion->getUsuarioDos()->getFotoPerfil(),
             );
+          }else{
+            $conversacionesArray[$key] = array(
+              'Id' => $conversacion->getId(),
+              'nombre' => $conversacion->getUsuarioUno()->getNombres(),
+              'foto' => $conversacion->getUsuarioUno()->getFotoPerfil(),
+            );
+          }
         }
       }else{
-        $mensajesArray = null;
+        $conversacionesArray = null;
       }
       
+        // var_dump($conversaciones);
+        // die();
 
-      $usuarioArray = array(
-      'username' => $usuario->getUsername(), 
-      'fotoPerfil' => $usuario->getFotoPerfil(), 
-      'fotoPortada' => $usuario->getFotoPortada(), 
-      'nombres' => $usuario->getNombres(), 
-      'apellidos' => $usuario->getApellidos(), 
-      );
-      
       $response = array(
           'status' => "success",
           'msj' => "Lista de Usuarios",
-          'usuario' => $usuarioArray,
-          'mensajes' => $mensajesArray,
+          'conversaciones' => $conversacionesArray,
       );
       return $response;
     }
-
     
-
-    /**
-     * @Rest\Get("/usuario/index/")
-     */
-    public function getIndexUserAction(Request $request)
-    { 
-      
-      $em = $this->getDoctrine()->getManager();
-      $usuarios = $em->getRepository('MappsUsuarioBundle:User')->findAll();
-
-      $response = array(
-        'status' => "success",
-        'msj' => "Lista de Usuarios",
-        "data" => $usuarios
-    );
-      return $response;
-    }
 }

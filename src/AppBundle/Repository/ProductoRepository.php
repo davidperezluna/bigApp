@@ -96,7 +96,7 @@ class ProductoRepository extends EntityRepository
                 JOIN p.empresa e
                 WHERE p.tags  LIKE :nombre
                 AND e.municipio = :municipio
-                AND p.subCategoria =:categoria
+                AND p.subCategoria =:categoria 
                 ORDER BY p.valor asc
                 '
             )

@@ -64,6 +64,13 @@ class User extends BaseUser
      */
     private $rolePersona;
 
+      /**
+     * @var string
+     *
+     * @ORM\Column(name="playerId", type="string", length=255 , nullable = true)
+     */
+    private $playerId;
+
      /**
      * @var \DateTime
      *
@@ -344,4 +351,28 @@ class User extends BaseUser
         return $this->publicaciones;
     }
 
+
+    /**
+     * Set playerId
+     *
+     * @param string $playerId
+     *
+     * @return User
+     */
+    public function setPlayerId($playerId)
+    {
+        $this->playerId = $playerId;
+
+        return $this;
+    }
+
+    /**
+     * Get playerId
+     *
+     * @return string
+     */
+    public function getPlayerId()
+    {
+        return $this->playerId;
+    }
 }

@@ -16,6 +16,46 @@ use Symfony\Component\HttpFoundation\Response;
  */
 class AmigoController extends FOSRestController
 {
+
+    /**
+     * @Rest\Get("amigo/user/pag")
+     */
+    public function postUsuariosAction()
+    { 
+        
+        $em    = $this->get('doctrine.orm.entity_manager');
+        $dql   =    "SELECT u 
+                    FROM MappsUsuarioBundle:User u";
+
+        $query = $em->createQuery($dql);
+
+        $paginator  = $this->get('knp_paginator');
+        $pagination = $paginator->paginate(
+            $query, /* query NOT result */
+            1/*page number*/,
+            20/*limit per page*/
+        );
+
+        $usuarios = $query->getResult();
+
+        foreach ($usuarios as $key => $usuario) {
+            $userArray[$key] = array(
+                'id'=> $usuario->getId(),
+                'username' => $usuario->getUsername(), 
+                'fotoPerfil' => $usuario->getFotoPerfil(), 
+                'fotoPortada' => $usuario->getFotoPortada(), 
+                'nombres' => $usuario->getNombres(), 
+                'apellidos' => $usuario->getApellidos(), 
+    
+            );
+        }
+
+        return $response = array(
+            'status' => "success",
+            'usuarios' => $userArray,
+        );
+    }
+
      /**
      * @Rest\Post("amigo/find/user")
      */
@@ -29,21 +69,26 @@ class AmigoController extends FOSRestController
         $stringBusqueda = $params->stringBusqueda;
        
 
-        $user = $em->getRepository('MappsUsuarioBundle:User')->findOneByEmail($stringBusqueda);
+        $usuarios = $em->getRepository('AppBundle:Amigo')->findAmigoLike($stringBusqueda);
+        $userArray = null;
 
-        $userArray = array(
-            'id'=> $user->getId(),
-            'username' => $user->getUsername(), 
-            'fotoPerfil' => $user->getFotoPerfil(), 
-            'fotoPortada' => $user->getFotoPortada(), 
-            'nombres' => $user->getNombres(), 
-            'apellidos' => $user->getApellidos(), 
-
-        );
+        if ($usuarios) {
+            foreach ($usuarios as $key => $usuario) {
+                $userArray[$key] = array( 
+                    'id'=> $usuario->getId(),
+                    'username' => $usuario->getUsername(), 
+                    'fotoPerfil' => $usuario->getFotoPerfil(), 
+                    'fotoPortada' => $usuario->getFotoPortada(), 
+                    'nombres' => $usuario->getNombres(), 
+                    'apellidos' => $usuario->getApellidos(), 
+        
+                );
+            }
+        }
 
         return $response = array(
             'status' => "success",
-            'user' => $userArray,
+            'usuarios' => $userArray,
         );
     }
 

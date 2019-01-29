@@ -87,18 +87,33 @@ class SubastaController extends FOSRestController
       $em->persist($subasta);
       $em->flush(); 
 
+      $arrayPlayersId = array();
+      $cantidadProductos=count($productos)-1;
+    //   var_dump($cantidadProductos);
       foreach ($productos as $key => $producto) {
+        // var_dump($key);
+        // if ($cantidadProductos == $key) {
+        //     $arrayPlayersId= ;
+        // } else {
+        //     $arrayPlayersId=$arrayPlayersId.$producto->getEmpresa()->getUsuario()->getPlayerId().'","';
+        // }
+        array_push($arrayPlayersId,$producto->getEmpresa()->getUsuario()->getPlayerId());
+
+        //   $arrayPlayersId=$arrayPlayersId.$producto->getEmpresa()->getUsuario()->getPlayerId().",";
           $subastaProducto = new SubastaProducto();
           $subastaProducto->setEmpresa($producto->getEmpresa());
           $subastaProducto->setProducto($producto);
           $subastaProducto->setSubasta($subasta);
           $em->persist($subastaProducto);
           $em->flush(); 
-      }
-
+        }
+        // var_dump($arrayPlayersId);
+        // die(); 
       return $response = array(
         'status' => "success",
         'msj' => "subasta creada",
+        'arrayPlayersId' => $arrayPlayersId,
+        'contenido' => $usuario->getNombres().' : '. $params->contenido,
         
       );
     }

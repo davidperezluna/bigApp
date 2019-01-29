@@ -85,7 +85,9 @@ class ComentarioController extends FOSRestController
       $params = json_decode($data);
       
       $comentario = new Comentario();
+      
       $fechaHoy = new \DateTime("now");
+
       $usuario = $em->getRepository('MappsUsuarioBundle:User')->findOneByUsername($params->usuario);
       $publicacion = $em->getRepository('AppBundle:Publicacion')->find($params->publicacionId);
 

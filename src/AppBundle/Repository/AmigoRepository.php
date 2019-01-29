@@ -10,4 +10,18 @@ namespace AppBundle\Repository;
  */
 class AmigoRepository extends \Doctrine\ORM\EntityRepository
 {
+    public function findAmigoLike($parametro)
+    {
+        $query = $this->getEntityManager()
+            ->createQuery(
+                'SELECT u  FROM MappsUsuarioBundle:User u
+                WHERE u.username  LIKE :parametro
+                AND u.email LIKE :parametro
+                '
+            )
+            ->setParameter('parametro', '%'.$parametro.'%');
+            $usuarios = $query->getResult();
+
+            return $usuarios;
+    }
 }

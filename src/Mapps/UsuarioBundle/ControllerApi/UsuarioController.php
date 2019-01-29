@@ -198,4 +198,30 @@ class UsuarioController extends FOSRestController
       // parameters to template
   }
 
+
+
+
+  /**
+     * @Rest\Post("/usuario/set/player/id")
+     */
+    public function postSetPlayerIdAction(Request $request)
+    { 
+      $em = $this->getDoctrine()->getManager();
+      $data = $request->getContent();
+      $params = json_decode($data);
+
+      $usuario = $em->getRepository('MappsUsuarioBundle:User')->findOneByUsername($params->username);
+      $playerId = $params->playerId;
+
+      $usuario->setPlayerId($playerId);
+      $em->flush($usuario);
+      
+      
+      $response = array(
+          'status' => "success",
+          'msj' => "Player Id Añadido",
+      );
+      return $response;
+    }
+
 }
