@@ -62,6 +62,7 @@ class ChatUsuarioUsuario
 
 
 
+
     /**
      * Get id
      *
@@ -71,8 +72,6 @@ class ChatUsuarioUsuario
     {
         return $this->id;
     }
-
-    
 
     /**
      * Set mensaje
@@ -101,7 +100,7 @@ class ChatUsuarioUsuario
     /**
      * Set createdAt
      *
-     * @param string $createdAt
+     * @param \DateTime $createdAt
      *
      * @return ChatUsuarioUsuario
      */
@@ -115,7 +114,7 @@ class ChatUsuarioUsuario
     /**
      * Get createdAt
      *
-     * @return string
+     * @return \DateTime
      */
     public function getCreatedAt()
     {
@@ -144,6 +143,30 @@ class ChatUsuarioUsuario
     public function getVisto()
     {
         return $this->visto;
+    }
+
+    /**
+     * Set conversacion
+     *
+     * @param \AppBundle\Entity\Conversacion $conversacion
+     *
+     * @return ChatUsuarioUsuario
+     */
+    public function setConversacion(\AppBundle\Entity\Conversacion $conversacion = null)
+    {
+        $this->conversacion = $conversacion;
+
+        return $this;
+    }
+
+    /**
+     * Get conversacion
+     *
+     * @return \AppBundle\Entity\Conversacion
+     */
+    public function getConversacion()
+    {
+        return $this->conversacion;
     }
 
     /**

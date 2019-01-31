@@ -19,7 +19,8 @@ class ConversacionRepository extends \Doctrine\ORM\EntityRepository
             ->createQuery(
                 'SELECT c   
                 FROM AppBundle:Conversacion c
-                WHERE c.usuarioUno  = :usuario'
+                WHERE c.usuarioUno  = :usuario
+                OR c.usuarioDos =:usuario' 
             )
             ->setParameter('usuario', $yo);
             $chats = $query->getResult();
