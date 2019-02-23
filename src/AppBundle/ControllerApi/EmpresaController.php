@@ -147,7 +147,7 @@ class EmpresaController extends FOSRestController
           $redesArray[$key] = array(
             'nombre' => $red->getNombre(), 
             'url' => $red->getUrlRedSocial(), 
-            
+
           );
         }
       }else{
