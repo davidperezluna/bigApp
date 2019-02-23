@@ -139,12 +139,60 @@ class EmpresaController extends FOSRestController
       $em = $this->getDoctrine()->getManager();
       $empresa = $em->getRepository('AppBundle:Empresa')->find($params->id);
 
+      $productos = $em->getRepository('AppBundle:Producto')->findByEmpresa($params->id);
+      $redes = $em->getRepository('AppBundle:EmpresaRedes')->findByEmpresa($params->id);
+
+      if ($redes) {
+        foreach ($redes as $key => $red) {
+          $redesArray[$key] = array(
+            'nombre' => $red->getNombre(), 
+            'url' => $red->getUrlRedSocial(), 
+            
+          );
+        }
+      }else{
+        $redesArray = null;
+      }
+
+      if ($productos != null) {
+        foreach ($productos as $key => $p) {
+          foreach ($p->getImagenes() as $keyImegen => $imagen) {
+            if ($keyImegen==0) {
+              $productosArray[$key] = array
+                (
+                'id' => $p->getId(), 
+                'idEmpresa' => $p->getEmpresa()->getId(), 
+                'nombreProducto' => $p->getNombre(), 
+                'descripcion' => $p->getDescripcion(),
+                'nombreEmpresa' => $p->getEmpresa()->getNombre(),
+                'logoEmpresa' => $p->getEmpresa()->getFotoLogo(),
+                'lat' => $p->getEmpresa()->getLat(),
+                'lng' => $p->getEmpresa()->getLng(), 
+                'imagen' => $imagen->getImagen(),
+                'valor' => $p->getValor(),
+                'subCategoria' => $p->getSubCategoria()->getNombre(),
+                'fecha' => $p->getCreatedAt(),
+                 //chat  
+                 'conversacionId' => null,
+                 'nombre' => $p->getEmpresa()->getUsuario()->getNombres(),
+                 'username' => $p->getEmpresa()->getUsuario()->getUsername(),
+                 'foto' => $p->getEmpresa()->getUsuario()->getFotoPerfil(),
+                 'usuarioId' => $p->getEmpresa()->getUsuario()->getId(),
+                 'oneSignalId' => $p->getEmpresa()->getUsuario()->getPlayerId(),
+                );
+            }
+          }  
+        }
+      }else{
+        $productosArray = null;
+      }
+      
+
       $empresaArray = array(
         'nombre' => $empresa->getNombre(), 
         'descripcion' => $empresa->getDescripcion(),
         'logo' => $empresa->getFotoLogo(),
         'portada' => $empresa->getFotoPortada(),
-        'municipio' => $empresa->getMunicipio()->getNombre(),
         'municipio' => $empresa->getMunicipio()->getNombre(),
         'lat' => $empresa->getLat(),
         'lng' => $empresa->getLng(),
@@ -155,6 +203,8 @@ class EmpresaController extends FOSRestController
           'status' => "success",
           'msj' => "Lista de Usuarios",
           'empresa' => $empresaArray,
+          'productos' => $productosArray,
+          'redes' => $redesArray,
       );
       return $response;
     }

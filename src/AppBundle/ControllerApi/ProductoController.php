@@ -3,6 +3,7 @@
 namespace AppBundle\ControllerApi;
 
 use AppBundle\Entity\Producto;
+use Symfony\Component\HttpFoundation\Session\Session;
 use FOS\RestBundle\Controller\FOSRestController;
 use FOS\RestBundle\Controller\Annotations\Route;
 use FOS\RestBundle\Controller\Annotations\Get;
@@ -23,6 +24,12 @@ class ProductoController extends FOSRestController
      */
   public function postListAction(Request $request)
   {
+
+      // $session = new Session();
+      // $session->start();
+      // $session->set('username', 'admin');
+
+      
 
       $data = $request->getContent();
       $params = json_decode($data);
@@ -47,7 +54,7 @@ class ProductoController extends FOSRestController
                 (
                 'id' => $p->getId(), 
                 'idEmpresa' => $p->getEmpresa()->getId(), 
-                'nombre' => $p->getNombre(), 
+                'nombreProducto' => $p->getNombre(), 
                 'descripcion' => $p->getDescripcion(),
                 'nombreEmpresa' => $p->getEmpresa()->getNombre(),
                 'logoEmpresa' => $p->getEmpresa()->getFotoLogo(),
@@ -57,6 +64,13 @@ class ProductoController extends FOSRestController
                 'valor' => $p->getValor(),
                 'subCategoria' => $p->getSubCategoria()->getNombre(),
                 'fecha' => $p->getCreatedAt(),
+                //chat  
+                'conversacionId' => null,
+                'nombre' => $p->getEmpresa()->getUsuario()->getNombres(),
+                'username' => $p->getEmpresa()->getUsuario()->getUsername(),
+                'foto' => $p->getEmpresa()->getUsuario()->getFotoPerfil(),
+                'usuarioId' => $p->getEmpresa()->getUsuario()->getId(),
+                'oneSignalId' => $p->getEmpresa()->getUsuario()->getPlayerId(),
                 );
             }
           }  
@@ -88,7 +102,7 @@ class ProductoController extends FOSRestController
                 (
                 'id' => $p->getId(), 
                 'idEmpresa' => $p->getEmpresa()->getId(),
-                'nombre' => $p->getNombre(), 
+                'nombreProducto' => $p->getNombre(), 
                 'descripcion' => $p->getDescripcion(),
                 'nombreEmpresa' => $p->getEmpresa()->getNombre(),
                 'logoEmpresa' => $p->getEmpresa()->getFotoLogo(),
@@ -99,6 +113,13 @@ class ProductoController extends FOSRestController
                 'valor' => $p->getValor(),
                 'subCategoria' => $p->getSubCategoria()->getNombre(),
                 'fecha' => $p->getCreatedAt(),
+                //chat  
+                'conversacionId' => null,
+                'nombre' => $p->getEmpresa()->getUsuario()->getNombres(),
+                'username' => $p->getEmpresa()->getUsuario()->getUsername(),
+                'foto' => $p->getEmpresa()->getUsuario()->getFotoPerfil(),
+                'usuarioId' => $p->getEmpresa()->getUsuario()->getId(),
+                'oneSignalId' => $p->getEmpresa()->getUsuario()->getPlayerId(),
                 );
             }
           }  
@@ -130,7 +151,7 @@ class ProductoController extends FOSRestController
                 (
                 'id' => $p->getId(),
                 'idEmpresa' => $p->getEmpresa()->getId(),
-                'nombre' => $p->getNombre(), 
+                'nombreProducto' => $p->getNombre(), 
                 'descripcion' => $p->getDescripcion(),
                 'nombreEmpresa' => $p->getEmpresa()->getNombre(),
                 'logoEmpresa' => $p->getEmpresa()->getFotoLogo(),
@@ -141,6 +162,13 @@ class ProductoController extends FOSRestController
                 'valor' => $p->getValor(),
                 'subCategoria' => $p->getSubCategoria()->getNombre(),
                 'fecha' => $p->getCreatedAt(),
+                //chat  
+                'conversacionId' => null,
+                'nombre' => $p->getEmpresa()->getUsuario()->getNombres(),
+                'username' => $p->getEmpresa()->getUsuario()->getUsername(),
+                'foto' => $p->getEmpresa()->getUsuario()->getFotoPerfil(),
+                'usuarioId' => $p->getEmpresa()->getUsuario()->getId(),
+                'oneSignalId' => $p->getEmpresa()->getUsuario()->getPlayerId(),
                 );
             }
           }
@@ -160,6 +188,7 @@ class ProductoController extends FOSRestController
      */
     public function getProductoFiltroAction(Request $request)
     {
+
       $em = $this->getDoctrine()->getManager();
       $data = $request->getContent();
       $params = json_decode($data);
@@ -172,7 +201,7 @@ class ProductoController extends FOSRestController
                 (
                 'id' => $p->getId(),
                 'idEmpresa' => $p->getEmpresa()->getId(),
-                'nombre' => $p->getNombre(), 
+                'nombreProducto' => $p->getNombre(), 
                 'descripcion' => $p->getDescripcion(),
                 'nombreEmpresa' => $p->getEmpresa()->getNombre(),
                 'logoEmpresa' => $p->getEmpresa()->getFotoLogo(),
@@ -183,6 +212,14 @@ class ProductoController extends FOSRestController
                 'valor' => $p->getValor(),
                 'subCategoria' => $p->getSubCategoria()->getNombre(),
                 'fecha' => $p->getCreatedAt(),
+                'conversacionId' => null,
+                 //chat  
+                'conversacionId' => null,
+                'nombre' => $p->getEmpresa()->getUsuario()->getNombres(),
+                'username' => $p->getEmpresa()->getUsuario()->getUsername(),
+                'foto' => $p->getEmpresa()->getUsuario()->getFotoPerfil(),
+                'usuarioId' => $p->getEmpresa()->getUsuario()->getId(),
+                'oneSignalId' => $p->getEmpresa()->getUsuario()->getPlayerId(),
                 );
             }
           }
@@ -196,5 +233,58 @@ class ProductoController extends FOSRestController
         'datos' => $productosArray,
       );
     }
+
+
+    /**
+     * @Rest\POST("/producto/buscar/general")
+     */
+  public function postBuscarGeneralAction(Request $request)
+  {
+
+      $data = $request->getContent();
+      $params = json_decode($data);
+      $em    = $this->get('doctrine.orm.entity_manager');
+
+      $productos = $em->getRepository('AppBundle:Producto')->findProductosPorNombre($params->stringBusqueda,'','');
+
+      if ($productos != null) {
+        foreach ($productos as $key => $p) {
+          foreach ($p->getImagenes() as $keyImegen => $imagen) {
+            if ($keyImegen==0) {
+              $productosArray[$key] = array
+                (
+                'id' => $p->getId(), 
+                'idEmpresa' => $p->getEmpresa()->getId(), 
+                'nombreProducto' => $p->getNombre(), 
+                'descripcion' => $p->getDescripcion(),
+                'nombreEmpresa' => $p->getEmpresa()->getNombre(),
+                'logoEmpresa' => $p->getEmpresa()->getFotoLogo(),
+                'lat' => $p->getEmpresa()->getLat(),
+                'lng' => $p->getEmpresa()->getLng(), 
+                'imagen' => $imagen->getImagen(),
+                'valor' => $p->getValor(),
+                'subCategoria' => $p->getSubCategoria()->getNombre(),
+                'fecha' => $p->getCreatedAt(),
+                 //chat  
+                 'conversacionId' => null,
+                 'nombre' => $p->getEmpresa()->getUsuario()->getNombres(),
+                 'username' => $p->getEmpresa()->getUsuario()->getUsername(),
+                 'foto' => $p->getEmpresa()->getUsuario()->getFotoPerfil(),
+                 'usuarioId' => $p->getEmpresa()->getUsuario()->getId(),
+                 'oneSignalId' => $p->getEmpresa()->getUsuario()->getPlayerId(),
+                );
+            }
+          }  
+        }
+      }else{
+        $productosArray = null;
+      }
+
+      return $response = array(
+        'status' => "success",
+        'productos' => $productosArray,
+      );
+      // parameters to template
+  }
 
 }

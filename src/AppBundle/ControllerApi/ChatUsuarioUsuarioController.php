@@ -92,7 +92,7 @@ class ChatUsuarioUsuarioController extends FOSRestController
               'mensaje' => $chat->getMensaje(),
               'toUserNames' => $chat->getDireccion()->getNombres(),
               'toUserFoto' => $chat->getDireccion()->getFotoPerfil(),
-              'myUserNames' => $chat->getUsuario()->getNombres(),
+              'myUserNames' => $chat->getUsuario()->getNombres(), 
               'myUserFoto' => $chat->getUsuario()->getFotoPerfil(),
               'myUser' => $chat->getUsuario()->getUsername(),
               'toUser' => $chat->getDireccion()->getUsername(),
@@ -102,8 +102,6 @@ class ChatUsuarioUsuarioController extends FOSRestController
       }else{
         $chatsArray = null;
       }
-      
-        
 
       $response = array(
           'status' => "success",
@@ -190,6 +188,7 @@ class ChatUsuarioUsuarioController extends FOSRestController
       $response = array(
           'status' => "success",
           'msj' => "ok",
+          'conversacionId' => $conversacion->getId(),
       );
       return $response;
     }

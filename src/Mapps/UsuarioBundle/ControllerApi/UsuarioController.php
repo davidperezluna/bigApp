@@ -56,6 +56,7 @@ class UsuarioController extends FOSRestController
       'fotoPortada' => $usuario->getFotoPortada(), 
       'nombres' => $usuario->getNombres(), 
       'apellidos' => $usuario->getApellidos(), 
+      'oneSignalId'=> $usuario->getPlayerId(),
       );
       
       $response = array(

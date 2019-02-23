@@ -56,7 +56,7 @@ class AmigoController extends FOSRestController
         );
     }
 
-     /**
+    /**
      * @Rest\Post("amigo/find/user")
      */
     public function postBuscarAmigoAction(Request $request)
@@ -67,8 +67,6 @@ class AmigoController extends FOSRestController
         $params = json_decode($data);
 
         $stringBusqueda = $params->stringBusqueda;
-       
-
         $usuarios = $em->getRepository('AppBundle:Amigo')->findAmigoLike($stringBusqueda);
         $userArray = null;
 
@@ -77,7 +75,7 @@ class AmigoController extends FOSRestController
                 $userArray[$key] = array( 
                     'id'=> $usuario->getId(),
                     'username' => $usuario->getUsername(), 
-                    'fotoPerfil' => $usuario->getFotoPerfil(), 
+                    'fotoPerfil' => $usuario->getFotoPerfil(),  
                     'fotoPortada' => $usuario->getFotoPortada(), 
                     'nombres' => $usuario->getNombres(), 
                     'apellidos' => $usuario->getApellidos(), 
@@ -89,6 +87,42 @@ class AmigoController extends FOSRestController
         return $response = array(
             'status' => "success",
             'usuarios' => $userArray,
+        );
+    }
+
+    /**
+     * @Rest\Post("amigo/find/amigos")
+     */
+    public function postBuscarUsuarioAmigosAction(Request $request)
+    { 
+        
+        $em = $this->getDoctrine()->getManager();
+        $data = $request->getContent();
+        $params = json_decode($data);
+        // var_dump($params);
+        // die();
+
+        $usuario = $em->getRepository('MappsUsuarioBundle:User')->findOneByUsername($params->username);
+
+        $amigos = $em->getRepository('AppBundle:Amigo')->findByUsuario($usuario->getId());
+        $amigosArray = null;
+
+        if ($amigos) {
+            foreach ($amigos as $key => $amigo) {
+                $amigosArray[$key] = array( 
+                    'conversacionId' => null,
+                    'nombre' => $amigo->getAmigo()->getNombres(),
+                    'username' => $amigo->getAmigo()->getUsername(),
+                    'foto' => $amigo->getAmigo()->getFotoPerfil(),
+                    'usuarioId' => $amigo->getAmigo()->getId(),
+                    'oneSignalId' => $amigo->getAmigo()->getPlayerId(),
+                );
+            }
+        }
+
+        return $response = array(
+            'status' => "success",
+            'amigos' => $amigosArray,
         );
     }
 
