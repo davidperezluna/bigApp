@@ -32,6 +32,14 @@ class UsuarioController extends FOSRestController
         array('usuarioReceptor'=> $usuario->getId()), 
         array('createdAt' => 'DESC')
       );
+      $empresa = $em->getRepository('AppBundle:Empresa')->findOneByUsuario($usuario->getId());
+      $empresaId = null;
+      if ($empresa) {
+        $empresaId = $empresa->getId();
+      }
+
+      // var_dump($empresaId);
+      // die();
 
       if ($publicaciones != null) {
         foreach ($publicaciones as $key => $p) {
@@ -57,6 +65,7 @@ class UsuarioController extends FOSRestController
       'nombres' => $usuario->getNombres(), 
       'apellidos' => $usuario->getApellidos(), 
       'oneSignalId'=> $usuario->getPlayerId(),
+      'empresaId'=> $empresaId,
       );
       
       $response = array(

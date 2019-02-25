@@ -60,6 +60,53 @@ class SubastaController extends FOSRestController
       	);
     }
 
+
+    /**
+     * @Rest\Post("subasta/empresa")
+     */
+    public function postIndexEmpresaAction(Request $request)
+    {
+        $data = $request->getContent();
+        $params = json_decode($data);
+        $subastasArray = null;
+        $em = $this->getDoctrine()->getManager();
+        $subastasProducto = $em->getRepository('AppBundle:SubastaProducto')->findByEmpresa($params->empresaId);
+        // var_dump($params->empresaId);
+        // die();
+
+        foreach ($subastasProducto as $key => $subastaProducto) {
+          $subastas = $em->getRepository('AppBundle:Subasta')->findBy(
+            array('id'=> $subastaProducto->getSubasta()->getId()), 
+            array('createdAt' => 'DESC')
+          );
+          foreach ($subastas as $key => $subasta) {
+          $subastasArray[$key] = array
+              (
+              'id' => $subasta->getId(),
+              'peticion' => $subasta->getPeticion(), 
+              'fecha' => $subasta->getCreatedAt(),
+              'fotoPerfil'=> $subasta->getUsuario()->getFotoPerfil(),
+              );
+          }
+        }
+
+        $empresa = $em->getRepository('AppBundle:Empresa')->find($params->empresaId);
+        
+        $usuarioArray = array(
+            'username' => $empresa->getUsuario()->getUsername(), 
+            'fotoPerfil' => $empresa->getUsuario()->getFotoPerfil(), 
+            'fotoPortada' => $empresa->getUsuario()->getFotoPortada(), 
+            'nombres' => $empresa->getUsuario()->getNombres(), 
+            'apellidos' => $empresa->getUsuario()->getApellidos(), 
+        );
+
+      	return $response = array(
+            'status' => "success",
+            'usuario' => $usuarioArray,
+      		'subastas' => $subastasArray
+      	);
+    }
+
     /**
      * @Rest\Post("/subasta/new")
      */
@@ -89,17 +136,15 @@ class SubastaController extends FOSRestController
 
       $arrayPlayersId = array();
       $cantidadProductos=count($productos)-1;
-    //   var_dump($cantidadProductos);
       foreach ($productos as $key => $producto) {
-        // var_dump($key);
         // if ($cantidadProductos == $key) {
-        //     $arrayPlayersId= ;
+        //     $arrayPlayersId = ;
         // } else {
         //     $arrayPlayersId=$arrayPlayersId.$producto->getEmpresa()->getUsuario()->getPlayerId().'","';
         // }
         array_push($arrayPlayersId,$producto->getEmpresa()->getUsuario()->getPlayerId());
 
-        //   $arrayPlayersId=$arrayPlayersId.$producto->getEmpresa()->getUsuario()->getPlayerId().",";
+          //$arrayPlayersId=$arrayPlayersId.$producto->getEmpresa()->getUsuario()->getPlayerId().",";
           $subastaProducto = new SubastaProducto();
           $subastaProducto->setEmpresa($producto->getEmpresa());
           $subastaProducto->setProducto($producto);
@@ -107,14 +152,11 @@ class SubastaController extends FOSRestController
           $em->persist($subastaProducto);
           $em->flush(); 
         }
-        // var_dump($arrayPlayersId);
-        // die(); 
       return $response = array(
         'status' => "success",
         'msj' => "subasta creada",
         'arrayPlayersId' => $arrayPlayersId,
         'contenido' => $usuario->getNombres().' : '. $params->contenido,
-        
       );
     }
 }

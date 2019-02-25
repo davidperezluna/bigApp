@@ -28,9 +28,7 @@ class ComentarioSubastaController extends FOSRestController
       $params = json_decode($data);
       
       $comentarioSubastas = $em->getRepository('AppBundle:SubastaComentario')->findBy(
-        array('subasta' => $params->subastaId),
-        array('fecha' => 'DESC')
-
+        array('subasta' => $params->subastaId)
       );
      
       if ($comentarioSubastas != null) {
