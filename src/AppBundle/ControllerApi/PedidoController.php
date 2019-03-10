@@ -83,27 +83,27 @@ class PedidoController extends FOSRestController
 
 
     /**
-     * @Rest\Get("pedido/{empresaId}/listar/byempresa")
+     * @Rest\Post("pedido/listar/by/empresa")
      */
-    public function postListarByEmpresaAction($empresaId)
+    public function postListarByEmpresaAction(Request $request)
     { 
         $em = $this->getDoctrine()->getManager();
+        $data = $request->getContent();
+        $params = json_decode($data);
 
+        $empresaId = $params->empresaId;
+        
         $pedidos = $em->getRepository('AppBundle:Pedido')->findByEmpresa($empresaId);
-
         foreach ($pedidos as $key => $pedido) {
             $pedidosArray[$key] = array(
                 'id'=> $pedido->getUsuario()->getId(),
                 'username' => $pedido->getUsuario()->getUsername(), 
                 'fotoPerfil' => $pedido->getUsuario()->getFotoPerfil(), 
-                'fotoPortada' => $pedido->getUsuario()->getFotoPortada(), 
                 'nombres' => $pedido->getUsuario()->getNombres(), 
                 'apellidos' => $pedido->getUsuario()->getApellidos(), 
                 'descripcion' => $pedido->getDescripcion(),
-                'lat' => $pedido->getLat(),
-                'lng' => $pedido->getLng(),
-                'producto'=>$pedido->getProducto()->getNombre()
-    
+                'direccion' => $pedido->getDireccion(),
+                'producto'=> $pedido->getProducto()->getNombre()
             );
         }
 
